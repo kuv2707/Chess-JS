@@ -75,7 +75,7 @@
                 div.style.left=xy.x-x+"px";
                 div.style.top=xy.y-y+"px";
                 div.style.filter=`drop-shadow(${(xy.x-320)/32}px ${(xy.y-320)/32}px 10px ${shadow})`;
-                
+                //console.log(div.id)
             }
             let md=function(e)
             {
@@ -102,6 +102,9 @@
                 div.style.width=80+"px";
                 div.style.height=80+"px";
                 div.style.transitionProperty='';
+                document.removeEventListener("mousemove",div.drag)
+                document.removeEventListener("touchmove",div.drag)
+                //console.log(e.type)
                 var xy=getXY(e);
                 let vx=xy.x-xy.x%80;
                 let vy=xy.y-xy.y%80;
@@ -128,7 +131,7 @@
                             already.alive=false;
                             already.onmouseenter=null;
                             already.onmouseleave=null;
-                            console.log(already);
+                            //console.log(already);
                             //use mutation observer
                             already.style.left=already.homeX+"px";
                             already.style.top=already.homeY+"px";
@@ -225,7 +228,7 @@
         let x=0,y=-80;
         let offsetX=Number(window.innerWidth<750?0:720);
         let offsetY=Number(window.innerHeight>800?640:0);
-        console.log(offsetX,offsetY)
+        //console.log(offsetX,offsetY)
         function getDeadLocation()
         {
             y+=80;
