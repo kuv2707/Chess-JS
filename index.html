@@ -78,7 +78,8 @@
             }
             div.addEventListener("mousedown",function(e)
             {
-                console.log("mouse down on " +div)
+                if(!div.alive)
+                return;
                 //div.style.width=100+"px";
                 //div.style.height=100+"px";
                 div.style.zIndex="2";
