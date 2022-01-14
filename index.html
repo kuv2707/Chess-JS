@@ -4,19 +4,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Chess dev</title>
 </head>
 
-<body style="background-color: rgb(36, 226, 195);">
+<body >
     <style>
+        html,body
+        {
+            padding:0;
+            margin:0;
+            background-color: rgba(60, 207, 195, 0.856);
+        }
+        canvas
+        {
+            border-radius: 5px;
+            
+        }
         .draggable
         {
             position:absolute;
             border-radius: 30px;
-            filter: drop-shadow(10px 10px 4px #777);
+            filter: drop-shadow(0px 0px 10px rgba(0,0,0,50));
             width: 80px;
             height: 80px;
-            transition-property: width,height,left,top;
+            transition-property: width,height,left,top,filter;
             transition-duration: 0.8s;
             
             user-select: none;
@@ -35,6 +46,7 @@
         }
     </style>
     <script>
+        const shadow="rgba(0,0,0,50)";
         const BOARD=new Array(8);
         for(let k=0;k<8;k++)
         {
@@ -47,19 +59,21 @@
             var x,y;
             div.onmouseenter=function()
             {
-                div.style.width="100px";
-                div.style.height="100px";
+                div.style.width="85px";
+                div.style.height="85px";
+                div.style.filter=`drop-shadow(${(div.homeX-320)/32}px ${(div.homeY-320)/32}px 10px ${shadow})`;
             };
             div.onmouseleave=function()
             {
                 div.style.width="80px";
                 div.style.height="80px";
+                div.style.filter=`drop-shadow(0px 0px 10px ${shadow})`;
             };
             div.drag=function(e)
             {
                 div.style.left=e.clientX-x+"px";
                 div.style.top=e.clientY-y+"px";
-                //div.style.filter=`drop-shadow(${(320-div.getBoundingClientRect().left)/32}px ${(320-div.getBoundingClientRect().top)/32}px ${10}px gray)`;
+                div.style.filter=`drop-shadow(${(e.clientX-320)/32}px ${(e.clientY-320)/32}px 10px ${shadow})`;
                 
             }
             div.addEventListener("mousedown",function(e)
@@ -70,8 +84,11 @@
                 div.style.zIndex="2";
                 x=Number(e.clientX-div.getBoundingClientRect().left);
                 y=Number(e.clientY-div.getBoundingClientRect().top);
+                if(div.alive)
                 document.addEventListener("mousemove",div.drag)
-                div.style.transitionProperty="none";
+                div.style.width="100px";
+                div.style.height="100px";
+                div.style.transitionProperty="width,height";
             })
             div.addEventListener("mouseup",function(e)
             {
@@ -82,32 +99,42 @@
 
                 let vx=e.clientX-e.clientX%80;
                 let vy=e.clientY-e.clientY%80;
-                var already=BOARD[vx/80][vy/80];
-                if(already==null)
+                if(!(vx>=640 ||  vy>=640))
                 {
-                    BOARD[div.homeX/80][div.homeY/80]=null;
-                    div.homeX=vx;
-                    div.homeY=vy;
-                    BOARD[div.homeX/80][div.homeY/80]=div;
-                }
-                else
-                {
-                    if(!(already.team==div.team))
+                    var already=BOARD[vx/80][vy/80];
+                    if(already==null)
                     {
-                        already.homeX=800;
-                        already.homeY=160;
-
-                        console.log(already);
-                        //use mutation observer
-                        already.style.left=already.homeX+"px";
-                        already.style.top=already.homeY+"px";
-                        //repitition
-                        BOARD[div.homeX/80][div.homeY/80]=null;
+                        //do it in a function which can handle the situation
+                        //when index is out of bounds so that dead pieces 
+                        //can be dealt with,as they are out of bounds
+                        BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
                         div.homeX=vx;
                         div.homeY=vy;
-                        BOARD[div.homeX/80][div.homeY/80]=div;
+                        BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=div;
+                    }
+                    else
+                    {
+                        if(!(already.team==div.team))
+                        {
+                            let dead=getDeadLocation();
+                            already.homeX=dead.x;
+                            already.homeY=dead.y;
+                            already.alive=false;
+                            already.onmouseenter=null;
+                            already.onmouseleave=null;
+                            console.log(already);
+                            //use mutation observer
+                            already.style.left=already.homeX+"px";
+                            already.style.top=already.homeY+"px";
+                            //repitition
+                            BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
+                            div.homeX=vx;
+                            div.homeY=vy;
+                            BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=div;
+                        }
                     }
                 }
+                
                 div.style.left=div.homeX+"px";
                 div.style.top=div.homeY+"px";
             })
@@ -121,6 +148,36 @@
         var face=["br","bn","bb","bq","bk","bb","bn","br","bp","bp","bp","bp","bp","bp","bp","bp",
                     "wp","wp","wp","wp","wp","wp","wp","wp","wr","wn","wb","wk","wq","wb","wn","wr"];
         var board=document.createElement("div");
+        var squares=document.createElement("canvas");
+        squares.width=640;
+        squares.height=640;
+        board.appendChild(squares);
+        var g=squares.getContext('2d');
+        var painter=function()
+        {
+            g.clearRect(0,0,squares.width,squares.height);
+            let black=false;
+            for(let i=0;i<640;i+=80)
+            {
+                for(let j=0;j<640;j+=80)
+                {
+                    if(black)
+                    {
+                        
+                        g.fillStyle="#9e5135";
+                    }
+                    else
+                    {
+                        g.fillStyle="#fbe9c9";
+                    }
+                    black=!black;
+                    g.fillRect(i,j,80,80);
+                }
+                black=!black;
+            }
+            //window.requestAnimationFrame(painter);
+        }
+        window.requestAnimationFrame(painter);
         board.className="#chessBoard";
        document.body.appendChild(board);
         for(let i=0;i<face.length;i++)
@@ -133,6 +190,7 @@
             board.appendChild(go);
             go.homeX=cx;
             go.homeY=cy;
+            go.alive=true;
             BOARD[go.homeX/80][go.homeY/80]=go;
             cx+=80;
             if(cx==640)
@@ -153,6 +211,18 @@
         
         
     </script>
-    
+    <script>
+        let x=720,y=-80;
+        function getDeadLocation()
+        {
+            y+=80;
+            if(y==640)
+            {
+                y=0;
+                x+=80;
+            }
+            return {x,y};
+        }
+    </script>
 </body>
 </html>
