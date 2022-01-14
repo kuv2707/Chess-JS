@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="background-color: rgb(36, 226, 195);">
+    <style>
+        .draggable
+        {
+            position:absolute;
+            border-radius: 30px;
+            filter: drop-shadow(10px 10px 4px #777);
+            width: 80px;
+            height: 80px;
+            transition-property: width,height,left,top;
+            transition-duration: 0.8s;
+            
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-drag: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+        #chessBoard
+        {
+            position: relative;
+            opacity: 1;
+            color: black;
+            width:100%;
+            height:100%;
+        }
+    </style>
+    <script>
+        const BOARD=new Array(8);
+        for(let k=0;k<8;k++)
+        {
+            BOARD[k]=new Array(8);
+            BOARD[k].fill(null);
+        }
+        
+        var addDraggability=function(div)
+        {
+            var x,y;
+            div.onmouseenter=function()
+            {
+                div.style.width="100px";
+                div.style.height="100px";
+            };
+            div.onmouseleave=function()
+            {
+                div.style.width="80px";
+                div.style.height="80px";
+            };
+            div.drag=function(e)
+            {
+                div.style.left=e.clientX-x+"px";
+                div.style.top=e.clientY-y+"px";
+                //div.style.filter=`drop-shadow(${(320-div.getBoundingClientRect().left)/32}px ${(320-div.getBoundingClientRect().top)/32}px ${10}px gray)`;
+                
+            }
+            div.addEventListener("mousedown",function(e)
+            {
+                console.log("mouse down on " +div)
+                //div.style.width=100+"px";
+                //div.style.height=100+"px";
+                div.style.zIndex="2";
+                x=Number(e.clientX-div.getBoundingClientRect().left);
+                y=Number(e.clientY-div.getBoundingClientRect().top);
+                document.addEventListener("mousemove",div.drag)
+                div.style.transitionProperty="none";
+            })
+            div.addEventListener("mouseup",function(e)
+            {
+                div.style.zIndex="1";
+                div.style.width=80+"px";
+                div.style.height=80+"px";
+                div.style.transitionProperty='';
+
+                let vx=e.clientX-e.clientX%80;
+                let vy=e.clientY-e.clientY%80;
+                var already=BOARD[vx/80][vy/80];
+                if(already==null)
+                {
+                    BOARD[div.homeX/80][div.homeY/80]=null;
+                    div.homeX=vx;
+                    div.homeY=vy;
+                    BOARD[div.homeX/80][div.homeY/80]=div;
+                }
+                else
+                {
+                    if(!(already.team==div.team))
+                    {
+                        already.homeX=800;
+                        already.homeY=160;
+
+                        console.log(already);
+                        //use mutation observer
+                        already.style.left=already.homeX+"px";
+                        already.style.top=already.homeY+"px";
+                        //repitition
+                        BOARD[div.homeX/80][div.homeY/80]=null;
+                        div.homeX=vx;
+                        div.homeY=vy;
+                        BOARD[div.homeX/80][div.homeY/80]=div;
+                    }
+                }
+                div.style.left=div.homeX+"px";
+                div.style.top=div.homeY+"px";
+            })
+            document.addEventListener("mouseup",function(e)
+            {
+                document.removeEventListener("mousemove",div.drag)
+                
+            })
+        }
+        var cx=0;cy=0;
+        var face=["br","bn","bb","bq","bk","bb","bn","br","bp","bp","bp","bp","bp","bp","bp","bp",
+                    "wp","wp","wp","wp","wp","wp","wp","wp","wr","wn","wb","wk","wq","wb","wn","wr"];
+        var board=document.createElement("div");
+        board.className="#chessBoard";
+       document.body.appendChild(board);
+        for(let i=0;i<face.length;i++)
+        {
+            var go=document.createElement("img");
+            go.id=face[i];
+            go.team=go.id.charAt(0);
+            go.className="draggable";
+            go.src="Fantasy/"+face[i]+".png";
+            board.appendChild(go);
+            go.homeX=cx;
+            go.homeY=cy;
+            BOARD[go.homeX/80][go.homeY/80]=go;
+            cx+=80;
+            if(cx==640)
+            {
+                cx=0;
+                cy+=80;
+            }
+            if(cy==160  )
+            {
+                cy=480;
+
+            }
+            go.style.left=go.homeX+"px";
+            go.style.top=go.homeY+"px";
+            addDraggability(go);
+            
+        }
+        
+        
+    </script>
+    
+</body>
+</html>
