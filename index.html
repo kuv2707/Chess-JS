@@ -13,7 +13,9 @@
         {
             padding:0;
             margin:0;
-            height:200px;
+            height:100%;
+            width:100%;
+            overflow: hidden;
             background-color: bisque;
             
         }
@@ -25,6 +27,18 @@
         {
             border-radius: 15px;
             
+        }
+        input
+        {
+            position: absolute;
+            width:100px;
+            height:70px;
+            border-radius: 30px;
+            background-color: lavender;
+            border:none;
+            filter:drop-shadow(0px 0px 30px black);
+            
+            top:400px;
         }
         .draggable
         {
@@ -55,7 +69,7 @@
             position:absolute;
             filter:drop-shadow(0px 0px 20px black);
             left:300px;
-            top:50px;
+            top:25px;
             
         }
     </style>
@@ -64,7 +78,7 @@
         var blackSquares="#9e5135";
         var whiteSquares="#fbe9c9";
         const boardOffsetX=300;
-        const boardOffsetY=50;
+        const boardOffsetY=25;
         const Pieces=new Array();
     </script>
     <script id="GUI">
@@ -268,7 +282,47 @@
             Pieces.push(go);
         }
         
-        
+        var WhiteButton=document.createElement("input");
+        WhiteButton.type="color";
+        WhiteButton.style.left="40px";
+        WhiteButton.value=whiteSquares;
+        WhiteButton.innerHTML="Color";
+        board.appendChild(WhiteButton);
+        var syncW;
+        WhiteButton.addEventListener("focus", function () 
+        {
+            syncW=setInterval(function()
+                {
+                    whiteSquares=WhiteButton.value;
+                    window.requestAnimationFrame(painter);
+                },3);
+            
+        });
+        WhiteButton.addEventListener("blur", function () 
+        {
+            clearInterval(syncW);
+        });
+
+        var BlackButton=document.createElement("input");
+        BlackButton.type="color";
+        BlackButton.style.left="190px";
+        BlackButton.value=blackSquares;
+        BlackButton.innerHTML="Color";
+        board.appendChild(BlackButton);
+        var syncB;
+        BlackButton.addEventListener("focus", function () 
+        {
+            syncB=setInterval(function()
+                {
+                    blackSquares=BlackButton.value;
+                    window.requestAnimationFrame(painter);
+                },3);
+            
+        });
+        WhiteButton.addEventListener("blur", function () 
+        {
+            clearInterval(syncW);
+        });
     </script>
     <script>
         let x=0,y=-80;
