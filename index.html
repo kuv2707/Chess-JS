@@ -13,7 +13,9 @@
         {
             padding:0;
             margin:0;
-            background-color: rgba(61, 66, 75, 0.856);
+            height:200px;
+            background-color: bisque;
+            
         }
         *
         {
@@ -21,7 +23,7 @@
         }
         canvas
         {
-            border-radius: 5px;
+            border-radius: 15px;
             
         }
         .draggable
@@ -40,16 +42,32 @@
             -webkit-user-select: none;
             -ms-user-select: none;
         }
-        #chessBoard
+        #container
         {
             position: relative;
             opacity: 1;
-            color: black;
             width:100%;
             height:100%;
+            background-color: lavender;
+        }
+        #chessBoard
+        {
+            position:absolute;
+            filter:drop-shadow(0px 0px 20px black);
+            left:300px;
+            top:50px;
+            
         }
     </style>
-    <script>
+    <script id="GlobalVariables">
+        var turn=true;
+        var blackSquares="#9e5135";
+        var whiteSquares="#fbe9c9";
+        const boardOffsetX=300;
+        const boardOffsetY=50;
+        const Pieces=new Array();
+    </script>
+    <script id="GUI">
         const shadow="rgba(0,0,0,50)";
         const BOARD=new Array(8);
         for(let k=0;k<8;k++)
@@ -61,11 +79,14 @@
         var addDraggability=function(div)
         {
             var x,y;
+            //only for pointer-based devices
             div.onmouseenter=function()
             {
+                if(turn!=div.team)
+                return;
                 div.style.width="85px";
                 div.style.height="85px";
-                div.style.filter=`drop-shadow(${(div.homeX-320)/32}px ${(div.homeY-320)/32}px 10px ${shadow})`;
+                div.style.filter=`drop-shadow(${(div.homeX-320)/32}px ${(div.homeY-320)/32}px 15px ${shadow})`;
             };
             div.onmouseleave=function()
             {
@@ -78,12 +99,14 @@
                 var xy=getXY(e);
                 div.style.left=xy.x-x+"px";
                 div.style.top=xy.y-y+"px";
-                div.style.filter=`drop-shadow(${(xy.x-320)/32}px ${(xy.y-320)/32}px 10px ${shadow})`;
+                div.style.filter=`drop-shadow(${(xy.x-320)/32}px ${(xy.y-320)/32}px 15px ${shadow})`;
                 //console.log(div.id)
             }
             let md=function(e)
             {
                 if(!div.alive)
+                return;
+                if(turn!=div.team)
                 return;
                 var xy=getXY(e);
                 //div.style.width=100+"px";
@@ -92,34 +115,46 @@
                 x=Number(xy.x-div.getBoundingClientRect().left);
                 y=Number(xy.y-div.getBoundingClientRect().top);
                 if(div.alive)
-                document.addEventListener("mousemove",div.drag)
-                document.addEventListener("touchmove",div.drag)
+                {
+                    document.addEventListener("mousemove",div.drag)
+                    document.addEventListener("touchmove",div.drag)
+                }
                 div.style.width="100px";
                 div.style.height="100px";
                 div.style.transitionProperty="width,height";
+                document.addEventListener("mouseup",docmu)
+                document.addEventListener("touchend",docmu)
             };
             div.addEventListener("mousedown",md)
             div.addEventListener("touchstart",md)
             let mu=function(e)
             {
-                div.style.zIndex="1";
+                if(!div.alive)
+                return;
+                var xy=getXY(e);
+                setTimeout(()=>div.style.zIndex="1",1000);
+                
                 div.style.width=80+"px";
                 div.style.height=80+"px";
                 div.style.transitionProperty='';
                 document.removeEventListener("mousemove",div.drag)
                 document.removeEventListener("touchmove",div.drag)
-                //console.log(e.type)
-                var xy=getXY(e);
+                xy.x-=boardOffsetX;
+                xy.y-=boardOffsetY;
                 let vx=xy.x-xy.x%80;
                 let vy=xy.y-xy.y%80;
-                if(!(vx>=640 ||  vy>=640))
+                console.log(vx,vy)
+                if(!(vx>=640 ||  vy>=640  ||  vx<0  ||  vy<0))
                 {
-                    var already=BOARD[vx/80][vy/80];
+                    /**
+                     * a successful turn is when:
+                     * already is null
+                     * or it is of different team
+                     */
+                    var already=BOARD[vx/80][vy/80];//indexoutofbounds exception never occurs
                     if(already==null)
                     {
-                        //do it in a function which can handle the situation
-                        //when index is out of bounds so that dead pieces 
-                        //can be dealt with,as they are out of bounds
+                        turn=!turn;
                         BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
                         div.homeX=vx;
                         div.homeY=vy;
@@ -135,6 +170,7 @@
                             already.alive=false;
                             already.onmouseenter=null;
                             already.onmouseleave=null;
+                            turn=!turn;
                             //console.log(already);
                             //use mutation observer
                             already.style.left=already.homeX+"px";
@@ -148,24 +184,29 @@
                     }
                 }
                 
-                div.style.left=div.homeX+"px";
-                div.style.top=div.homeY+"px";
+                div.style.left=div.homeX+boardOffsetX+"px";
+                div.style.top=div.homeY+boardOffsetY+"px";
             };
-            div.addEventListener("mouseup",mu)
-            div.addEventListener("touchend",mu)
-            div.addEventListener("touchcancel",mu)
-            document.addEventListener("mouseup",function(e)
+            // div.addEventListener("mouseup",mu)
+            // div.addEventListener("touchend",mu)
+            //div.addEventListener("touchcancel",mu)
+            let docmu=function(e)
             {
                 document.removeEventListener("mousemove",div.drag)
                 document.removeEventListener("touchmove",div.drag)
+                document.removeEventListener("mouseup",docmu)
+                document.removeEventListener("touchend",docmu)
+                mu(e);
                 
-            })
+            };
+            
         }
         var cx=0;cy=0;
         var face=["br","bn","bb","bq","bk","bb","bn","br","bp","bp","bp","bp","bp","bp","bp","bp",
                     "wp","wp","wp","wp","wp","wp","wp","wp","wr","wn","wb","wk","wq","wb","wn","wr"];
         var board=document.createElement("div");
         var squares=document.createElement("canvas");
+        squares.id="chessBoard";
         squares.width=640;
         squares.height=640;
         board.appendChild(squares);
@@ -181,11 +222,11 @@
                     if(black)
                     {
                         
-                        g.fillStyle="#9e5135";
+                        g.fillStyle=blackSquares;
                     }
                     else
                     {
-                        g.fillStyle="#fbe9c9";
+                        g.fillStyle=whiteSquares;
                     }
                     black=!black;
                     g.fillRect(i,j,80,80);
@@ -195,19 +236,20 @@
             //window.requestAnimationFrame(painter);
         }
         window.requestAnimationFrame(painter);
-        board.className="#chessBoard";
+        board.className="#container";
        document.body.appendChild(board);
         for(let i=0;i<face.length;i++)
         {
             var go=document.createElement("img");
             go.id=face[i];
-            go.team=go.id.charAt(0);
+            go.team=go.id.charAt(0)=='b'?false:true;//false means black
             go.className="draggable";
             go.src="Fantasy/"+face[i]+".png";
             board.appendChild(go);
             go.homeX=cx;
             go.homeY=cy;
             go.alive=true;
+            go.onclick=()=>console.log(go);
             BOARD[go.homeX/80][go.homeY/80]=go;
             cx+=80;
             if(cx==640)
@@ -220,16 +262,25 @@
                 cy=480;
 
             }
-            go.style.left=go.homeX+"px";
-            go.style.top=go.homeY+"px";
+            go.style.left=go.homeX+boardOffsetX+"px";
+            go.style.top=go.homeY+boardOffsetY+"px";
             addDraggability(go);
-            
+            Pieces.push(go);
         }
         
         
     </script>
     <script>
         let x=0,y=-80;
+        if(window.innerWidth<650  &&  window.innerHeight>1000)
+        {
+            y+=640-boardOffsetY;
+
+        }
+        else
+        {
+            x+=640-boardOffsetX;
+        }
         let offsetX=Number(window.innerWidth<750?0:720);
         let offsetY=Number(window.innerHeight>800?640:0);
         //console.log(offsetX,offsetY)
@@ -258,6 +309,12 @@
                 return {"x":e.clientX,"y":e.clientY};
             }
         }
+        // setInterval(function()
+        // {
+        //     let temp=Pieces[Math.floor(Math.random()*Pieces.length)].style;
+        //     temp.left=Math.random()*560+boardOffsetX+"px";
+        //     temp.top=Math.random()*560+boardOffsetY+"px";
+        // },5)
     </script>
 </body>
 </html>
