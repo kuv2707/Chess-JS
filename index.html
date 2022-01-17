@@ -28,17 +28,20 @@
             border-radius: 15px;
             
         }
-        input
+        input,label
         {
             position: absolute;
             width:100px;
             height:70px;
             border-radius: 30px;
-            background-color: lavender;
+            background-color: rgba(28, 146, 136,255);
             border:none;
             filter:drop-shadow(0px 0px 30px black);
-            
+            text-align: center;
+            font-size: 50px;
             top:400px;
+            transition-duration: 0.8s;
+            transition-property: color,left;
         }
         .draggable
         {
@@ -62,7 +65,7 @@
             opacity: 1;
             width:100%;
             height:100%;
-            background-color: lavender;
+            background-color: rgb(47, 171, 209);
         }
         #chessBoard
         {
@@ -70,6 +73,8 @@
             filter:drop-shadow(0px 0px 20px black);
             left:300px;
             top:25px;
+            transition-duration: 0.8s;
+            transition-property: left;
             
         }
     </style>
@@ -77,11 +82,25 @@
         var turn=true;
         var blackSquares="#9e5135";
         var whiteSquares="#fbe9c9";
-        const boardOffsetX=300;
+        var boardOffsetX=window.innerWidth/2-320;
         const boardOffsetY=25;
         const Pieces=new Array();
     </script>
     <script id="GUI">
+        window.addEventListener("resize",function()
+        {
+            squares.style.left=window.innerWidth/2-320+"px";
+            boardOffsetX=window.innerWidth/2-320;
+            WhiteButton.style.left=window.innerWidth/2+320+30+"px";
+            BlackButton.style.left=window.innerWidth/2+320+30+"px";
+            labelW.style.left=window.innerWidth/2+320+30+"px";
+            labelB.style.left=window.innerWidth/2+320+30+"px";
+            Pieces.forEach(function(dog)
+            {
+                
+                dog.style.left=dog.homeX+boardOffsetX+"px";
+            });
+        });
         const shadow="rgba(0,0,0,50)";
         const BOARD=new Array(8);
         for(let k=0;k<8;k++)
@@ -114,7 +133,7 @@
                 div.style.left=xy.x-x+"px";
                 div.style.top=xy.y-y+"px";
                 div.style.filter=`drop-shadow(${(xy.x-320)/32}px ${(xy.y-320)/32}px 15px ${shadow})`;
-                //console.log(div.id)
+                
             }
             let md=function(e)
             {
@@ -157,7 +176,7 @@
                 xy.y-=boardOffsetY;
                 let vx=xy.x-xy.x%80;
                 let vy=xy.y-xy.y%80;
-                console.log(vx,vy)
+                
                 if(!(vx>=640 ||  vy>=640  ||  vx<0  ||  vy<0))
                 {
                     /**
@@ -169,6 +188,16 @@
                     if(already==null)
                     {
                         turn=!turn;
+                        if(turn)
+                        {
+                            labelW.style.color="white";
+                            labelB.style.color="black";
+                        }
+                        else
+                        {
+                            labelB.style.color="white";
+                            labelW.style.color="black";
+                        }
                         BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
                         div.homeX=vx;
                         div.homeY=vy;
@@ -185,7 +214,7 @@
                             already.onmouseenter=null;
                             already.onmouseleave=null;
                             turn=!turn;
-                            //console.log(already);
+                            
                             //use mutation observer
                             already.style.left=already.homeX+"px";
                             already.style.top=already.homeY+"px";
@@ -223,6 +252,7 @@
         squares.id="chessBoard";
         squares.width=640;
         squares.height=640;
+        squares.style.left=window.innerWidth/2-320+"px";
         board.appendChild(squares);
         var g=squares.getContext('2d');
         var painter=function()
@@ -284,7 +314,7 @@
         
         var WhiteButton=document.createElement("input");
         WhiteButton.type="color";
-        WhiteButton.style.left="40px";
+        WhiteButton.style.left=window.innerWidth/2+320+30+"px";
         WhiteButton.value=whiteSquares;
         WhiteButton.innerHTML="Color";
         board.appendChild(WhiteButton);
@@ -305,7 +335,8 @@
 
         var BlackButton=document.createElement("input");
         BlackButton.type="color";
-        BlackButton.style.left="190px";
+        BlackButton.style.left=window.innerWidth/2+320+30+"px";
+        BlackButton.style.top="500px";
         BlackButton.value=blackSquares;
         BlackButton.innerHTML="Color";
         board.appendChild(BlackButton);
@@ -323,28 +354,36 @@
         {
             clearInterval(syncW);
         });
+
+        var labelW=document.createElement("label");
+        labelW.style.left=window.innerWidth/2+320+30+"px";
+        labelW.style.top="100px";
+        labelW.style.width="300px";
+        labelW.innerHTML="White";
+        labelW.style.color="white";
+
+        var labelB=document.createElement("label");
+        labelB.style.left=window.innerWidth/2+320+30+"px";
+        labelB.style.top="200px";
+        labelB.style.width="300px";
+        labelB.innerHTML="Black";
+
+        board.appendChild(labelW);
+        board.appendChild(labelB);
     </script>
     <script>
-        let x=0,y=-80;
-        if(window.innerWidth<650  &&  window.innerHeight>1000)
-        {
-            y+=640-boardOffsetY;
-
-        }
-        else
-        {
-            x+=640-boardOffsetX;
-        }
-        let offsetX=Number(window.innerWidth<750?0:720);
-        let offsetY=Number(window.innerHeight>800?640:0);
-        //console.log(offsetX,offsetY)
+        let x=-80,y=640;
+        
+        let offsetX=0;
+        let offsetY=boardOffsetY;
+        
         function getDeadLocation()
         {
-            y+=80;
-            if(y==640)
+            x+=80;
+            if(x==640)
             {
-                y=0;
-                x+=80;
+                x=0;
+                y+=80;
             }
             let q=x+offsetX,w=y+offsetY;
             return {"x":q,"y":w};
