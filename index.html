@@ -16,7 +16,7 @@
             height:100%;
             width:100%;
             overflow: hidden;
-            background-color: bisque;
+            background-color: #16ddbc;
             
         }
         *
@@ -42,6 +42,22 @@
             top:400px;
             transition-duration: 0.8s;
             transition-property: color,left;
+        }
+        label
+        {
+            position: absolute;
+            width:100px;
+            height:70px;
+            border-radius: 30px;
+            background-color: rgba(28, 146, 136,255);
+            border:none;
+            filter:drop-shadow(0px 0px 30px rgb(235, 230, 186));
+            text-align: center;
+            font-size: 50px;
+            top:400px;
+            transition-duration: 0.8s;
+            transition-property: color,left;
+            font-family: papyrus;
         }
         .draggable
         {
@@ -80,8 +96,8 @@
     </style>
     <script id="GlobalVariables">
         var turn=true;
-        var blackSquares="#9e5135";
-        var whiteSquares="#fbe9c9";
+        var blackSquares="#0E6A7C";
+        var whiteSquares="#75D9E6";
         var boardOffsetX=window.innerWidth/2-320;
         const boardOffsetY=25;
         const Pieces=new Array();
@@ -92,9 +108,9 @@
             squares.style.left=window.innerWidth/2-320+"px";
             boardOffsetX=window.innerWidth/2-320;
             WhiteButton.style.left=window.innerWidth/2+320+30+"px";
-            BlackButton.style.left=window.innerWidth/2+320+30+"px";
+            BlackButton.style.left=window.innerWidth/2+520+30+"px";
             labelW.style.left=window.innerWidth/2+320+30+"px";
-            labelB.style.left=window.innerWidth/2+320+30+"px";
+            labelB.style.right=window.innerWidth/2+320+30+"px";
             Pieces.forEach(function(dog)
             {
                 
@@ -188,6 +204,16 @@
                     if(already==null)
                     {
                         turn=!turn;
+                        if(turn)
+                        {
+                            labelW.style.color="white";
+                            labelB.style.color="black";
+                        }
+                        else
+                        {
+                            labelB.style.color="white";
+                            labelW.style.color="black";
+                        }
                         if(turn)
                         {
                             labelW.style.color="white";
@@ -335,8 +361,7 @@
 
         var BlackButton=document.createElement("input");
         BlackButton.type="color";
-        BlackButton.style.left=window.innerWidth/2+320+30+"px";
-        BlackButton.style.top="500px";
+        BlackButton.style.left=window.innerWidth/2+520+30+"px";
         BlackButton.value=blackSquares;
         BlackButton.innerHTML="Color";
         board.appendChild(BlackButton);
@@ -363,8 +388,8 @@
         labelW.style.color="white";
 
         var labelB=document.createElement("label");
-        labelB.style.left=window.innerWidth/2+320+30+"px";
-        labelB.style.top="200px";
+        labelB.style.right=window.innerWidth/2+320+30+"px";
+        labelB.style.top="100px";
         labelB.style.width="300px";
         labelB.innerHTML="Black";
 
