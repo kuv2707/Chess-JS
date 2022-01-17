@@ -98,128 +98,12 @@
         var turn=true;
         var blackSquares="#0E6A7C";
         var whiteSquares="#75D9E6";
-        var boardOffsetX=window.innerWidth/2-320;
+        var boardOffsetX=(window.innerWidth/window.innerHeight>1)?window.innerWidth/2-320:20;
         const boardOffsetY=25;
+        console.log("boardoffsetx is",boardOffsetX)
         const Pieces=new Array();
-    </script>
-    <script>
-        let xb=-330;
-        let yb=200;
-        let xw=0;
-        let yw=200;
-        var allotDeadLocation;
-        let offsetX=0;
-        let offsetY=boardOffsetY;
-        if(window.innerWidth/window.innerHeight>1)
-        {
-            //landscape view
-            window.addEventListener("resize",function()
-            {
-                squares.style.left=window.innerWidth/2-320+"px";
-                boardOffsetX=window.innerWidth/2-320;
-                WhiteButton.style.left=window.innerWidth/2+320+30+"px";
-                BlackButton.style.left=window.innerWidth/2+520+30+"px";
-                labelW.style.left=window.innerWidth/2+320+30+"px";
-                labelB.style.left=window.innerWidth/2-320-330+"px";
-                Pieces.forEach(function(dog)
-                {
-                    if(dog.alive)
-                    dog.style.left=dog.homeX+boardOffsetX+"px";
-                    else
-                    {
-                        if(dog.team==false)
-                        dog.style.left=window.innerWidth/2-320+dog.homeX+"px";
-                        else
-                        dog.style.left=window.innerWidth/2+320+dog.homeX+"px";
-                    }
-                });
-            });
-            allotDeadLocation=function(piece)
-            {
-                console.log(piece.team)
-                if(piece.team==false)
-                {
-                    
-                    piece.style.left=window.innerWidth/2-320+xb+"px";
-                    piece.style.top=yb+"px";
-                    piece.style.height="75px";
-                    piece.style.width="75px";
-                    piece.homeX=xb;
-                    piece.homeY=yb;
-                    console.log("allotted",xb,yb)
-                    xb+=75;
-                    if(xb==0)
-                    {
-                        xb=-330;
-                        yb+=75;
-                    }
-                    
-                }
-                else
-                {
-                    piece.style.left=window.innerWidth/2+320+xw+"px";
-                    piece.style.top=yw+"px";
-                    piece.style.height="75px";
-                    piece.style.width="75px";
-                    piece.homeX=xw;
-                    piece.homeY=yw;
-                    xw+=75;
-                    if(xw==300)
-                    {
-                        xw=0;
-                        yw+=75;
-                    }
-                }
-                
-                
-            }
 
-        }
-        else
-        {
-            //portrait view
-            squares.style.left="20px";
-            Pieces.forEach(function(dog)
-                {
-                    if(dog.alive)
-                    dog.style.left=dog.homeX+boardOffsetX+"px";
-                    else
-                    {
-                        if(dog.team==false)
-                        dog.style.left=window.innerWidth/2-320+dog.homeX+"px";
-                        else
-                        dog.style.left=window.innerWidth/2+320+dog.homeX+"px";
-                    }
-                });
-                boardOffsetX=20;
-                WhiteButton.style.left=window.innerWidth/2+320+30+"px";
-                BlackButton.style.left="10px";
-                BlackButton.style.top="10px";
-                labelW.style.left=window.innerWidth/2+330+"px"
-                labelW.style.top="680px";
-                labelB.style.top="680px";
-                labelB.style.left=window.innerWidth/2-320-330+"px";
-        }
-
-        function getXY(e)
-        {
-            if(e.type.substring(0,5)=="touch")
-            {
-                let evt=(typeof e.originalEvent==='undefined')?e:e.originalEvent;
-                let touch=evt.touches[0]||evt.changedTouches[0];
-                return {"x":touch.pageX,"y":touch.pageY};
-            }
-            else if(e.type.substring(0,5)=="mouse")
-            {
-                return {"x":e.clientX,"y":e.clientY};
-            }
-        }
-        // setInterval(function()
-        // {
-        //     let temp=Pieces[Math.floor(Math.random()*Pieces.length)].style;
-        //     temp.left=Math.random()*560+boardOffsetX+"px";
-        //     temp.top=Math.random()*560+boardOffsetY+"px";
-        // },5)
+        
     </script>
     <script id="GUI">
         
@@ -441,44 +325,44 @@
             Pieces.push(go);
         }
         
-        var WhiteButton=document.createElement("input");
-        WhiteButton.type="color";
-        WhiteButton.style.left=window.innerWidth/2+320+30+"px";
-        WhiteButton.value=whiteSquares;
-        WhiteButton.innerHTML="Color";
-        board.appendChild(WhiteButton);
+        var WColorSelector=document.createElement("input");
+        WColorSelector.type="color";
+        WColorSelector.style.left=window.innerWidth/2+320+30+"px";
+        WColorSelector.value=whiteSquares;
+        WColorSelector.innerHTML="Color";
+        board.appendChild(WColorSelector);
         var syncW;
-        WhiteButton.addEventListener("focus", function () 
+        WColorSelector.addEventListener("focus", function () 
         {
             syncW=setInterval(function()
                 {
-                    whiteSquares=WhiteButton.value;
+                    whiteSquares=WColorSelector.value;
                     window.requestAnimationFrame(painter);
                 },3);
             
         });
-        WhiteButton.addEventListener("blur", function () 
+        WColorSelector.addEventListener("blur", function () 
         {
             clearInterval(syncW);
         });
 
-        var BlackButton=document.createElement("input");
-        BlackButton.type="color";
-        BlackButton.style.left=window.innerWidth/2+520+30+"px";
-        BlackButton.value=blackSquares;
-        BlackButton.innerHTML="Color";
-        board.appendChild(BlackButton);
+        var BColorSelector=document.createElement("input");
+        BColorSelector.type="color";
+        BColorSelector.style.left=window.innerWidth/2+520+30+"px";
+        BColorSelector.value=blackSquares;
+        BColorSelector.innerHTML="Color";
+        board.appendChild(BColorSelector);
         var syncB;
-        BlackButton.addEventListener("focus", function () 
+        BColorSelector.addEventListener("focus", function () 
         {
             syncB=setInterval(function()
                 {
-                    blackSquares=BlackButton.value;
+                    blackSquares=BColorSelector.value;
                     window.requestAnimationFrame(painter);
                 },3);
             
         });
-        WhiteButton.addEventListener("blur", function () 
+        WColorSelector.addEventListener("blur", function () 
         {
             clearInterval(syncW);
         });
@@ -499,6 +383,124 @@
         board.appendChild(labelW);
         board.appendChild(labelB);
     </script>
-    
+    <script>
+        let xb=-330;
+        let yb=200;
+        let xw=0;
+        let yw=200;
+        var allotDeadLocation;
+        let offsetX=0;
+        let offsetY=boardOffsetY;
+        console.log(window.innerWidth/window.innerHeight>1);
+        if(window.innerWidth/window.innerHeight>1)
+        {
+            //landscape view
+            window.addEventListener("resize",function()
+            {
+                squares.style.left=window.innerWidth/2-320+"px";
+                boardOffsetX=window.innerWidth/2-320;
+                WColorSelector.style.left=window.innerWidth/2+320+30+"px";
+                BColorSelector.style.left=window.innerWidth/2+520+30+"px";
+                labelW.style.left=window.innerWidth/2+320+30+"px";
+                labelB.style.left=window.innerWidth/2-320-330+"px";
+                Pieces.forEach(function(dog)
+                {
+                    if(dog.alive)
+                    dog.style.left=dog.homeX+boardOffsetX+"px";
+                    else
+                    {
+                        if(dog.team==false)
+                        dog.style.left=window.innerWidth/2-320+dog.homeX+"px";
+                        else
+                        dog.style.left=window.innerWidth/2+320+dog.homeX+"px";
+                    }
+                });
+            });
+            allotDeadLocation=function(piece)
+            {
+                console.log(piece.team)
+                if(piece.team==false)
+                {
+                    
+                    piece.style.left=window.innerWidth/2-320+xb+"px";
+                    piece.style.top=yb+"px";
+                    piece.style.height="75px";
+                    piece.style.width="75px";
+                    piece.homeX=xb;
+                    piece.homeY=yb;
+                    console.log("allotted",xb,yb)
+                    xb+=75;
+                    if(xb==0)
+                    {
+                        xb=-330;
+                        yb+=75;
+                    }
+                    
+                }
+                else
+                {
+                    piece.style.left=window.innerWidth/2+320+xw+"px";
+                    piece.style.top=yw+"px";
+                    piece.style.height="75px";
+                    piece.style.width="75px";
+                    piece.homeX=xw;
+                    piece.homeY=yw;
+                    xw+=75;
+                    if(xw==300)
+                    {
+                        xw=0;
+                        yw+=75;
+                    }
+                }
+                
+                
+            }
+
+        }
+        else
+        {
+            //portrait view
+            squares.style.left="20px";
+            Pieces.forEach(function(dog)
+                {
+                    if(dog.alive)
+                    dog.style.left=dog.homeX+boardOffsetX+"px";
+                    else
+                    {
+                        if(dog.team==false)
+                        dog.style.left=window.innerWidth/2-320+dog.homeX+"px";
+                        else
+                        dog.style.left=window.innerWidth/2+320+dog.homeX+"px";
+                    }
+                });
+                boardOffsetX=window.innerWidth/2-320;
+                WColorSelector.style.left="0px";
+                BColorSelector.style.left="0px";
+                labelW.style.left="20px";
+                labelB.style.left="320px";
+                labelW.style.top="680px";
+                labelB.style.top="680px";
+        }
+
+        function getXY(e)
+        {
+            if(e.type.substring(0,5)=="touch")
+            {
+                let evt=(typeof e.originalEvent==='undefined')?e:e.originalEvent;
+                let touch=evt.touches[0]||evt.changedTouches[0];
+                return {"x":touch.pageX,"y":touch.pageY};
+            }
+            else if(e.type.substring(0,5)=="mouse")
+            {
+                return {"x":e.clientX,"y":e.clientY};
+            }
+        }
+        // setInterval(function()
+        // {
+        //     let temp=Pieces[Math.floor(Math.random()*Pieces.length)].style;
+        //     temp.left=Math.random()*560+boardOffsetX+"px";
+        //     temp.top=Math.random()*560+boardOffsetY+"px";
+        // },5)
+    </script>
 </body>
 </html>
