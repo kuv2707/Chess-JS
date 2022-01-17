@@ -28,7 +28,7 @@
             border-radius: 15px;
             
         }
-        input,label
+        input
         {
             position: absolute;
             width:100px;
@@ -39,7 +39,7 @@
             filter:drop-shadow(0px 0px 30px black);
             text-align: center;
             font-size: 50px;
-            top:400px;
+            top:20px;
             transition-duration: 0.8s;
             transition-property: color,left;
         }
@@ -56,7 +56,7 @@
             font-size: 50px;
             top:400px;
             transition-duration: 0.8s;
-            transition-property: color,left;
+            transition-property: color,left,right;
             font-family: papyrus;
         }
         .draggable
@@ -110,11 +110,18 @@
             WhiteButton.style.left=window.innerWidth/2+320+30+"px";
             BlackButton.style.left=window.innerWidth/2+520+30+"px";
             labelW.style.left=window.innerWidth/2+320+30+"px";
-            labelB.style.right=window.innerWidth/2+320+30+"px";
+            labelB.style.left=window.innerWidth/2-320-330+"px";
             Pieces.forEach(function(dog)
             {
-                
+                if(dog.alive)
                 dog.style.left=dog.homeX+boardOffsetX+"px";
+                else
+                {
+                    if(dog.team==false)
+                    dog.style.left=window.innerWidth/2-320+dog.homeX+"px";
+                    else
+                    dog.style.left=window.innerWidth/2+320+dog.homeX+"px";
+                }
             });
         });
         const shadow="rgba(0,0,0,50)";
@@ -214,16 +221,7 @@
                             labelB.style.color="white";
                             labelW.style.color="black";
                         }
-                        if(turn)
-                        {
-                            labelW.style.color="white";
-                            labelB.style.color="black";
-                        }
-                        else
-                        {
-                            labelB.style.color="white";
-                            labelW.style.color="black";
-                        }
+                        
                         BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
                         div.homeX=vx;
                         div.homeY=vy;
@@ -233,17 +231,23 @@
                     {
                         if(!(already.team==div.team))
                         {
-                            let dead=getDeadLocation();
-                            already.homeX=dead.x;
-                            already.homeY=dead.y;
+                            allotDeadLocation(already);
+                            
                             already.alive=false;
                             already.onmouseenter=null;
                             already.onmouseleave=null;
                             turn=!turn;
+                            if(turn)
+                            {
+                                labelW.style.color="white";
+                                labelB.style.color="black";
+                            }
+                            else
+                            {
+                                labelB.style.color="white";
+                                labelW.style.color="black";
+                            }
                             
-                            //use mutation observer
-                            already.style.left=already.homeX+"px";
-                            already.style.top=already.homeY+"px";
                             //repitition
                             BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
                             div.homeX=vx;
@@ -388,7 +392,7 @@
         labelW.style.color="white";
 
         var labelB=document.createElement("label");
-        labelB.style.right=window.innerWidth/2+320+30+"px";
+        labelB.style.left=window.innerWidth/2-320-330+"px";
         labelB.style.top="100px";
         labelB.style.width="300px";
         labelB.innerHTML="Black";
@@ -397,22 +401,58 @@
         board.appendChild(labelB);
     </script>
     <script>
-        let x=-80,y=640;
-        
+        let xb=-330;
+        let yb=200;
+        let xw=0;
+        let yw=200;
+        var allotDeadLocation;
         let offsetX=0;
         let offsetY=boardOffsetY;
-        
-        function getDeadLocation()
+        if(window.innerWidth/window.innerHeight>1)
         {
-            x+=80;
-            if(x==640)
+            //landscape view
+            allotDeadLocation=function(piece)
             {
-                x=0;
-                y+=80;
+                console.log(piece.team)
+                if(piece.team==false)
+                {
+                    
+                    piece.style.left=window.innerWidth/2-320+xb+"px";
+                    piece.style.top=yb+"px";
+                    piece.style.height="75px";
+                    piece.style.width="75px";
+                    piece.homeX=xb;
+                    piece.homeY=yb;
+                    console.log("allotted",xb,yb)
+                    xb+=75;
+                    if(xb==0)
+                    {
+                        xb=-330;
+                        yb+=75;
+                    }
+                    
+                }
+                else
+                {
+                    piece.style.left=window.innerWidth/2+320+xw+"px";
+                    piece.style.top=yw+"px";
+                    piece.style.height="75px";
+                    piece.style.width="75px";
+                    piece.homeX=xw;
+                    piece.homeY=yw;
+                    xw+=75;
+                    if(xw==300)
+                    {
+                        xw=0;
+                        yw+=75;
+                    }
+                }
+                
+                
             }
-            let q=x+offsetX,w=y+offsetY;
-            return {"x":q,"y":w};
+
         }
+        
 
         function getXY(e)
         {
