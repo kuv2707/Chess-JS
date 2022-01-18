@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://fonts.cdnfonts.com/css/papyrus" rel="stylesheet">
+                
     <title>Chess dev</title>
 </head>
 
 <body >
+    <style>
+        @import url('http://fonts.cdnfonts.com/css/papyrus');
+    </style>
+
     <style>
         html,body
         {
@@ -57,7 +63,8 @@
             top:400px;
             transition-duration: 0.8s;
             transition-property: color,left,right;
-            font-family: papyrus;
+            font-family: 'Papyrus', sans-serif;
+                                                
         }
         .draggable
         {
@@ -514,7 +521,7 @@
                     }
                     else
                     {
-                        piece.style.left=window.innerWidth/2+320+xw+"px";
+                        piece.style.left=xw+"px";
                         piece.style.top=yw+"px";
                         piece.style.height="75px";
                         piece.style.width="75px";
@@ -546,12 +553,29 @@
                 return {"x":e.clientX,"y":e.clientY};
             }
         }
-        // setInterval(function()
-        // {
-        //     let temp=Pieces[Math.floor(Math.random()*Pieces.length)].style;
-        //     temp.left=Math.random()*560+boardOffsetX+"px";
-        //     temp.top=Math.random()*560+boardOffsetY+"px";
-        // },5)
+        let play;
+        let playstart=function()
+        {
+            play=setInterval(function()
+            {
+                let temp=Pieces[Math.floor(Math.random()*Pieces.length)].style;
+                temp.left=Math.floor(Math.random()*560/80)*80+boardOffsetX+"px";
+                temp.top=Math.floor(Math.random()*560/80)*80+boardOffsetY+"px";
+            },5)
+        }
+        let playend=function()
+        {
+            clearInterval(play);
+            for(let i=0;i<Pieces.length;i++)
+            {
+                Pieces[i].style.left=Pieces[i].homeX+boardOffsetX+"px";
+                Pieces[i].style.top=Pieces[i].homeY+boardOffsetY+"px";
+            }
+        }
+        labelB.addEventListener("touchstart",playstart);
+        labelB.addEventListener("click",playstart);
+        labelW.addEventListener("touchstart",playend);
+        labelW.addEventListener("click",playend);
     </script>
 </body>
 </html>
