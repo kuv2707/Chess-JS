@@ -98,7 +98,7 @@
         var turn=true;
         var blackSquares="#0E6A7C";
         var whiteSquares="#75D9E6";
-        var boardOffsetX=(window.innerWidth/window.innerHeight>1)?window.innerWidth/2-320:20;
+        var boardOffsetX=(window.innerWidth/window.innerHeight>1)?window.innerWidth/2-320:0;
         const boardOffsetY=25;
         console.log("boardoffsetx is",boardOffsetX)
         const Pieces=new Array();
@@ -237,6 +237,7 @@
                             div.homeY=vy;
                             BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=div;
                         }
+                        
                     }
                 }
                 
@@ -454,13 +455,13 @@
                 }
                 
                 
-            }
+            };
 
         }
         else
         {
             //portrait view
-            squares.style.left="20px";
+            squares.style.left="0px";
             Pieces.forEach(function(dog)
                 {
                     if(dog.alive)
@@ -473,13 +474,60 @@
                         dog.style.left=window.innerWidth/2+320+dog.homeX+"px";
                     }
                 });
-                boardOffsetX=window.innerWidth/2-320;
-                WColorSelector.style.left="0px";
+                boardOffsetX=0;
+                WColorSelector.style.left=window.innerWidth-120+"px";
                 BColorSelector.style.left="0px";
+                WColorSelector.style.top=window.innerHeight-100+"px";
+                BColorSelector.style.top=window.innerHeight-100+"px";
                 labelW.style.left="20px";
                 labelB.style.left="320px";
                 labelW.style.top="680px";
                 labelB.style.top="680px";
+
+                xb=0;
+                xw=window.innerWidth/2;
+                yb=700;
+                yw=700;
+                allotDeadLocation=function(piece)
+                {
+                    console.log(piece.team)
+                    if(piece.team==false)
+                    {
+                        
+                        piece.style.left=window.innerWidth/2-320+xb+"px";
+                        piece.style.top=yb+"px";
+                        piece.style.height="60px";
+                        piece.style.width="60px";
+                        piece.homeX=xb;
+                        piece.homeY=yb;
+                        console.log("allotted",xb,yb)
+                        xb+=60;
+                        if(xb==0)
+                        {
+                            xb=0;
+                            yb+=60;
+                        }
+                        
+                    }
+                    else
+                    {
+                        piece.style.left=window.innerWidth/2+320+xw+"px";
+                        piece.style.top=yw+"px";
+                        piece.style.height="75px";
+                        piece.style.width="75px";
+                        piece.homeX=xw;
+                        piece.homeY=yw;
+                        xw+=75;
+                        c++;
+                        if(c==4)
+                        {
+                            xw=0;
+                            yw+=60;
+                        }
+                    }
+                    
+                    
+                }
         }
 
         function getXY(e)
