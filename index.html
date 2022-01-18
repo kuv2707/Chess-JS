@@ -160,8 +160,8 @@
                 //div.style.width=100+"px";
                 //div.style.height=100+"px";
                 div.style.zIndex="2";
-                x=Number(xy.x-div.getBoundingClientRect().left+10);
-                y=Number(xy.y-div.getBoundingClientRect().top+10);
+                x=Number(xy.x-div.getBoundingClientRect().left);
+                y=Number(xy.y-div.getBoundingClientRect().top);
                 if(div.alive)
                 {
                     document.addEventListener("mousemove",div.drag)
@@ -490,8 +490,8 @@
                 BColorSelector.style.left="20px";
                 WColorSelector.style.top="760px";
                 BColorSelector.style.top="760px";
-                labelW.style.left="20px";
-                labelB.style.left="320px";
+                labelW.style.left="320px";
+                labelB.style.left="20px";
                 labelW.style.top="680px";
                 labelB.style.top="680px";
 
@@ -562,7 +562,7 @@
                 let temp=Pieces[Math.floor(Math.random()*Pieces.length)].style;
                 temp.left=Math.floor(Math.random()*560/80)*80+boardOffsetX+"px";
                 temp.top=Math.floor(Math.random()*560/80)*80+boardOffsetY+"px";
-            },5)
+            },50);
         }
         let playend=function()
         {
