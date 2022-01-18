@@ -168,8 +168,8 @@
                 }
                 div.style.width="100px";
                 div.style.height="100px";
-                div.style.left=div.homeX+boardOffsetX-10+"px";
-                div.style.top=div.homeY+boardOffsetY-10+"px";
+                //div.style.left=div.homeX+boardOffsetX-10+"px";
+                //div.style.top=div.homeY+boardOffsetY-10+"px";
                 console.log(div.style);
                 document.addEventListener("mouseup",docmu)
                 document.addEventListener("touchend",docmu)
@@ -441,7 +441,7 @@
                     piece.homeY=yb;
                     console.log("allotted",xb,yb)
                     xb+=75;
-                    if(xb==0)
+                    if(xb==-30)
                     {
                         xb=-330;
                         yb+=75;
