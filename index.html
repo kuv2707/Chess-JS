@@ -51,7 +51,7 @@
             border-radius: 30px;
             background-color: rgba(28, 146, 136,255);
             border:none;
-            filter:drop-shadow(0px 0px 30px rgb(235, 230, 186));
+            filter:drop-shadow(0px 0px 30px rgb(4, 4, 4));
             text-align: center;
             font-size: 50px;
             top:400px;
@@ -135,6 +135,7 @@
             };
             div.drag=function(e)
             {
+                div.style.transitionProperty="width,height";
                 var xy=getXY(e);
                 div.style.left=xy.x-x+"px";
                 div.style.top=xy.y-y+"px";
@@ -151,8 +152,8 @@
                 //div.style.width=100+"px";
                 //div.style.height=100+"px";
                 div.style.zIndex="2";
-                x=Number(xy.x-div.getBoundingClientRect().left);
-                y=Number(xy.y-div.getBoundingClientRect().top);
+                x=Number(xy.x-div.getBoundingClientRect().left+10);
+                y=Number(xy.y-div.getBoundingClientRect().top+10);
                 if(div.alive)
                 {
                     document.addEventListener("mousemove",div.drag)
@@ -160,7 +161,9 @@
                 }
                 div.style.width="100px";
                 div.style.height="100px";
-                div.style.transitionProperty="width,height";
+                div.style.left=div.homeX+boardOffsetX-10+"px";
+                div.style.top=div.homeY+boardOffsetY-10+"px";
+                console.log(div.style);
                 document.addEventListener("mouseup",docmu)
                 document.addEventListener("touchend",docmu)
             };
@@ -475,10 +478,10 @@
                     }
                 });
                 boardOffsetX=0;
-                WColorSelector.style.left="320px";
+                WColorSelector.style.left="520px";
                 BColorSelector.style.left="20px";
-                WColorSelector.style.top="800px";
-                BColorSelector.style.top="800px";
+                WColorSelector.style.top="750px";
+                BColorSelector.style.top="750px";
                 labelW.style.left="20px";
                 labelB.style.left="320px";
                 labelW.style.top="680px";
@@ -486,8 +489,8 @@
 
                 xb=0;
                 xw=320;
-                yb=700;
-                yw=700;
+                yb=820;
+                yw=820;
                 allotDeadLocation=function(piece)
                 {
                     console.log(piece.team)
