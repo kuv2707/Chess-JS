@@ -23,6 +23,7 @@
             width:100%;
             overflow: hidden;
             background-color: #16ddbc;
+            filter: brightness(0.85);
             -webkit-user-select: none;
             user-select: none;
         }
@@ -341,6 +342,7 @@
         WColorSelector.type="color";
         WColorSelector.style.left=window.innerWidth/2+320+30+"px";
         WColorSelector.value=whiteSquares;
+        document.body.style.backgroundColor=whiteSquares;
         WColorSelector.innerHTML="Color";
         board.appendChild(WColorSelector);
         var syncW;
@@ -349,6 +351,7 @@
             syncW=setInterval(function()
                 {
                     whiteSquares=WColorSelector.value;
+                    document.body.style.backgroundColor=whiteSquares;
                     window.requestAnimationFrame(painter);
                 },3);
             
@@ -362,6 +365,7 @@
         BColorSelector.type="color";
         BColorSelector.style.left=window.innerWidth/2+520+30+"px";
         BColorSelector.value=blackSquares;
+        
         BColorSelector.innerHTML="Color";
         board.appendChild(BColorSelector);
         var syncB;
@@ -370,6 +374,8 @@
             syncB=setInterval(function()
                 {
                     blackSquares=BColorSelector.value;
+                    labelB.style.backgroundColor=blackSquares;
+                    labelW.style.backgroundColor=blackSquares;
                     window.requestAnimationFrame(painter);
                 },3);
             
@@ -392,6 +398,9 @@
         labelB.style.width="300px";
         labelB.innerHTML="Black";
 
+        labelB.style.backgroundColor=blackSquares;
+        labelW.style.backgroundColor=blackSquares;
+        
         board.appendChild(labelW);
         board.appendChild(labelB);
     </script>
@@ -451,7 +460,7 @@
                 }
                 else
                 {
-                    piece.style.left=window.innerWidth/2+320+xw+"px";
+                    piece.style.left=window.innerWidth/2+330+xw+"px";
                     piece.style.top=yw+"px";
                     piece.style.height="75px";
                     piece.style.width="75px";
@@ -554,9 +563,10 @@
                 return {"x":e.clientX,"y":e.clientY};
             }
         }
-        let play;
+        let play=0;
         let playstart=function()
         {
+            clearInterval(play);
             play=setInterval(function()
             {
                 let temp=Pieces[Math.floor(Math.random()*Pieces.length)].style;
