@@ -65,7 +65,7 @@
             top:400px;
             transition-duration: 0.8s;
             transition-property: color,left,right;
-            font-family: 'Papyrus', sans-serif;
+            font-family: 'Papyrus','Algerian', sans-serif;
                                                 
         }
         .draggable
@@ -342,7 +342,8 @@
         WColorSelector.type="color";
         WColorSelector.style.left=window.innerWidth/2+320+30+"px";
         WColorSelector.value=whiteSquares;
-        document.body.style.backgroundColor=whiteSquares;
+        //document.body.style.backgroundColor=whiteSquares;
+        //document.querySelector("html").style.backgroundColor=whiteSquares;
         WColorSelector.innerHTML="Color";
         board.appendChild(WColorSelector);
         var syncW;
