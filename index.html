@@ -11,10 +11,6 @@
 
 <body >
     <style>
-        @import url('http://fonts.cdnfonts.com/css/papyrus');
-    </style>
-
-    <style>
         html,body
         {
             padding:0;
@@ -22,10 +18,14 @@
             height:100%;
             width:100%;
             overflow: hidden;
-            background-color: #16ddbc;
+            
             
             -webkit-user-select: none;
             user-select: none;
+        }
+        html
+        {
+            background-image: linear-gradient(180deg,rgb(242, 184, 184),#DD6240,rgb(7, 9, 14));
         }
         *
         {
@@ -42,7 +42,7 @@
             width:100px;
             height:70px;
             border-radius: 30px;
-            background-color: rgba(28, 146, 136,255);
+            background-color: #f0b1b1;
             border:none;
             filter:drop-shadow(0px 0px 30px black);
             text-align: center;
@@ -50,14 +50,15 @@
             top:20px;
             transition-duration: 0.8s;
             transition-property: color,left;
+            
         }
-        label
+        h2
         {
             position: absolute;
             width:100px;
             height:70px;
             border-radius: 30px;
-            background-color: rgba(28, 146, 136,255);
+            background-color: rgba(4, 5, 5, 0);
             border:none;
             filter:drop-shadow(0px 0px 30px rgb(4, 4, 4));
             text-align: center;
@@ -66,13 +67,13 @@
             transition-duration: 0.8s;
             transition-property: color,left,right;
             font-family: 'Papyrus','Algerian', sans-serif;
-                                                
+            text-shadow:0px 0px 15px rgb(238, 179, 179);                                   
         }
         .draggable
         {
             position:absolute;
             border-radius: 30px;
-            filter: drop-shadow(0px 0px 10px rgba(0,0,0,50));
+            filter: drop-shadow(0px 0px 10px rgba(200,0,0,50));
             width: 80px;
             height: 80px;
             transition-property: width,height,left,top,filter;
@@ -104,19 +105,49 @@
         }
     </style>
     <script id="GlobalVariables">
-        var turn=true;
-        var blackSquares="#0E6A7C";
-        var whiteSquares="#75D9E6";
+        var turn=false;
+        var blackSquares="#191010";
+        var whiteSquares="#DD6240";
         var boardOffsetX=(window.innerWidth/window.innerHeight>1)?window.innerWidth/2-320:0;
         const boardOffsetY=25;
         console.log("boardoffsetx is",boardOffsetX)
         const Pieces=new Array();
-
+        const shadow="rgba(200,0,0,50)";
         
     </script>
     <script id="GUI">
         
-        const shadow="rgba(0,0,0,50)";
+        const switchTurn=function()
+        {
+            turn=!turn;
+            if(turn)
+            {
+                labelW.style.color="white";
+                labelB.style.color="black";
+                for(let i=0;i<Pieces.length;i++)
+                {
+                    if(!Pieces[i].alive)
+                    continue;
+                    if(Pieces[i].team!=true)
+                    Pieces[i].style.filter=`drop-shadow(0px 0px 10px black)`;
+                    else
+                    Pieces[i].style.filter=`drop-shadow(0px 0px 10px rgba(200,0,0,50))`;
+                }
+            }
+            else
+            {
+                labelB.style.color="white";
+                labelW.style.color="black";
+                for(let i=0;i<Pieces.length;i++)
+                {
+                    if(Pieces[i].team==true)
+                    Pieces[i].style.filter=`drop-shadow(0px 0px 10px black)`;
+                    else
+                    Pieces[i].style.filter=`drop-shadow(0px 0px 10px rgba(200,0,0,50))`;
+                }
+            }
+        }
+        
         const BOARD=new Array(8);
         for(let k=0;k<8;k++)
         {
@@ -205,17 +236,7 @@
                     var already=BOARD[vx/80][vy/80];//indexoutofbounds exception never occurs
                     if(already==null)
                     {
-                        turn=!turn;
-                        if(turn)
-                        {
-                            labelW.style.color="white";
-                            labelB.style.color="black";
-                        }
-                        else
-                        {
-                            labelB.style.color="white";
-                            labelW.style.color="black";
-                        }
+                        switchTurn();
                         
                         BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
                         div.homeX=vx;
@@ -226,22 +247,14 @@
                     {
                         if(!(already.team==div.team))
                         {
+                            //kill what is already there
                             allotDeadLocation(already);
-                            
+                            already.style.filter=`drop-shadow(0px 0px 10px ${"white"})`;
                             already.alive=false;
                             already.onmouseenter=null;
                             already.onmouseleave=null;
-                            turn=!turn;
-                            if(turn)
-                            {
-                                labelW.style.color="white";
-                                labelB.style.color="black";
-                            }
-                            else
-                            {
-                                labelB.style.color="white";
-                                labelW.style.color="black";
-                            }
+                            switchTurn();
+                            
                             
                             //repitition
                             BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
@@ -386,14 +399,14 @@
             clearInterval(syncW);
         });
 
-        var labelW=document.createElement("label");
+        var labelW=document.createElement("h2");
         labelW.style.left=window.innerWidth/2+320+30+"px";
         labelW.style.top="100px";
         labelW.style.width="300px";
         labelW.innerHTML="White";
         labelW.style.color="white";
 
-        var labelB=document.createElement("label");
+        var labelB=document.createElement("h2");
         labelB.style.left=window.innerWidth/2-320-330+"px";
         labelB.style.top="100px";
         labelB.style.width="300px";
@@ -404,6 +417,8 @@
         
         board.appendChild(labelW);
         board.appendChild(labelB);
+
+        switchTurn();
     </script>
     <script>
         let xb=-330;
