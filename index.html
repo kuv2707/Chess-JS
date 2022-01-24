@@ -52,7 +52,7 @@
             transition-property: left;
             
         }
-        label
+        h2
         {
             position: absolute;
             width:100px;
@@ -64,13 +64,13 @@
             font-size: 50px;
             transition-duration: 0.8s;
             transition-property: color,left;
-            font-family: 'Papyrus','Algerian', sans-serif;
-                                               
+            font-family: 'Papyrus','Roboto', sans-serif;
+            text-shadow: 0px 0px 15px rgb(238, 179, 179);
         }
         .draggable
         {
             position:absolute;
-            filter: drop-shadow(0px 0px 10px red);
+            
             width: 80px;
             height: 80px;
             transition-property: width,height,left,top,filter,transform;
@@ -85,7 +85,7 @@
         #chessBoard
         {
             position:absolute;
-            filter:drop-shadow(0px 0px 20px black);
+            filter:drop-shadow(0px 0px 40px black);
             top:25px;
             transition-duration: 0.8s;
             transition-property: left;
@@ -99,65 +99,72 @@
         var boardOffsetX=(window.innerWidth/window.innerHeight>1)?window.innerWidth/2-320:0;
         const boardOffsetY=25;
         const Pieces=new Array();
-        const shadow="red";
+        var activeShadow="red";
+        var inactiveShadow="black";
         
     </script>
     <script id="GUI">
         
         let switchTurn;
-        if(window.innerWidth/window.innerHeight<1)
+        if(window.innerWidth/window.innerHeight>1)
         {
 
+           
             switchTurn=function()
             {
                 turn=!turn;
                 if(turn)
                 {
                     labelW.style.color="white";
-                    labelB.style.color="grey";
+                    labelB.style.color="black";
                     for(let i=0;i<Pieces.length;i++)
                     {
                         if(!Pieces[i].alive)
                         continue;
                         if(Pieces[i].team!=true)
-                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px black)`;
+                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px ${inactiveShadow})`;
                         else
-                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px red)`;
+                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px ${activeShadow})`;
                     }
                 }
                 else
                 {
                     labelB.style.color="white";
-                    labelW.style.color="grey";
+                    labelW.style.color="black";
                     for(let i=0;i<Pieces.length;i++)
                     {
                         if(!Pieces[i].alive)
                         continue;
                         if(Pieces[i].team==true)
-                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px black)`;
+                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px ${inactiveShadow})`;
                         else
-                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px red)`;
+                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px ${activeShadow})`;
                     }
                 }
             }
         }
-            else
+        else
+        {
+            activeShadow="black";
+            for(let i=0;i<Pieces.length;i++)
             {
-                switchTurn=function()
+                Pieces[i].style.filter=`drop-shadow(0px 0px 10px ${inactiveShadow})`;
+            }
+            switchTurn=function()
+            {
+                turn=!turn;
+                if(turn)
                 {
-                    turn=!turn;
-                    if(turn)
-                    {
-                        labelW.style.color="white";
-                        labelB.style.color="grey";
-                    }
-                    else
-                    {
-                        labelB.style.color="white";
-                        labelW.style.color="grey";
-                    }
+                    labelW.style.color="white";
+                    labelB.style.color="black";
                 }
-            } 
+                else
+                {
+                    labelB.style.color="white";
+                    labelW.style.color="black";
+                }
+            }
+        } 
         const BOARD=new Array(8);
         for(let k=0;k<8;k++)
         {
@@ -175,13 +182,13 @@
                 return;
                 div.style.width="85px";
                 div.style.height="85px";
-                div.style.filter=`drop-shadow(${(div.homeX-320)/32}px ${(div.homeY-320)/32}px 15px ${shadow})`;
+                div.style.filter=`drop-shadow(${(div.homeX-320)/32}px ${(div.homeY-320)/32}px 15px ${activeShadow})`;
             };
             div.onmouseleave=function()
             {
                 div.style.width="80px";
                 div.style.height="80px";
-                div.style.filter=`drop-shadow(0px 0px 10px ${turn==div.team?"red":"black"})`;
+                div.style.filter=`drop-shadow(0px 0px 10px ${turn==div.team?activeShadow:inactiveShadow})`;
             };
             div.drag=function(e)
             {
@@ -189,7 +196,7 @@
                 var xy=getXY(e);
                 div.style.left=xy.x-x+"px";
                 div.style.top=xy.y-y+"px";
-                div.style.filter=`drop-shadow(${(xy.x-320)/32}px ${(xy.y-320)/32}px 15px ${shadow})`;
+                div.style.filter=`drop-shadow(${(xy.x-320)/32}px ${(xy.y-320)/32}px 15px ${activeShadow})`;
                 
             }
             let md=function(e)
@@ -379,14 +386,14 @@
         var syncB;
         
 
-        var labelW=document.createElement("label");
+        var labelW=document.createElement("h2");
         labelW.style.left=window.innerWidth/2+320+30+"px";
         labelW.style.top="100px";
         labelW.style.width="300px";
         labelW.innerHTML="White";
         labelW.style.color="white";
 
-        var labelB=document.createElement("label");
+        var labelB=document.createElement("h2");
         labelB.style.left=window.innerWidth/2-320-330+"px";
         labelB.style.top="100px";
         labelB.style.width="300px";
@@ -449,8 +456,7 @@
                 BColorSelector.style.left=window.innerWidth/2+520+30+"px";
                 labelW.style.left=window.innerWidth/2+320+30+"px";
                 labelB.style.left=window.innerWidth/2-320-330+"px";
-                labelW.style.textShadow="0px 0px 15px rgb(238, 179, 179)";
-                labelB.style.textShadow="0px 0px 15px rgb(238, 179, 179)";
+                
                 Pieces.forEach(function(dog)
                 {
                     if(dog.alive)
