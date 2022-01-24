@@ -98,7 +98,6 @@
         var whiteSquares="#DD6240";
         var boardOffsetX=(window.innerWidth/window.innerHeight>1)?window.innerWidth/2-320:0;
         const boardOffsetY=25;
-        console.log("boardoffsetx is",boardOffsetX)
         const Pieces=new Array();
         const shadow="red";
         
@@ -193,7 +192,6 @@
                 div.style.height="100px";
                 //div.style.left=div.homeX+boardOffsetX-10+"px";
                 //div.style.top=div.homeY+boardOffsetY-10+"px";
-                console.log(div.style);
                 document.addEventListener("mouseup",docmu)
                 document.addEventListener("touchend",docmu)
             };
@@ -320,7 +318,7 @@
             go.homeX=cx;
             go.homeY=cy;
             go.alive=true;
-            go.onclick=()=>console.log(go);
+            go.onclick=(e)=>console.log(e.target);
             BOARD[go.homeX/80][go.homeY/80]=go;
             cx+=80;
             if(cx==640)
@@ -389,7 +387,7 @@
         var allotDeadLocation;
         let offsetX=0;
         let offsetY=boardOffsetY;
-        console.log(window.innerWidth/window.innerHeight>1);
+        console.log("Aspect ratio:",window.innerWidth/window.innerHeight);
         if(window.innerWidth/window.innerHeight>1)
         {
             //landscape view
@@ -445,7 +443,6 @@
             });
             allotDeadLocation=function(piece)
             {
-                console.log(piece.team)
                 if(piece.team==false)
                 {
                     
@@ -455,7 +452,6 @@
                     piece.style.width="75px";
                     piece.homeX=xb;
                     piece.homeY=yb;
-                    console.log("allotted",xb,yb)
                     xb+=75;
                     if(xb==-30)
                     {
@@ -516,7 +512,6 @@
                 yw=840;
                 allotDeadLocation=function(piece)
                 {
-                    console.log(piece.team)
                     if(piece.team==false)
                     {
                         
@@ -526,7 +521,6 @@
                         piece.style.width="75px";
                         piece.homeX=xb;
                         piece.homeY=yb;
-                        console.log("allotted",xb,yb)
                         xb+=60;
                         if(xb==240)
                         {
@@ -585,9 +579,10 @@
             clearInterval(play);
             for(let i=0;i<Pieces.length;i++)
             {
-                Pieces[i].style.left=Pieces[i].homeX+boardOffsetX+"px";
                 Pieces[i].style.top=Pieces[i].homeY+boardOffsetY+"px";
+                Pieces[i].style.left=Pieces[i].homeX+boardOffsetX+"px";
             }
+            window.dispatchEvent(new Event('resize'));
         }
         labelB.addEventListener("touchstart",playstart);
         labelB.addEventListener("click",playstart);
