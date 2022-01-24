@@ -76,7 +76,7 @@
             filter: drop-shadow(0px 0px 10px rgba(200,0,0,50));
             width: 80px;
             height: 80px;
-            transition-property: width,height,left,top,filter;
+            transition-property: width,height,left,top,filter,transform;
             transition-duration: 0.8s;
             
             user-select: none;
@@ -140,6 +140,8 @@
                 labelW.style.color="black";
                 for(let i=0;i<Pieces.length;i++)
                 {
+                    if(!Pieces[i].alive)
+                    continue;
                     if(Pieces[i].team==true)
                     Pieces[i].style.filter=`drop-shadow(0px 0px 10px black)`;
                     else
@@ -171,7 +173,7 @@
             {
                 div.style.width="80px";
                 div.style.height="80px";
-                div.style.filter=`drop-shadow(0px 0px 10px ${shadow})`;
+                div.style.filter=`drop-shadow(0px 0px 10px ${turn==div.team?"rgba(200,0,0,50)":"black"})`;
             };
             div.drag=function(e)
             {
@@ -249,12 +251,13 @@
                         {
                             //kill what is already there
                             allotDeadLocation(already);
-                            already.style.filter=`drop-shadow(0px 0px 10px ${"white"})`;
                             already.alive=false;
+                            
                             already.onmouseenter=null;
                             already.onmouseleave=null;
                             switchTurn();
-                            
+                            already.style.filter=`drop-shadow(0px 0px 10px ${"white"})`;
+                            already.style.transform="rotate(180deg)";
                             
                             //repitition
                             BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
@@ -422,9 +425,9 @@
     </script>
     <script>
         let xb=-330;
-        let yb=200;
+        let yb=220;
         let xw=0;
-        let yw=200;
+        let yw=220;
         var allotDeadLocation;
         let offsetX=0;
         let offsetY=boardOffsetY;
@@ -517,8 +520,8 @@
                 BColorSelector.style.top="760px";
                 labelW.style.left="320px";
                 labelB.style.left="20px";
-                labelW.style.top="680px";
-                labelB.style.top="680px";
+                labelW.style.top="630px";
+                labelB.style.top="630px";
 
                 xb=0;
                 xw=320;
