@@ -104,39 +104,60 @@
     </script>
     <script id="GUI">
         
-        const switchTurn=function()
+        let switchTurn;
+        if(window.innerWidth/window.innerHeight<1)
         {
-            turn=!turn;
-            if(turn)
+
+            switchTurn=function()
             {
-                labelW.style.color="white";
-                labelB.style.color="grey";
-                for(let i=0;i<Pieces.length;i++)
+                turn=!turn;
+                if(turn)
                 {
-                    if(!Pieces[i].alive)
-                    continue;
-                    if(Pieces[i].team!=true)
-                    Pieces[i].style.filter=`drop-shadow(0px 0px 10px black)`;
-                    else
-                    Pieces[i].style.filter=`drop-shadow(0px 0px 10px red)`;
+                    labelW.style.color="white";
+                    labelB.style.color="grey";
+                    for(let i=0;i<Pieces.length;i++)
+                    {
+                        if(!Pieces[i].alive)
+                        continue;
+                        if(Pieces[i].team!=true)
+                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px black)`;
+                        else
+                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px red)`;
+                    }
                 }
-            }
-            else
-            {
-                labelB.style.color="white";
-                labelW.style.color="grey";
-                for(let i=0;i<Pieces.length;i++)
+                else
                 {
-                    if(!Pieces[i].alive)
-                    continue;
-                    if(Pieces[i].team==true)
-                    Pieces[i].style.filter=`drop-shadow(0px 0px 10px black)`;
-                    else
-                    Pieces[i].style.filter=`drop-shadow(0px 0px 10px red)`;
+                    labelB.style.color="white";
+                    labelW.style.color="grey";
+                    for(let i=0;i<Pieces.length;i++)
+                    {
+                        if(!Pieces[i].alive)
+                        continue;
+                        if(Pieces[i].team==true)
+                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px black)`;
+                        else
+                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px red)`;
+                    }
                 }
             }
         }
-        
+            else
+            {
+                switchTurn=function()
+                {
+                    turn=!turn;
+                    if(turn)
+                    {
+                        labelW.style.color="white";
+                        labelB.style.color="grey";
+                    }
+                    else
+                    {
+                        labelB.style.color="white";
+                        labelW.style.color="grey";
+                    }
+                }
+            } 
         const BOARD=new Array(8);
         for(let k=0;k<8;k++)
         {
@@ -377,7 +398,7 @@
         board.appendChild(labelW);
         board.appendChild(labelB);
 
-        switchTurn();
+        
     </script>
     <script>
         let xb=-330;
@@ -443,6 +464,7 @@
                     }
                 });
             });
+            
             allotDeadLocation=function(piece)
             {
                 if(piece.team==false)
@@ -512,6 +534,7 @@
                 xw=320;
                 yb=840;
                 yw=840;
+                
                 allotDeadLocation=function(piece)
                 {
                     if(piece.team==false)
@@ -590,6 +613,7 @@
         labelB.addEventListener("click",playstart);
         labelW.addEventListener("touchstart",playend);
         labelW.addEventListener("click",playend);
+        switchTurn();
     </script>
 </body>
 </html>
