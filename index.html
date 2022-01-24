@@ -25,7 +25,7 @@
         }
         html
         {
-            background-image: linear-gradient(180deg,rgb(242, 184, 184),#DD6240,rgb(7, 9, 14));
+            background-image: linear-gradient(180deg,#f2b8b8,#DD6240,#07090e);
         }
         *
         {
@@ -33,7 +33,7 @@
         }
         canvas
         {
-            border-radius: 15px;
+            border-radius: 20px;
             
         }
         input
@@ -49,31 +49,28 @@
             font-size: 50px;
             top:20px;
             transition-duration: 0.8s;
-            transition-property: color,left;
+            transition-property: left;
             
         }
-        h2
+        label
         {
             position: absolute;
             width:100px;
             height:70px;
             border-radius: 30px;
-            background-color: rgba(4, 5, 5, 0);
             border:none;
             filter:drop-shadow(0px 0px 30px rgb(4, 4, 4));
             text-align: center;
             font-size: 50px;
-            top:400px;
             transition-duration: 0.8s;
-            transition-property: color,left,right;
+            transition-property: color,left;
             font-family: 'Papyrus','Algerian', sans-serif;
             text-shadow:0px 0px 15px rgb(238, 179, 179);                                   
         }
         .draggable
         {
             position:absolute;
-            border-radius: 30px;
-            filter: drop-shadow(0px 0px 10px rgba(200,0,0,50));
+            filter: drop-shadow(0px 0px 10px red);
             width: 80px;
             height: 80px;
             transition-property: width,height,left,top,filter,transform;
@@ -85,19 +82,10 @@
             -webkit-user-select: none;
             -ms-user-select: none;
         }
-        #container
-        {
-            position: relative;
-            opacity: 1;
-            width:100%;
-            height:100%;
-            background-color: rgb(47, 171, 209);
-        }
         #chessBoard
         {
             position:absolute;
             filter:drop-shadow(0px 0px 20px black);
-            left:300px;
             top:25px;
             transition-duration: 0.8s;
             transition-property: left;
@@ -112,7 +100,7 @@
         const boardOffsetY=25;
         console.log("boardoffsetx is",boardOffsetX)
         const Pieces=new Array();
-        const shadow="rgba(200,0,0,50)";
+        const shadow="red";
         
     </script>
     <script id="GUI">
@@ -131,7 +119,7 @@
                     if(Pieces[i].team!=true)
                     Pieces[i].style.filter=`drop-shadow(0px 0px 10px black)`;
                     else
-                    Pieces[i].style.filter=`drop-shadow(0px 0px 10px rgba(200,0,0,50))`;
+                    Pieces[i].style.filter=`drop-shadow(0px 0px 10px red)`;
                 }
             }
             else
@@ -145,7 +133,7 @@
                     if(Pieces[i].team==true)
                     Pieces[i].style.filter=`drop-shadow(0px 0px 10px black)`;
                     else
-                    Pieces[i].style.filter=`drop-shadow(0px 0px 10px rgba(200,0,0,50))`;
+                    Pieces[i].style.filter=`drop-shadow(0px 0px 10px red)`;
                 }
             }
         }
@@ -173,7 +161,7 @@
             {
                 div.style.width="80px";
                 div.style.height="80px";
-                div.style.filter=`drop-shadow(0px 0px 10px ${turn==div.team?"rgba(200,0,0,50)":"black"})`;
+                div.style.filter=`drop-shadow(0px 0px 10px ${turn==div.team?"red":"black"})`;
             };
             div.drag=function(e)
             {
@@ -272,9 +260,6 @@
                 div.style.left=div.homeX+boardOffsetX+"px";
                 div.style.top=div.homeY+boardOffsetY+"px";
             };
-            // div.addEventListener("mouseup",mu)
-            // div.addEventListener("touchend",mu)
-            //div.addEventListener("touchcancel",mu)
             let docmu=function(e)
             {
                 document.removeEventListener("mousemove",div.drag)
@@ -323,7 +308,7 @@
         }
         window.requestAnimationFrame(painter);
         board.className="#container";
-       document.body.appendChild(board);
+        document.body.appendChild(board);
         for(let i=0;i<face.length;i++)
         {
             var go=document.createElement("img");
@@ -363,20 +348,7 @@
         WColorSelector.innerHTML="Color";
         board.appendChild(WColorSelector);
         var syncW;
-        WColorSelector.addEventListener("focus", function () 
-        {
-            syncW=setInterval(function()
-                {
-                    whiteSquares=WColorSelector.value;
-                    //document.body.style.backgroundColor=whiteSquares;
-                    window.requestAnimationFrame(painter);
-                },3);
-            
-        });
-        WColorSelector.addEventListener("blur", function () 
-        {
-            clearInterval(syncW);
-        });
+        
 
         var BColorSelector=document.createElement("input");
         BColorSelector.type="color";
@@ -386,30 +358,16 @@
         BColorSelector.innerHTML="Color";
         board.appendChild(BColorSelector);
         var syncB;
-        BColorSelector.addEventListener("focus", function () 
-        {
-            syncB=setInterval(function()
-                {
-                    blackSquares=BColorSelector.value;
-                    labelB.style.backgroundColor=blackSquares;
-                    labelW.style.backgroundColor=blackSquares;
-                    window.requestAnimationFrame(painter);
-                },3);
-            
-        });
-        WColorSelector.addEventListener("blur", function () 
-        {
-            clearInterval(syncW);
-        });
+        
 
-        var labelW=document.createElement("h2");
+        var labelW=document.createElement("label");
         labelW.style.left=window.innerWidth/2+320+30+"px";
         labelW.style.top="100px";
         labelW.style.width="300px";
         labelW.innerHTML="White";
         labelW.style.color="white";
 
-        var labelB=document.createElement("h2");
+        var labelB=document.createElement("label");
         labelB.style.left=window.innerWidth/2-320-330+"px";
         labelB.style.top="100px";
         labelB.style.width="300px";
@@ -435,6 +393,35 @@
         if(window.innerWidth/window.innerHeight>1)
         {
             //landscape view
+            WColorSelector.addEventListener("focus", function () 
+            {
+                syncW=setInterval(function()
+                    {
+                        whiteSquares=WColorSelector.value;
+                        //document.body.style.backgroundColor=whiteSquares;
+                        window.requestAnimationFrame(painter);
+                    },3);
+                
+            });
+            WColorSelector.addEventListener("blur", function () 
+            {
+                clearInterval(syncW);
+            });
+            BColorSelector.addEventListener("focus", function () 
+            {
+                syncB=setInterval(function()
+                    {
+                        blackSquares=BColorSelector.value;
+                        labelB.style.backgroundColor=blackSquares;
+                        labelW.style.backgroundColor=blackSquares;
+                        window.requestAnimationFrame(painter);
+                    },3);
+                
+            });
+            WColorSelector.addEventListener("blur", function () 
+            {
+                clearInterval(syncW);
+            });
             window.addEventListener("resize",function()
             {
                 squares.style.left=window.innerWidth/2-320+"px";
