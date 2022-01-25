@@ -112,8 +112,6 @@
         let switchTurn;
         if(window.innerWidth/window.innerHeight>1)
         {
-
-           
             switchTurn=function()
             {
                 turn=!turn;
@@ -210,8 +208,6 @@
                 if(turn!=div.team)
                 return;
                 var xy=getXY(e);
-                //div.style.width=100+"px";
-                //div.style.height=100+"px";
                 div.style.zIndex="2";
                 x=Number(xy.x-div.getBoundingClientRect().left);
                 y=Number(xy.y-div.getBoundingClientRect().top);
@@ -222,8 +218,6 @@
                 }
                 div.style.width="100px";
                 div.style.height="100px";
-                //div.style.left=div.homeX+boardOffsetX-10+"px";
-                //div.style.top=div.homeY+boardOffsetY-10+"px";
                 document.addEventListener("mouseup",docmu)
                 document.addEventListener("touchend",docmu)
             };
@@ -346,6 +340,7 @@
             go.team=go.id.charAt(0)=='b'?false:true;//false means black
             go.className="draggable";
             go.src="Fantasy/"+face[i]+".png";
+            go.alt=face[i];
             board.appendChild(go);
             go.homeX=cx;
             go.homeY=cy;
@@ -373,8 +368,6 @@
         WColorSelector.type="color";
         WColorSelector.style.left=window.innerWidth/2+320+30+"px";
         WColorSelector.value=whiteSquares;
-        //document.body.style.backgroundColor=whiteSquares;
-        //document.querySelector("html").style.backgroundColor=whiteSquares;
         WColorSelector.innerHTML="Color";
         board.appendChild(WColorSelector);
         var syncW;
@@ -519,70 +512,70 @@
             //portrait view
             squares.style.left="0px";
             Pieces.forEach(function(dog)
+            {
+                if(dog.alive)
+                dog.style.left=dog.homeX+boardOffsetX+"px";
+                else
                 {
-                    if(dog.alive)
-                    dog.style.left=dog.homeX+boardOffsetX+"px";
+                    if(dog.team==false)
+                    dog.style.left=window.innerWidth/2-320+dog.homeX+"px";
                     else
-                    {
-                        if(dog.team==false)
-                        dog.style.left=window.innerWidth/2-320+dog.homeX+"px";
-                        else
-                        dog.style.left=window.innerWidth/2+320+dog.homeX+"px";
-                    }
-                });
-                boardOffsetX=0;
-                WColorSelector.style.left="520px";
-                BColorSelector.style.left="20px";
-                WColorSelector.style.top="760px";
-                BColorSelector.style.top="760px";
-                labelW.style.left="320px";
-                labelB.style.left="20px";
-                labelW.style.top="630px";
-                labelB.style.top="630px";
+                    dog.style.left=window.innerWidth/2+320+dog.homeX+"px";
+                }
+            });
+            boardOffsetX=0;
+            WColorSelector.style.left="520px";
+            BColorSelector.style.left="20px";
+            WColorSelector.style.top="760px";
+            BColorSelector.style.top="760px";
+            labelW.style.left="320px";
+            labelB.style.left="20px";
+            labelW.style.top="630px";
+            labelB.style.top="630px";
 
-                xb=0;
-                xw=320;
-                yb=840;
-                yw=840;
-                
-                allotDeadLocation=function(piece)
+            xb=0;
+            xw=320;
+            yb=840;
+            yw=840;
+            
+            allotDeadLocation=function(piece)
+            {
+                if(piece.team==false)
                 {
-                    if(piece.team==false)
-                    {
-                        
-                        piece.style.left=xb+"px";
-                        piece.style.top=yb+"px";
-                        piece.style.height="75px";
-                        piece.style.width="75px";
-                        piece.homeX=xb;
-                        piece.homeY=yb;
-                        xb+=60;
-                        if(xb==240)
-                        {
-                            xb=0;
-                            yb+=60;
-                        }
-                        
-                    }
-                    else
-                    {
-                        piece.style.left=xw+"px";
-                        piece.style.top=yw+"px";
-                        piece.style.height="75px";
-                        piece.style.width="75px";
-                        piece.homeX=xw;
-                        piece.homeY=yw;
-                        xw+=60;
-                        
-                        if(xw==320+240)
-                        {
-                            xw=320;
-                            yw+=60;
-                        }
-                    }
                     
+                    piece.style.left=xb+"px";
+                    piece.style.top=yb+"px";
+                    piece.style.height="75px";
+                    piece.style.width="75px";
+                    piece.homeX=xb;
+                    piece.homeY=yb;
+                    xb+=60;
+                    if(xb==240)
+                    {
+                        xb=0;
+                        yb+=60;
+                    }
                     
                 }
+                else
+                {
+                    piece.style.left=xw+"px";
+                    piece.style.top=yw+"px";
+                    piece.style.height="75px";
+                    piece.style.width="75px";
+                    piece.homeX=xw;
+                    piece.homeY=yw;
+                    xw+=60;
+                    
+                    if(xw==320+240)
+                    {
+                        xw=320;
+                        yw+=60;
+                    }
+                }
+                
+                
+            }
         }
 
         function getXY(e)
