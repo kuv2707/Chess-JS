@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="http://fonts.cdnfonts.com/css/papyrus" rel="stylesheet">
                 
     <title>Chess dev</title>
 </head>
@@ -57,7 +56,7 @@
             transition-property: left;
             
         }
-        h2
+        h3
         {
             position: absolute;
             width:100px;
@@ -391,14 +390,14 @@
         var syncB;
         
 
-        var labelW=document.createElement("h2");
+        var labelW=document.createElement("h3");
         labelW.style.left=window.innerWidth/2+320+30+"px";
         labelW.style.top="100px";
         labelW.style.width="300px";
         labelW.innerHTML="White";
         labelW.style.color="white";
 
-        var labelB=document.createElement("h2");
+        var labelB=document.createElement("h3");
         labelB.style.left=window.innerWidth/2-320-330+"px";
         labelB.style.top="100px";
         labelB.style.width="300px";
