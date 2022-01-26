@@ -474,7 +474,7 @@
                 {
                     
                     piece.style.left=window.innerWidth/2-320+xb+"px";
-                    piece.style.top=yb+"px";
+                    piece.style.top=yb+boardOffsetY+"px";
                     piece.style.height="75px";
                     piece.style.width="75px";
                     piece.homeX=xb;
@@ -490,10 +490,10 @@
                 else
                 {
                     piece.style.left=window.innerWidth/2+330+xw+"px";
-                    piece.style.top=yw+"px";
+                    piece.style.top=yw+boardOffsetY+"px";
                     piece.style.height="75px";
                     piece.style.width="75px";
-                    piece.homeX=xw;
+                    piece.homeX=xw+10;
                     piece.homeY=yw;
                     xw+=75;
                     if(xw==300)
@@ -555,7 +555,7 @@
                 {
                     
                     piece.style.left=xb+"px";
-                    piece.style.top=yb+"px";
+                    piece.style.top=yb+boardOffsetY+"px";
                     piece.style.height="75px";
                     piece.style.width="75px";
                     piece.homeX=xb;
@@ -571,7 +571,7 @@
                 else
                 {
                     piece.style.left=xw+"px";
-                    piece.style.top=yw+"px";
+                    piece.style.top=yw+boardOffsetY+"px";
                     piece.style.height="75px";
                     piece.style.width="75px";
                     piece.homeX=xw;
