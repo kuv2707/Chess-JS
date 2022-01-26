@@ -22,7 +22,6 @@
             height:100%;
             width:100%;
             overflow: hidden;
-            background-repeat: no-repeat;
             
             -webkit-user-select: none;
             user-select: none;
@@ -30,6 +29,8 @@
         html
         {
             background-image: linear-gradient(180deg,#f2b8b8,#DD6240,#3d0a0a);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
         *
         {
@@ -124,9 +125,9 @@
                         if(!Pieces[i].alive)
                         continue;
                         if(Pieces[i].team!=true)
-                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px ${inactiveShadow})`;
+                        Pieces[i].style.filter=`drop-shadow(${(Pieces[i].homeX-320)/24}px ${(Pieces[i].homeY-320)/24}px 10px ${inactiveShadow})`;
                         else
-                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px ${activeShadow})`;
+                        Pieces[i].style.filter=`drop-shadow(${(Pieces[i].homeX-320)/24}px ${(Pieces[i].homeY-320)/24}px 10px ${activeShadow})`;
                     }
                 }
                 else
@@ -138,9 +139,9 @@
                         if(!Pieces[i].alive)
                         continue;
                         if(Pieces[i].team==true)
-                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px ${inactiveShadow})`;
+                        Pieces[i].style.filter=`drop-shadow(${(Pieces[i].homeX-320)/24}px ${(Pieces[i].homeY-320)/24}px 10px ${inactiveShadow})`;
                         else
-                        Pieces[i].style.filter=`drop-shadow(0px 0px 10px ${activeShadow})`;
+                        Pieces[i].style.filter=`drop-shadow(${(Pieces[i].homeX-320)/24}px ${(Pieces[i].homeY-320)/24}px 10px ${activeShadow})`;
                     }
                 }
             }
@@ -184,13 +185,13 @@
                 return;
                 div.style.width="85px";
                 div.style.height="85px";
-                div.style.filter=`drop-shadow(${(div.homeX-320)/32}px ${(div.homeY-320)/32}px 15px ${activeShadow})`;
+                div.style.filter=`drop-shadow(${(div.homeX-320)/24}px ${(div.homeY-320)/24}px 15px ${activeShadow})`;
             };
             div.onmouseleave=function()
             {
                 div.style.width="80px";
                 div.style.height="80px";
-                div.style.filter=`drop-shadow(0px 0px 10px ${turn==div.team?activeShadow:inactiveShadow})`;
+                div.style.filter=`drop-shadow(${(div.homeX-320)/24}px ${(div.homeY-320)/24}px 10px ${turn==div.team?activeShadow:inactiveShadow})`;
             };
             div.drag=function(e)
             {
@@ -198,7 +199,7 @@
                 var xy=getXY(e);
                 div.style.left=xy.x-x+"px";
                 div.style.top=xy.y-y+"px";
-                div.style.filter=`drop-shadow(${(xy.x-320)/32}px ${(xy.y-320)/32}px 15px ${activeShadow})`;
+                div.style.filter=`drop-shadow(${(xy.x-window.innerWidth/2)/24}px ${(xy.y-window.innerHeight/2)/24}px 15px ${activeShadow})`;
                 
             }
             let md=function(e)
@@ -269,7 +270,7 @@
                             already.onmouseleave=null;
                             switchTurn();
                             already.style.filter=`drop-shadow(0px 0px 10px ${"white"})`;
-                            already.style.transform="rotate(180deg)";
+                            already.style.transform="rotate(360deg)";
                             
                             //repitition
                             BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
@@ -361,6 +362,7 @@
             go.style.left=go.homeX+boardOffsetX+"px";
             go.style.top=go.homeY+boardOffsetY+"px";
             addDraggability(go);
+            go.style.filter=`drop-shadow(${(go.homeX-320)/24}px ${(go.homeY-320)/24}px 10px ${activeShadow})`;
             Pieces.push(go);
         }
         
