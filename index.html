@@ -22,7 +22,7 @@
             height:100%;
             width:100%;
             overflow: hidden;
-            
+            background-repeat: no-repeat;
             
             -webkit-user-select: none;
             user-select: none;
@@ -510,6 +510,17 @@
         else
         {
             //portrait view
+            WColorSelector.addEventListener("change", function (e) 
+            {
+                whiteSquares=e.target.value;
+                window.requestAnimationFrame(painter);
+                
+            });
+            BColorSelector.addEventListener("change", function (e) 
+            {
+                blackSquares=e.target.value;
+                window.requestAnimationFrame(painter);
+            });
             squares.style.left="0px";
             Pieces.forEach(function(dog)
             {
