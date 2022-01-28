@@ -74,6 +74,15 @@
             font-family: defFont;
             text-shadow: 0px 0px 15px rgb(238, 179, 179);
         }
+        div
+        {
+            width:100vw;
+            height:100vh;
+            position:relative;
+            transform-origin: 50vw 50vh;
+            transition-duration: 0.8s;
+            transition-property: transform;
+        }
         .draggable
         {
             position:absolute;
@@ -108,12 +117,12 @@
         const Pieces=new Array();
         var activeShadow="red";
         var inactiveShadow="black";
-        
+        const mode=window.innerWidth/window.innerHeight>1;
     </script>
     <script id="GUI">
         
         let switchTurn;
-        if(window.innerWidth/window.innerHeight>1)
+        if(mode)
         {
             switchTurn=function()
             {
@@ -235,7 +244,8 @@
                 div.style.zIndex="2";
                 x=Number(xy.x-div.getBoundingClientRect().left);
                 y=Number(xy.y-div.getBoundingClientRect().top);
-                xy=getXY(e,false);
+                
+               
                 if(div.alive)
                 {
                     document.addEventListener("mousemove",div.drag)
@@ -442,7 +452,7 @@
         let offsetX=0;
         let offsetY=boardOffsetY;
         console.log("Aspect ratio:",window.innerWidth/window.innerHeight);
-        if(window.innerWidth/window.innerHeight>1)
+        if(mode)
         {
             //landscape view
             WColorSelector.addEventListener("focus", function () 
@@ -570,8 +580,8 @@
             BColorSelector.style.top="760px";
             labelW.style.left="320px";
             labelB.style.left="20px";
-            labelW.style.top="630px";
-            labelB.style.top="630px";
+            labelW.style.top="680px";
+            labelB.style.top="680px";
 
             xb=0;
             xw=320;
@@ -621,6 +631,8 @@
         function getXY(e,transforms)
         {
             let x=0,y=0;
+            if(!mode)
+            transforms=false;
             if(e.type.substring(0,5)=="touch")
             {
                 let evt=(typeof e.originalEvent==='undefined')?e:e.originalEvent;
