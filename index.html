@@ -36,6 +36,7 @@
         *
         {
             overscroll-behavior: none;
+            transform-origin: center;
         }
         canvas
         {
@@ -58,7 +59,7 @@
             transition-property: left;
             
         }
-        h3
+        label
         {
             position: absolute;
             width:100px;
@@ -72,6 +73,15 @@
             transition-property: color,left;
             font-family: defFont;
             text-shadow: 0px 0px 15px rgb(238, 179, 179);
+        }
+        div
+        {
+            width:100vw;
+            height:100vh;
+            position:relative;
+            transform-origin: 50vw 50vh;
+            transition-duration: 0.8s;
+            transition-property: transform;
         }
         .draggable
         {
@@ -100,8 +110,8 @@
     </style>
     <script id="GlobalVariables">
         var turn=false;
-        var blackSquares="#191010";
-        var whiteSquares="#DD6240";
+        var blackSquares="#6E1111";
+        var whiteSquares="#ffa1a1";
         var boardOffsetX=(window.innerWidth/window.innerHeight>1)?window.innerWidth/2-320:0;
         const boardOffsetY=25;
         const Pieces=new Array();
@@ -121,29 +131,42 @@
                 {
                     labelW.style.color="white";
                     labelB.style.color="black";
+                    board.style.transform="rotate(0deg)";
+                    labelB.style.transform="rotate(0deg)";
+                    labelW.style.transform="rotate(0deg)";
                     for(let i=0;i<Pieces.length;i++)
                     {
+                        
                         if(!Pieces[i].alive)
                         continue;
+                        Pieces[i].style.transform="rotate(0deg)";
                         if(Pieces[i].team!=true)
                         Pieces[i].style.filter=`drop-shadow(${(Pieces[i].homeX-320)/24}px ${(Pieces[i].homeY-320)/24}px 10px ${inactiveShadow})`;
                         else
                         Pieces[i].style.filter=`drop-shadow(${(Pieces[i].homeX-320)/24}px ${(Pieces[i].homeY-320)/24}px 10px ${activeShadow})`;
                     }
+                   
                 }
                 else
                 {
                     labelB.style.color="white";
                     labelW.style.color="black";
+                    board.style.transform="rotate(180deg)";
+                    labelB.style.transform="rotate(180deg)";
+                    labelW.style.transform="rotate(180deg)";
                     for(let i=0;i<Pieces.length;i++)
                     {
+                        for(let i=0;i<Pieces.length;i++)
+                        
                         if(!Pieces[i].alive)
                         continue;
+                        Pieces[i].style.transform="rotate(180deg)";
                         if(Pieces[i].team==true)
                         Pieces[i].style.filter=`drop-shadow(${(Pieces[i].homeX-320)/24}px ${(Pieces[i].homeY-320)/24}px 10px ${inactiveShadow})`;
                         else
                         Pieces[i].style.filter=`drop-shadow(${(Pieces[i].homeX-320)/24}px ${(Pieces[i].homeY-320)/24}px 10px ${activeShadow})`;
                     }
+                   
                 }
             }
         }
@@ -161,11 +184,15 @@
                 {
                     labelW.style.color="white";
                     labelB.style.color="black";
+                    for(let i=0;i<Pieces.length;i++)
+                    Pieces[i].style.transform="rotate(0deg)";
                 }
                 else
                 {
                     labelB.style.color="white";
                     labelW.style.color="black";
+                    for(let i=0;i<Pieces.length;i++)
+                    Pieces[i].style.transform="rotate(180deg)";
                 }
             }
         } 
@@ -197,7 +224,11 @@
             div.drag=function(e)
             {
                 div.style.transitionProperty="width,height";
-                var xy=getXY(e);
+                var xy=getXY(e,true);
+                if(!turn)
+                {
+
+                }
                 div.style.left=xy.x-x+"px";
                 div.style.top=xy.y-y+"px";
                 div.style.filter=`drop-shadow(${(xy.x-window.innerWidth/2)/24}px ${(xy.y-window.innerHeight/2)/24}px 15px ${activeShadow})`;
@@ -209,10 +240,11 @@
                 return;
                 if(turn!=div.team)
                 return;
-                var xy=getXY(e);
+                var xy=getXY(e,false);
                 div.style.zIndex="2";
                 x=Number(xy.x-div.getBoundingClientRect().left);
                 y=Number(xy.y-div.getBoundingClientRect().top);
+                xy=getXY(e,false);
                 if(div.alive)
                 {
                     document.addEventListener("mousemove",div.drag)
@@ -229,7 +261,7 @@
             {
                 if(!div.alive)
                 return;
-                var xy=getXY(e);
+                var xy=getXY(e,true);
                 setTimeout(()=>div.style.zIndex="1",1000);
                 
                 div.style.width=80+"px";
@@ -271,6 +303,9 @@
                             already.onmouseleave=null;
                             switchTurn();
                             already.style.filter=`drop-shadow(0px 0px 10px ${"white"})`;
+                            if(already.team==false)
+                            already.style.transform="rotate(180deg)";
+                            else
                             already.style.transform="rotate(360deg)";
                             
                             //repitition
@@ -386,14 +421,14 @@
         var syncB;
         
 
-        var labelW=document.createElement("h3");
+        var labelW=document.createElement("label");
         labelW.style.left=window.innerWidth/2+320+30+"px";
         labelW.style.top="100px";
         labelW.style.width="300px";
         labelW.innerHTML="White";
         labelW.style.color="white";
 
-        var labelB=document.createElement("h3");
+        var labelB=document.createElement("label");
         labelB.style.left=window.innerWidth/2-320-330+"px";
         labelB.style.top="100px";
         labelB.style.width="300px";
@@ -404,7 +439,7 @@
         
         board.appendChild(labelW);
         board.appendChild(labelB);
-
+        
         
     </script>
     <script>
@@ -424,7 +459,7 @@
                 syncW=setInterval(function()
                     {
                         whiteSquares=WColorSelector.value;
-                        //document.body.style.backgroundColor=whiteSquares;
+                        
                         window.requestAnimationFrame(painter);
                     },3);
                 
@@ -592,18 +627,42 @@
             }
         }
 
-        function getXY(e)
+        function getXY(e,transforms)
         {
+            let x=0,y=0;
             if(e.type.substring(0,5)=="touch")
             {
                 let evt=(typeof e.originalEvent==='undefined')?e:e.originalEvent;
                 let touch=evt.touches[0]||evt.changedTouches[0];
-                return {"x":touch.pageX,"y":touch.pageY};
+                x=touch.pageX;
+                y=touch.pageY;
+                
             }
-            else if(e.type.substring(0,5)=="mouse")
+            if(e.type.substring(0,5)=="mouse")
             {
-                return {"x":e.clientX,"y":e.clientY};
+                x=e.clientX;
+                y=e.clientY;
             }
+            if(transforms)
+            {
+                if(turn)
+                {
+                    return {"x":x,"y":y};
+                }
+                else
+                {
+                    return rotate({"x":x,"y":y});
+                }
+            }
+            else
+            {
+                return {"x":x,"y":y};
+            }
+        }
+        function rotate({x,y})
+        {
+            return{"x":window.innerWidth-x,
+                "y":window.innerHeight-y}
         }
         let play=0;
         let playstart=function()
