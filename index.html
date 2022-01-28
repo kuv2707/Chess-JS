@@ -74,15 +74,6 @@
             font-family: defFont;
             text-shadow: 0px 0px 15px rgb(238, 179, 179);
         }
-        div
-        {
-            width:100vw;
-            height:100vh;
-            position:relative;
-            transform-origin: 50vw 50vh;
-            transition-duration: 0.8s;
-            transition-property: transform;
-        }
         .draggable
         {
             position:absolute;
@@ -244,7 +235,11 @@
                 div.style.zIndex="2";
                 x=Number(xy.x-div.getBoundingClientRect().left);
                 y=Number(xy.y-div.getBoundingClientRect().top);
-                
+                if(mode  &&  !turn)
+                {
+                    x=80-x;
+                    y=80-y;
+                }
                
                 if(div.alive)
                 {
@@ -370,6 +365,17 @@
         }
         window.requestAnimationFrame(painter);
         board.className="#container";
+        if(mode)
+        {
+            board.style=`
+            width:100vw;
+            height:100vh;
+            position:relative;
+            transform-origin: 50vw 50vh;
+            transition-duration: 0.8s;
+            transition-property: transform;
+            `;
+        }
         document.body.appendChild(board);
         for(let i=0;i<face.length;i++)
         {
