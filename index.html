@@ -28,7 +28,7 @@
         }
         html
         {
-            background-image: linear-gradient(180deg,#f2b8b8,#DD6240,#3d0a0a);
+            background-image: linear-gradient(180deg,#5dd7ea,#40cddd,#0d848c);
             background-repeat: no-repeat;
             background-attachment: fixed;
 
@@ -49,7 +49,7 @@
             width:100px;
             height:70px;
             border-radius: 30px;
-            background-color: #f0b1b1;
+            background-color: #5ab9c1;
             border:none;
             filter:drop-shadow(0px 0px 30px black);
             text-align: center;
@@ -66,13 +66,14 @@
             height:70px;
             border-radius: 30px;
             border:none;
+            background-color: #5ab9c1;
             filter:drop-shadow(0px 0px 30px rgb(4, 4, 4));
             text-align: center;
             font-size: 50px;
             transition-duration: 0.8s;
             transition-property: color,left;
             font-family: defFont;
-            text-shadow: 0px 0px 15px rgb(238, 179, 179);
+            
         }
         .draggable
         {
@@ -80,7 +81,7 @@
             
             width: 80px;
             height: 80px;
-            transition-property: width,height,left,top,filter,transform;
+            transition-property: width,height,left,top,filter;
             transition-duration: 0.8s;
             
             user-select: none;
@@ -98,31 +99,44 @@
             transition-property: left;
             
         }
+        #container
+        {
+            transition-duration: 0s;
+        }
     </style>
     <script id="GlobalVariables">
         var turn=false;
         var blackSquares="#6E1111";
         var whiteSquares="#ffa1a1";
-        document.querySelector('meta[name="theme-color"]').setAttribute('content', whiteSquares);
         var boardOffsetX=(window.innerWidth/window.innerHeight>1)?window.innerWidth/2-320:0;
         const boardOffsetY=25;
         const Pieces=new Array();
-        var activeShadow="red";
+        var activeShadow="#d1dfe5";
         var inactiveShadow="black";
         const mode=window.innerWidth/window.innerHeight>1;
+        if(mode)
+        {
+            labelInactive="black";
+        }
+        else
+        {
+            labelInactive="grey";
+        }
     </script>
     <script id="GUI">
         
         let switchTurn;
         if(mode)
         {
+            
             switchTurn=function()
             {
                 turn=!turn;
                 if(turn)
                 {
                     labelW.style.color="white";
-                    labelB.style.color="black";
+                    labelB.style.color=labelInactive;
+                   
                     board.style.transform="rotate(0deg)";
                     labelB.style.transform="rotate(0deg)";
                     labelW.style.transform="rotate(0deg)";
@@ -142,7 +156,8 @@
                 else
                 {
                     labelB.style.color="white";
-                    labelW.style.color="black";
+                    labelW.style.color=labelInactive;
+                    
                     board.style.transform="rotate(180deg)";
                     labelB.style.transform="rotate(180deg)";
                     labelW.style.transform="rotate(180deg)";
@@ -165,6 +180,7 @@
         else
         {
             activeShadow="black";
+            
             for(let i=0;i<Pieces.length;i++)
             {
                 Pieces[i].style.filter=`drop-shadow(0px 0px 10px ${inactiveShadow})`;
@@ -175,14 +191,14 @@
                 if(turn)
                 {
                     labelW.style.color="white";
-                    labelB.style.color="black";
+                    labelB.style.color=labelInactive;
                     for(let i=0;i<Pieces.length;i++)
                     Pieces[i].style.transform="rotate(0deg)";
                 }
                 else
                 {
                     labelB.style.color="white";
-                    labelW.style.color="black";
+                    labelW.style.color=labelInactive;
                     for(let i=0;i<Pieces.length;i++)
                     Pieces[i].style.transform="rotate(180deg)";
                 }
@@ -211,7 +227,7 @@
             {
                 div.style.width="80px";
                 div.style.height="80px";
-                div.style.filter=`drop-shadow(${(div.homeX-320)/24}px ${(div.homeY-320)/24}px 10px ${turn==div.team?activeShadow:inactiveShadow})`;
+                div.style.filter=`drop-shadow(${(div.homeX-320)/24}px ${(div.homeY-320)/24}px 10px ${turn==div.team&&mode==true?activeShadow:inactiveShadow})`;
             };
             div.drag=function(e)
             {
@@ -265,7 +281,7 @@
                 
                 div.style.width=80+"px";
                 div.style.height=80+"px";
-                div.style.transitionProperty='';
+                div.style.transitionProperty=div.defaulttp;
                 document.removeEventListener("mousemove",div.drag)
                 document.removeEventListener("touchmove",div.drag)
                 xy.x-=boardOffsetX;
@@ -375,7 +391,7 @@
             height:100vh;
             position:relative;
             transform-origin: 50vw 50vh;
-            transition-duration: 0.8s;
+            transition-duration: 0.2s;
             transition-property: transform;
             `;
         }
@@ -407,9 +423,15 @@
             }
             go.style.left=go.homeX+boardOffsetX+"px";
             go.style.top=go.homeY+boardOffsetY+"px";
-            if(!mode)
+            if(mode)
+            {
+                go.style.transitionProperty="width,height,left,top,filter,transform";
+                go.defaulttp="width,height,left,top,filter,transform";
+            }
+            else
             {
                 go.style.transitionProperty="width,height,left,top,filter";
+                go.defaulttp="width,height,left,top,filter";
             }
             addDraggability(go);
             go.style.filter=`drop-shadow(${(go.homeX-320)/24}px ${(go.homeY-320)/24}px 10px ${activeShadow})`;
@@ -448,8 +470,7 @@
         labelB.style.width="300px";
         labelB.innerHTML="Black";
 
-        labelB.style.backgroundColor=blackSquares;
-        labelW.style.backgroundColor=blackSquares;
+        
         
         board.appendChild(labelW);
         board.appendChild(labelB);
@@ -468,6 +489,24 @@
         if(mode)
         {
             //landscape view
+            labelB.style.textShadow=`            
+                    0 0 7px #fff,
+                    0 0 10px #fff, 
+                    0 0 21px #fff, 
+                    0 0 42px #0fa, 
+                    0 0 82px #0fa, 
+                    0 0 92px #0fa, 
+                    0 0 102px #0fa,
+                    0 0 151px #0fa`;
+                    labelW.style.textShadow=`            
+                    0 0 7px #fff,
+                    0 0 10px #fff, 
+                    0 0 21px #fff, 
+                    0 0 42px #0fa, 
+                    0 0 82px #0fa, 
+                    0 0 92px #0fa, 
+                    0 0 102px #0fa,
+                    0 0 151px #0fa`;
             WColorSelector.addEventListener("focus", function () 
             {
                 syncW=setInterval(function()
@@ -562,6 +601,8 @@
         else
         {
             //portrait view
+            labelB.style.textShadow=`0px 0px 40px #fff`;
+                    labelW.style.textShadow=`0px 0px 40px #fff `;
             WColorSelector.addEventListener("change", function (e) 
             {
                 whiteSquares=e.target.value;
@@ -706,6 +747,35 @@
         labelW.addEventListener("touchstart",playend);
         labelW.addEventListener("click",playend);
         switchTurn();
+    </script>
+    <script id="theme">
+        const setTheme=function(theme)
+        {
+            theme.elems="black"
+
+            whiteSquares=theme.ws;
+            blackSquares=theme.bs;
+            document.querySelector('meta[name="theme-color"]').setAttribute('content', whiteSquares);
+            labelB.style.backgroundColor=theme.elems;
+            labelW.style.backgroundColor=theme.elems;
+            WColorSelector.style.backgroundColor=theme.elems;
+            BColorSelector.style.backgroundColor=theme.elems;
+            WColorSelector.value=whiteSquares;
+            BColorSelector.value=blackSquares;
+            document.querySelector("html").style.backgroundImage=` linear-gradient(180deg,${theme.grad1},${theme.grad2},${theme.grad3})`;
+            window.requestAnimationFrame(painter)
+            activeShadow="#d1dfe5"
+        }
+        setTheme(
+            {
+                "bs":"#007785",
+                "ws":"#00ffff",
+                "grad1":"51DBD2",
+                "grad2":"green",
+                "grad3":"black",
+                "elems":"#5ab9c1"
+            }
+        )
     </script>
 </body>
 </html>
