@@ -35,7 +35,7 @@
         }
         *
         {
-            overscroll-behavior: none;
+            
             transform-origin: center;
         }
         canvas
@@ -214,6 +214,8 @@
             };
             div.drag=function(e)
             {
+                e.stopPropagation();
+                e.preventDefault();
                 div.style.transitionProperty="width,height";
                 var xy=getXY(e,true);
                 if(!turn)
@@ -404,6 +406,10 @@
             }
             go.style.left=go.homeX+boardOffsetX+"px";
             go.style.top=go.homeY+boardOffsetY+"px";
+            if(!mode)
+            {
+                go.style.transitionDuration="1.5s";
+            }
             addDraggability(go);
             go.style.filter=`drop-shadow(${(go.homeX-320)/24}px ${(go.homeY-320)/24}px 10px ${activeShadow})`;
             Pieces.push(go);
