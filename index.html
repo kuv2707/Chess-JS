@@ -408,7 +408,7 @@
             go.style.top=go.homeY+boardOffsetY+"px";
             if(!mode)
             {
-                go.style.transitionDuration="1.5s";
+                go.style.transitionProperty="width,height,left,top,filter";
             }
             addDraggability(go);
             go.style.filter=`drop-shadow(${(go.homeX-320)/24}px ${(go.homeY-320)/24}px 10px ${activeShadow})`;
