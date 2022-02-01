@@ -28,7 +28,7 @@
         }
         html
         {
-            background-image: linear-gradient(180deg,#5dd7ea,#40cddd,#0d848c);
+            background-image: linear-gradient(#000000,#571010,#040303);
             background-repeat: no-repeat;
             background-attachment: fixed;
 
@@ -65,9 +65,10 @@
             width:100px;
             height:70px;
             border-radius: 30px;
-            border:none;
-            background-color: #5ab9c1;
+            
+            background-color: #000000;
             filter:drop-shadow(0px 0px 30px rgb(4, 4, 4));
+            box-shadow: 0 0 20px white ;
             text-align: center;
             font-size: 50px;
             transition-duration: 0.8s;
@@ -121,6 +122,7 @@
         else
         {
             labelInactive="grey";
+            activeShadow="black";
         }
     </script>
     <script id="GUI">
@@ -147,9 +149,9 @@
                         continue;
                         Pieces[i].style.transform="rotate(0deg)";
                         if(Pieces[i].team!=true)
-                        Pieces[i].style.filter=`drop-shadow(${(Pieces[i].homeX-320)/24}px ${(Pieces[i].homeY-320)/24}px 10px ${inactiveShadow})`;
+                        Pieces[i].style.filter=`drop-shadow(0 0 10px ${inactiveShadow})`;
                         else
-                        Pieces[i].style.filter=`drop-shadow(${(Pieces[i].homeX-320)/24}px ${(Pieces[i].homeY-320)/24}px 10px ${activeShadow})`;
+                        Pieces[i].style.filter=`drop-shadow(0 0 10px ${activeShadow})`;
                     }
                    
                 }
@@ -169,9 +171,9 @@
                         continue;
                         Pieces[i].style.transform="rotate(180deg)";
                         if(Pieces[i].team==true)
-                        Pieces[i].style.filter=`drop-shadow(${(Pieces[i].homeX-320)/24}px ${(Pieces[i].homeY-320)/24}px 10px ${inactiveShadow})`;
+                        Pieces[i].style.filter=`drop-shadow(0 0 10px ${inactiveShadow})`;
                         else
-                        Pieces[i].style.filter=`drop-shadow(${(Pieces[i].homeX-320)/24}px ${(Pieces[i].homeY-320)/24}px 10px ${activeShadow})`;
+                        Pieces[i].style.filter=`drop-shadow(0 0 10px ${activeShadow})`;
                     }
                    
                 }
@@ -221,13 +223,13 @@
                 return;
                 div.style.width="85px";
                 div.style.height="85px";
-                div.style.filter=`drop-shadow(${(div.homeX-320)/24}px ${(div.homeY-320)/24}px 15px ${activeShadow})`;
+                div.style.filter=`drop-shadow(0 0 20px ${activeShadow})`;
             };
             div.onmouseleave=function()
             {
                 div.style.width="80px";
                 div.style.height="80px";
-                div.style.filter=`drop-shadow(${(div.homeX-320)/24}px ${(div.homeY-320)/24}px 10px ${turn==div.team&&mode==true?activeShadow:inactiveShadow})`;
+                div.style.filter=`drop-shadow(0 0 10px ${turn==div.team&&mode==true?activeShadow:inactiveShadow})`;
             };
             div.drag=function(e)
             {
@@ -241,7 +243,7 @@
                 }
                 div.style.left=xy.x-x+"px";
                 div.style.top=xy.y-y+"px";
-                div.style.filter=`drop-shadow(${(xy.x-window.innerWidth/2)/24}px ${(xy.y-window.innerHeight/2)/24}px 15px ${activeShadow})`;
+                div.style.filter=`drop-shadow(0 0 15px ${activeShadow})`;
                 
             }
             let md=function(e)
@@ -493,11 +495,11 @@
                     0 0 7px #fff,
                     0 0 10px #fff, 
                     0 0 21px #fff, 
-                    0 0 42px #0fa, 
-                    0 0 82px #0fa, 
-                    0 0 92px #0fa, 
-                    0 0 102px #0fa,
-                    0 0 151px #0fa`;
+                    0 0 42px #0af, 
+                    0 0 82px #0af, 
+                    0 0 92px #0af, 
+                    0 0 102px #0af,
+                    0 0 151px #0af`;
                     labelW.style.textShadow=`            
                     0 0 7px #fff,
                     0 0 10px #fff, 
@@ -526,8 +528,6 @@
                 syncB=setInterval(function()
                     {
                         blackSquares=BColorSelector.value;
-                        labelB.style.backgroundColor=blackSquares;
-                        labelW.style.backgroundColor=blackSquares;
                         window.requestAnimationFrame(painter);
                     },3);
                 
@@ -756,8 +756,6 @@
             whiteSquares=theme.ws;
             blackSquares=theme.bs;
             document.querySelector('meta[name="theme-color"]').setAttribute('content', whiteSquares);
-            labelB.style.backgroundColor=theme.elems;
-            labelW.style.backgroundColor=theme.elems;
             WColorSelector.style.backgroundColor=theme.elems;
             BColorSelector.style.backgroundColor=theme.elems;
             WColorSelector.value=whiteSquares;
@@ -768,8 +766,8 @@
         }
         setTheme(
             {
-                "bs":"#007785",
-                "ws":"#00ffff",
+                "bs":"#850001",
+                "ws":"#ffa1a1",
                 "grad1":"51DBD2",
                 "grad2":"green",
                 "grad3":"black",
