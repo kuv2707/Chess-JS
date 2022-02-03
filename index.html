@@ -244,7 +244,8 @@
                 div.style.left=xy.x-x+"px";
                 div.style.top=xy.y-y+"px";
                 div.style.filter=`drop-shadow(0 0 15px ${activeShadow})`;
-                
+                tentativeMove.setXY(Math.floor((xy.x-boardOffsetX)/80)*80,
+                Math.floor((xy.y-boardOffsetY)/80)*80);
             }
             let md=function(e)
             {
@@ -261,7 +262,7 @@
                     x=80-x;
                     y=80-y;
                 }
-               
+                
                 if(div.alive)
                 {
                     document.addEventListener("mousemove",div.drag)
@@ -271,6 +272,7 @@
                 div.style.height="100px";
                 document.addEventListener("mouseup",docmu)
                 document.addEventListener("touchend",docmu)
+                tentativeMove.listen=true;
             };
             div.addEventListener("mousedown",md)
             div.addEventListener("touchstart",md)
@@ -286,10 +288,8 @@
                 div.style.transitionProperty=div.defaulttp;
                 document.removeEventListener("mousemove",div.drag)
                 document.removeEventListener("touchmove",div.drag)
-                xy.x-=boardOffsetX;
-                xy.y-=boardOffsetY;
-                let vx=xy.x-xy.x%80;
-                let vy=xy.y-xy.y%80;
+                let vx=Math.floor((xy.x-boardOffsetX)/80)*80;
+                let vy=Math.floor((xy.y-boardOffsetY)/80)*80;
                 
                 if(!(vx>=640 ||  vy>=640  ||  vx<0  ||  vy<0))
                 {
@@ -345,7 +345,8 @@
                 document.removeEventListener("mouseup",docmu)
                 document.removeEventListener("touchend",docmu)
                 mu(e);
-                
+                tentativeMove.listen=false;
+                tentativeMove.setXY(0,0);
             };
             
         }
@@ -360,6 +361,19 @@
         squares.style.left=window.innerWidth/2-320+"px";
         board.appendChild(squares);
         var g=squares.getContext('2d');
+        const tentativeMove=
+        {
+            x:0,
+            y:0,
+            listen:false,
+            setXY:function(x,y)
+            {
+                this.x=x;
+                this.y=y;
+                window.requestAnimationFrame(painter);
+            }
+
+        }
         var painter=function()
         {
             g.clearRect(0,0,squares.width,squares.height);
@@ -381,6 +395,11 @@
                     g.fillRect(i,j,80,80);
                 }
                 black=!black;
+                if(tentativeMove.listen)
+                {
+                    g.fillStyle="cyan";
+                    g.fillRect(tentativeMove.x,tentativeMove.y,80,80);
+                }
             }
             //window.requestAnimationFrame(painter);
         }
@@ -485,8 +504,6 @@
         let xw=0;
         let yw=220;
         var allotDeadLocation;
-        let offsetX=0;
-        let offsetY=boardOffsetY;
         console.log("Aspect ratio:",window.innerWidth/window.innerHeight);
         if(mode)
         {
