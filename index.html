@@ -115,13 +115,13 @@
         var activeShadow="#d1dfe5";
         var inactiveShadow="black";
         const mode=window.innerWidth/window.innerHeight>1;
+        var labelInactive="black";
         if(mode)
         {
-            labelInactive="black";
+            
         }
         else
         {
-            labelInactive="grey";
             activeShadow="black";
         }
     </script>
@@ -246,6 +246,24 @@
                 div.style.filter=`drop-shadow(0 0 15px ${activeShadow})`;
                 tentativeMove.setXY(Math.floor((xy.x-boardOffsetX)/80)*80,
                 Math.floor((xy.y-boardOffsetY)/80)*80);
+                try
+                {
+                    let a=Math.floor(tentativeMove.x/80);
+                    let b=Math.floor(tentativeMove.y/80);
+                    //console.log(a,b,BOARD[0][0]);
+                    if(BOARD[a][b]!=null)
+                    {
+                        tentativeMove.setKillMode(true);
+                    }
+                    else
+                    {
+                        tentativeMove.setKillMode(false);
+                    }
+                }
+                catch(error)
+                {
+                    console.log(error)
+                }
             }
             let md=function(e)
             {
@@ -366,13 +384,26 @@
             x:0,
             y:0,
             listen:false,
+            color:"#2ae7a2",
             setXY:function(x,y)
             {
+                if(this.x==x  &&  this.y==y)
+                return;
                 this.x=x;
                 this.y=y;
                 window.requestAnimationFrame(painter);
+            },
+            setKillMode:function(yes)
+            {
+                if(yes)
+                {
+                    this.color="red";
+                }
+                else
+                {
+                    this.color="#2ae7a2";
+                }
             }
-
         }
         var painter=function()
         {
@@ -397,7 +428,7 @@
                 black=!black;
                 if(tentativeMove.listen)
                 {
-                    g.fillStyle="cyan";
+                    g.fillStyle=tentativeMove.color;
                     g.fillRect(tentativeMove.x,tentativeMove.y,80,80);
                 }
             }
@@ -509,23 +540,23 @@
         {
             //landscape view
             labelB.style.textShadow=`            
-                    0 0 7px #fff,
-                    0 0 10px #fff, 
-                    0 0 21px #fff, 
-                    0 0 42px #0af, 
-                    0 0 82px #0af, 
-                    0 0 92px #0af, 
-                    0 0 102px #0af,
-                    0 0 151px #0af`;
-                    labelW.style.textShadow=`            
-                    0 0 7px #fff,
-                    0 0 10px #fff, 
-                    0 0 21px #fff, 
-                    0 0 42px #0fa, 
-                    0 0 82px #0fa, 
-                    0 0 92px #0fa, 
-                    0 0 102px #0fa,
-                    0 0 151px #0fa`;
+                0 0 7px #fff,
+                0 0 10px #fff, 
+                0 0 21px #fff, 
+                0 0 42px #0af, 
+                0 0 82px #0af, 
+                0 0 92px #0af, 
+                0 0 102px #0af,
+                0 0 151px #0af`;
+            labelW.style.textShadow=`            
+                0 0 7px #fff,
+                0 0 10px #fff, 
+                0 0 21px #fff, 
+                0 0 42px #0fa, 
+                0 0 82px #0fa, 
+                0 0 92px #0fa, 
+                0 0 102px #0fa,
+                0 0 151px #0fa`;
             WColorSelector.addEventListener("focus", function () 
             {
                 syncW=setInterval(function()
@@ -618,8 +649,20 @@
         else
         {
             //portrait view
-            labelB.style.textShadow=`0px 0px 40px #fff`;
-                    labelW.style.textShadow=`0px 0px 40px #fff `;
+            labelB.style.textShadow=`            
+                0 0 7px #fff,
+                0 0 10px #fff, 
+                0 0 21px #fff, 
+                0 0 42px #0af, 
+                0 0 82px #0af 
+                `;
+            labelW.style.textShadow=`            
+                0 0 7px #fff,
+                0 0 10px #fff, 
+                0 0 21px #fff, 
+                0 0 42px #0fa, 
+                0 0 82px #0fa
+                `;
             WColorSelector.addEventListener("change", function (e) 
             {
                 whiteSquares=e.target.value;
@@ -649,8 +692,8 @@
             BColorSelector.style.left="20px";
             WColorSelector.style.top="760px";
             BColorSelector.style.top="760px";
-            labelW.style.left="320px";
-            labelB.style.left="20px";
+            labelW.style.left="330px";
+            labelB.style.left="10px";
             labelW.style.top="680px";
             labelB.style.top="680px";
 
@@ -772,7 +815,7 @@
 
             whiteSquares=theme.ws;
             blackSquares=theme.bs;
-            document.querySelector('meta[name="theme-color"]').setAttribute('content', whiteSquares);
+            document.querySelector('meta[name="theme-color"]').setAttribute('content', "maroon");
             WColorSelector.style.backgroundColor=theme.elems;
             BColorSelector.style.backgroundColor=theme.elems;
             WColorSelector.value=whiteSquares;
