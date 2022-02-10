@@ -95,9 +95,19 @@
             position:absolute;
             filter:drop-shadow(0px 0px 40px black);
             top:25px;
+            display: grid;
             transition-duration: 0.8s;
             transition-property: left;
             
+            grid-template-columns: repeat(8,80px);
+            grid-template-rows: repeat(8,80px);
+        }
+        .boardSquares
+        {
+            width:80px;
+            height:80px;
+            border-radius: 0px;
+            border:none;
         }
         #container
         {
@@ -243,12 +253,11 @@
                 div.style.left=xy.x-x+"px";
                 div.style.top=xy.y-y+"px";
                 div.style.filter=`drop-shadow(0 0 15px ${activeShadow})`;
-                tentativeMove.setXY(Math.floor((xy.x-boardOffsetX)/80)*80,
-                Math.floor((xy.y-boardOffsetY)/80)*80);
+                
                 try
                 {
-                    let a=Math.floor(tentativeMove.x/80);
-                    let b=Math.floor(tentativeMove.y/80);
+                    let a=Math.floor(tentativeMove.x);
+                    let b=Math.floor(tentativeMove.y);
                     //console.log(a,b,BOARD[0][0]);
                     if(BOARD[a][b]!=null)
                     {
@@ -263,6 +272,8 @@
                 {
                     console.log(error)
                 }
+                tentativeMove.setXY(Math.floor((xy.x-boardOffsetX)/80),
+                Math.floor((xy.y-boardOffsetY)/80));
             }
             let md=function(e)
             {
@@ -289,7 +300,7 @@
                 div.style.height="100px";
                 document.addEventListener("mouseup",docmu)
                 document.addEventListener("touchend",docmu)
-                tentativeMove.listen=true;
+                tentativeMove.setListen(true);
             };
             div.addEventListener("mousedown",md)
             div.addEventListener("touchstart",md)
@@ -362,8 +373,7 @@
                 document.removeEventListener("mouseup",docmu)
                 document.removeEventListener("touchend",docmu)
                 mu(e);
-                tentativeMove.listen=false;
-                tentativeMove.setXY(0,0);
+                tentativeMove.setListen(false);
             };
             
         }
@@ -371,18 +381,72 @@
         var face=["br","bn","bb","bq","bk","bb","bn","br","bp","bp","bp","bp","bp","bp","bp","bp",
                     "wp","wp","wp","wp","wp","wp","wp","wp","wr","wn","wb","wk","wq","wb","wn","wr"];
         var board=document.createElement("div");
-        var squares=document.createElement("canvas");
-        squares.id="chessBoard";
-        squares.width=640;
-        squares.height=640;
-        squares.style.left=window.innerWidth/2-320+"px";
-        board.appendChild(squares);
-        var g=squares.getContext('2d');
+        var chessBoard=document.createElement("div");
+        chessBoard.id="chessBoard";
+        let sqs=new Array();
+        for(let i=0;i<8;i++)
+        {
+            let arr=new Array();
+            for(let j=0;j<8;j++)
+            {
+                let sq=document.createElement("button");
+                sq.className="boardSquares";
+                sq.id="square"+i+"_"+j;
+                if((i+j)%2==0)
+                {
+                    sq.style.backgroundColor=blackSquares;
+                    sq.revert=function()
+                    {
+                        this.style.backgroundColor=blackSquares;
+                    }
+                }
+                else
+                {
+                    sq.style.backgroundColor=whiteSquares;
+                    sq.revert=function()
+                    {
+                        this.style.backgroundColor=whiteSquares;
+                    }
+                    
+                }
+                chessBoard.append(sq);
+                arr.push(sq);
+            }
+            sqs.push(arr);
+        }
+        chessBoard.refresh=function()
+        {
+            sqs.forEach(function(k,i)
+            {
+                k.forEach(function(l,j)
+                {
+                    
+                    if((i+j)%2==0)
+                    {
+                        l.style.backgroundColor=blackSquares;
+                        
+                    }
+                    else
+                    {
+                        l.style.backgroundColor=whiteSquares;
+                        
+                    }
+                })
+            })
+            
+        }
+        chessBoard.width=640;
+        chessBoard.height=640;
+        chessBoard.style.left=window.innerWidth/2-320+"px";
+        board.appendChild(chessBoard);
+        
         const tentativeMove=
         {
             x:0,
             y:0,
             listen:false,
+            prev:null,
+            prevCol:null,
             color:"#2ae7a2",
             setXY:function(x,y)
             {
@@ -390,7 +454,12 @@
                 return;
                 this.x=x;
                 this.y=y;
-                window.requestAnimationFrame(painter);
+                if(!this.listen)
+                return;
+                if(this.prev)
+                this.prev.revert()
+                this.prev=sqs[y][x];
+                this.prev.style.backgroundColor=this.color;
             },
             setKillMode:function(yes)
             {
@@ -402,38 +471,18 @@
                 {
                     this.color="#2ae7a2";
                 }
-            }
-        }
-        var painter=function()
-        {
-            g.clearRect(0,0,squares.width,squares.height);
-            let black=false;
-            for(let i=0;i<640;i+=80)
+                this.prev.style.backgroundColor=this.color;
+            },
+            setListen:function(yes)
             {
-                for(let j=0;j<640;j+=80)
+                this.listen=yes;
+                if(!yes)
                 {
-                    if(black)
-                    {
-                        
-                        g.fillStyle=blackSquares;
-                    }
-                    else
-                    {
-                        g.fillStyle=whiteSquares;
-                    }
-                    black=!black;
-                    g.fillRect(i,j,80,80);
-                }
-                black=!black;
-                if(tentativeMove.listen)
-                {
-                    g.fillStyle=tentativeMove.color;
-                    g.fillRect(tentativeMove.x,tentativeMove.y,80,80);
+                    this.prev.revert();
                 }
             }
-            //window.requestAnimationFrame(painter);
         }
-        window.requestAnimationFrame(painter);
+        
         board.className="#container";
         if(mode)
         {
@@ -585,7 +634,7 @@
             });
             window.addEventListener("resize",function()
             {
-                squares.style.left=window.innerWidth/2-320+"px";
+                chessBoard.style.left=window.innerWidth/2-320+"px";
                 boardOffsetX=window.innerWidth/2-320;
                 WColorSelector.style.left=window.innerWidth/2+320+30+"px";
                 BColorSelector.style.left=window.innerWidth/2+520+30+"px";
@@ -605,6 +654,15 @@
                     }
                 });
             });
+
+            sqs.forEach(function(k,i)
+            {
+                k.forEach(function(l,j)
+                {
+                    
+                    l.style.borderRadius="15px";
+                })
+            })
             
             allotDeadLocation=function(piece)
             {
@@ -673,7 +731,7 @@
                 blackSquares=e.target.value;
                 window.requestAnimationFrame(painter);
             });
-            squares.style.left="0px";
+            chessBoard.style.left="0px";
             Pieces.forEach(function(dog)
             {
                 if(dog.alive)
@@ -700,6 +758,8 @@
             xw=320;
             yb=840;
             yw=840;
+
+            
             
             allotDeadLocation=function(piece)
             {
@@ -810,10 +870,10 @@
     <script id="theme">
         const setTheme=function(theme)
         {
-            
+    theme.chromeTheme=theme.bs;
             whiteSquares=theme.ws;
             blackSquares=theme.bs;
-            document.querySelector('meta[name="theme-color"]').setAttribute('content', "maroon");
+            document.querySelector('meta[name="theme-color"]').setAttribute('content', theme.chromeTheme);
             WColorSelector.style.backgroundColor=theme.elems;
             BColorSelector.style.backgroundColor=theme.elems;
             labelW.style.backgroundColor=theme.elems;
@@ -824,7 +884,7 @@
             sty.background=`linear-gradient(180deg,${theme.grad1},${theme.grad2},${theme.grad3})`;
             sty.backgroundRepeat="no-repeat"
             sty.backgroundAttachment="fixed";
-            window.requestAnimationFrame(painter)
+            chessBoard.refresh();
             activeShadow="#d1dfe5"
         }
         let redtheme=
@@ -834,8 +894,8 @@
             "grad1":"#000000",
             "grad2":"#390404",
             "grad3":"#610000",
-            "elems":"#5ab9c1"
-        }
+            "elems":"#2d0101"
+        };
         let bluetheme=
         {
             "bs":"#096162",
@@ -846,6 +906,14 @@
             "elems":"#000000"
         };
         setTheme(bluetheme);
+        WColorSelector.addEventListener("click",function()
+        {
+            setTheme(redtheme);
+        })
+        BColorSelector.addEventListener("click",function()
+        {
+            setTheme(bluetheme);
+        })
     </script>
 </body>
 </html>
