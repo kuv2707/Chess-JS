@@ -26,13 +26,6 @@
             -webkit-user-select: none;
             user-select: none;
         }
-        html
-        {
-            background-image: linear-gradient(#000000,#571010,#040303);
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-
-        }
         *
         {
             
@@ -66,15 +59,21 @@
             height:70px;
             border-radius: 30px;
             
-            background-color: #000000;
+            background-color: #b13a3a;
             filter:drop-shadow(0px 0px 30px rgb(4, 4, 4));
+            
             box-shadow: 0 0 20px white ;
             text-align: center;
             font-size: 50px;
             transition-duration: 0.8s;
-            transition-property: color,left;
+            transition-property: color,left,border-radius,background-color;
             font-family: defFont;
             
+        }
+        label:hover
+        {
+            border-radius: 120px;
+            background-color: #aaa8a8 !important;
         }
         .draggable
         {
@@ -443,7 +442,7 @@
             height:100vh;
             position:relative;
             transform-origin: 50vw 50vh;
-            transition-duration: 0.2s;
+            transition-duration: 0s;
             transition-property: transform;
             `;
         }
@@ -811,29 +810,42 @@
     <script id="theme">
         const setTheme=function(theme)
         {
-            theme.elems="black"
-
+            
             whiteSquares=theme.ws;
             blackSquares=theme.bs;
             document.querySelector('meta[name="theme-color"]').setAttribute('content', "maroon");
             WColorSelector.style.backgroundColor=theme.elems;
             BColorSelector.style.backgroundColor=theme.elems;
+            labelW.style.backgroundColor=theme.elems;
+            labelB.style.backgroundColor=theme.elems;
             WColorSelector.value=whiteSquares;
             BColorSelector.value=blackSquares;
-            document.querySelector("html").style.backgroundImage=` linear-gradient(180deg,${theme.grad1},${theme.grad2},${theme.grad3})`;
+            let sty=document.body.style;
+            sty.background=`linear-gradient(180deg,${theme.grad1},${theme.grad2},${theme.grad3})`;
+            sty.backgroundRepeat="no-repeat"
+            sty.backgroundAttachment="fixed";
             window.requestAnimationFrame(painter)
             activeShadow="#d1dfe5"
         }
-        setTheme(
-            {
-                "bs":"#850001",
-                "ws":"#ffa1a1",
-                "grad1":"51DBD2",
-                "grad2":"green",
-                "grad3":"black",
-                "elems":"#5ab9c1"
-            }
-        )
+        let redtheme=
+        {
+            "bs":"#850001",
+            "ws":"#ffa1a1",
+            "grad1":"#000000",
+            "grad2":"#390404",
+            "grad3":"#610000",
+            "elems":"#5ab9c1"
+        }
+        let bluetheme=
+        {
+            "bs":"#096162",
+            "ws":"#25C0cB",
+            "grad1":"#000000",
+            "grad2":"rgb(70 149 144)",
+            "grad3":"rgb(36 231 200)",
+            "elems":"#000000"
+        };
+        setTheme(bluetheme);
     </script>
 </body>
 </html>
