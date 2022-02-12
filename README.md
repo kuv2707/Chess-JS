@@ -1,5 +1,5 @@
-# Chess-JS (Anarchy in hell)
+# Chess-JS
 
 Being hosted at: https://kuv2707.github.io/Chess-JS/
 
-Doesn't follow any of the rules of the game yet.
+Rules of the game are not yet imposed.
