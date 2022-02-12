@@ -36,7 +36,7 @@
             border-radius: 20px;
             
         }
-        input
+        #colorSelector
         {
             position: absolute;
             width:100px;
@@ -59,7 +59,7 @@
             height:70px;
             border-radius: 30px;
             
-            background-color: #b13a3a;
+            background-color: #000000;
             filter:drop-shadow(0px 0px 30px rgb(4, 4, 4));
             
             box-shadow: 0 0 20px white ;
@@ -222,6 +222,46 @@
             BOARD[k].fill(null);
         }
         
+        const tentativeMove=
+        {
+            x:0,
+            y:0,
+            listen:false,
+            kill:false,
+            prev:null,
+            prevCol:null,
+            color:"#2ae7a2",
+            setXY:function(x,y)
+            {
+                if(!this.listen)
+                return;
+                if(this.x==x  &&  this.y==y)
+                return;
+                this.x=x;
+                this.y=y;
+                if(this.prev)
+                this.prev.revert()
+                this.prev=sqs[y][x];
+                if(BOARD[x][y]==null)
+                {
+                    this.color="#2ae7a2";
+                }
+                else
+                {
+                    this.color="red";
+                }
+                this.prev.style.backgroundColor=this.color;
+            },
+            setListen:function(yes)
+            {
+                this.listen=yes;
+                if(!yes)
+                {
+                    this.prev.revert();
+                }
+            }
+        }
+
         var addDraggability=function(div)
         {
             var x,y;
@@ -246,32 +286,12 @@
                 e.preventDefault();
                 div.style.transitionProperty="width,height";
                 var xy=getXY(e,true);
-                if(!turn)
-                {
-
-                }
                 div.style.left=xy.x-x+"px";
                 div.style.top=xy.y-y+"px";
                 div.style.filter=`drop-shadow(0 0 15px ${activeShadow})`;
                 
-                try
-                {
-                    let a=Math.floor(tentativeMove.x);
-                    let b=Math.floor(tentativeMove.y);
-                    //console.log(a,b,BOARD[0][0]);
-                    if(BOARD[a][b]!=null)
-                    {
-                        tentativeMove.setKillMode(true);
-                    }
-                    else
-                    {
-                        tentativeMove.setKillMode(false);
-                    }
-                }
-                catch(error)
-                {
-                    console.log(error)
-                }
+                let a=Math.floor(tentativeMove.x);
+                let b=Math.floor(tentativeMove.y);
                 tentativeMove.setXY(Math.floor((xy.x-boardOffsetX)/80),
                 Math.floor((xy.y-boardOffsetY)/80));
             }
@@ -440,48 +460,7 @@
         chessBoard.style.left=window.innerWidth/2-320+"px";
         board.appendChild(chessBoard);
         
-        const tentativeMove=
-        {
-            x:0,
-            y:0,
-            listen:false,
-            prev:null,
-            prevCol:null,
-            color:"#2ae7a2",
-            setXY:function(x,y)
-            {
-                if(this.x==x  &&  this.y==y)
-                return;
-                this.x=x;
-                this.y=y;
-                if(!this.listen)
-                return;
-                if(this.prev)
-                this.prev.revert()
-                this.prev=sqs[y][x];
-                this.prev.style.backgroundColor=this.color;
-            },
-            setKillMode:function(yes)
-            {
-                if(yes)
-                {
-                    this.color="red";
-                }
-                else
-                {
-                    this.color="#2ae7a2";
-                }
-                this.prev.style.backgroundColor=this.color;
-            },
-            setListen:function(yes)
-            {
-                this.listen=yes;
-                if(!yes)
-                {
-                    this.prev.revert();
-                }
-            }
-        }
+        
         
         board.className="#container";
         if(mode)
@@ -496,6 +475,36 @@
             `;
         }
         document.body.appendChild(board);
+
+        
+        var colorSelector=document.createElement("input");
+        colorSelector.id="colorSelector";
+        colorSelector.type="color";
+        colorSelector.style.left=window.innerWidth/2+420+30+"px";
+        colorSelector.value=whiteSquares;
+        colorSelector.innerHTML="Color";
+        board.appendChild(colorSelector);
+        
+        
+        var labelW=document.createElement("label");
+        labelW.style.left=window.innerWidth/2+320+30+"px";
+        labelW.style.top="100px";
+        labelW.style.width="300px";
+        labelW.innerHTML="White";
+        labelW.style.color="white";
+
+        var labelB=document.createElement("label");
+        labelB.style.left=window.innerWidth/2-320-330+"px";
+        labelB.style.top="100px";
+        labelB.style.width="300px";
+        labelB.innerHTML="Black";
+
+        
+        
+        board.appendChild(labelW);
+        board.appendChild(labelB);
+        
+        
         for(let i=0;i<face.length;i++)
         {
             var go=document.createElement("img");
@@ -508,7 +517,7 @@
             go.homeX=cx;
             go.homeY=cy;
             go.alive=true;
-            go.onclick=(e)=>console.log(e.target);
+            
             BOARD[go.homeX/80][go.homeY/80]=go;
             cx+=80;
             if(cx==640)
@@ -538,44 +547,6 @@
             Pieces.push(go);
         }
         
-        var WColorSelector=document.createElement("input");
-        WColorSelector.type="color";
-        WColorSelector.style.left=window.innerWidth/2+320+30+"px";
-        WColorSelector.value=whiteSquares;
-        WColorSelector.innerHTML="Color";
-        board.appendChild(WColorSelector);
-        var syncW;
-        
-
-        var BColorSelector=document.createElement("input");
-        BColorSelector.type="color";
-        BColorSelector.style.left=window.innerWidth/2+520+30+"px";
-        BColorSelector.value=blackSquares;
-        
-        BColorSelector.innerHTML="Color";
-        board.appendChild(BColorSelector);
-        var syncB;
-        
-
-        var labelW=document.createElement("label");
-        labelW.style.left=window.innerWidth/2+320+30+"px";
-        labelW.style.top="100px";
-        labelW.style.width="300px";
-        labelW.innerHTML="White";
-        labelW.style.color="white";
-
-        var labelB=document.createElement("label");
-        labelB.style.left=window.innerWidth/2-320-330+"px";
-        labelB.style.top="100px";
-        labelB.style.width="300px";
-        labelB.innerHTML="Black";
-
-        
-        
-        board.appendChild(labelW);
-        board.appendChild(labelB);
-        
-        
     </script>
     <script>
         let xb=-330;
@@ -583,7 +554,6 @@
         let xw=0;
         let yw=220;
         var allotDeadLocation;
-        console.log("Aspect ratio:",window.innerWidth/window.innerHeight);
         if(mode)
         {
             //landscape view
@@ -605,39 +575,26 @@
                 0 0 92px #0fa, 
                 0 0 102px #0fa,
                 0 0 151px #0fa`;
-            WColorSelector.addEventListener("focus", function () 
+                var sync;
+            colorSelector.addEventListener("focus", function (e) 
             {
-                syncW=setInterval(function()
+                sync=setInterval(function()
                     {
-                        whiteSquares=WColorSelector.value;
+                        setTheme(createTheme(HexToRGB(e.target.value)));
                         
-                        window.requestAnimationFrame(painter);
-                    },3);
+                    },5);
                 
             });
-            WColorSelector.addEventListener("blur", function () 
+            colorSelector.addEventListener("blur", function () 
             {
-                clearInterval(syncW);
+                clearInterval(sync);
             });
-            BColorSelector.addEventListener("focus", function () 
-            {
-                syncB=setInterval(function()
-                    {
-                        blackSquares=BColorSelector.value;
-                        window.requestAnimationFrame(painter);
-                    },3);
-                
-            });
-            WColorSelector.addEventListener("blur", function () 
-            {
-                clearInterval(syncW);
-            });
+            
             window.addEventListener("resize",function()
             {
                 chessBoard.style.left=window.innerWidth/2-320+"px";
                 boardOffsetX=window.innerWidth/2-320;
-                WColorSelector.style.left=window.innerWidth/2+320+30+"px";
-                BColorSelector.style.left=window.innerWidth/2+520+30+"px";
+                colorSelector.style.left=window.innerWidth/2+420+30+"px";
                 labelW.style.left=window.innerWidth/2+320+30+"px";
                 labelB.style.left=window.innerWidth/2-320-330+"px";
                 
@@ -720,16 +677,10 @@
                 0 0 42px #0fa, 
                 0 0 82px #0fa
                 `;
-            WColorSelector.addEventListener("change", function (e) 
+            colorSelector.addEventListener("change", function (e) 
             {
-                whiteSquares=e.target.value;
-                window.requestAnimationFrame(painter);
+                setTheme(createTheme(HexToRGB(e.target.value)));
                 
-            });
-            BColorSelector.addEventListener("change", function (e) 
-            {
-                blackSquares=e.target.value;
-                window.requestAnimationFrame(painter);
             });
             chessBoard.style.left="0px";
             Pieces.forEach(function(dog)
@@ -745,10 +696,8 @@
                 }
             });
             boardOffsetX=0;
-            WColorSelector.style.left="520px";
-            BColorSelector.style.left="20px";
-            WColorSelector.style.top="760px";
-            BColorSelector.style.top="760px";
+            colorSelector.style.left=-50+window.innerWidth/2+"px";
+            colorSelector.style.top="760px";
             labelW.style.left="330px";
             labelB.style.left="10px";
             labelW.style.top="680px";
@@ -874,12 +823,9 @@
             whiteSquares=theme.ws;
             blackSquares=theme.bs;
             document.querySelector('meta[name="theme-color"]').setAttribute('content', theme.chromeTheme);
-            WColorSelector.style.backgroundColor=theme.elems;
-            BColorSelector.style.backgroundColor=theme.elems;
+            colorSelector.style.backgroundColor=theme.elems;
             labelW.style.backgroundColor=theme.elems;
             labelB.style.backgroundColor=theme.elems;
-            WColorSelector.value=whiteSquares;
-            BColorSelector.value=blackSquares;
             let sty=document.body.style;
             sty.background=`linear-gradient(180deg,${theme.grad1},${theme.grad2},${theme.grad3})`;
             sty.backgroundRepeat="no-repeat"
@@ -887,33 +833,40 @@
             chessBoard.refresh();
             activeShadow="#d1dfe5"
         }
-        let redtheme=
+        
+        function createTheme({red,green,blue,alfa})
         {
-            "bs":"#850001",
-            "ws":"#ffa1a1",
-            "grad1":"#000000",
-            "grad2":"#390404",
-            "grad3":"#610000",
-            "elems":"#2d0101"
-        };
-        let bluetheme=
+            var bs=getPercentColor(red,green,blue,60);
+            var ws=getPercentColor(red,green,blue,140);
+            var grad1=getPercentColor(red,green,blue,5);
+            var grad2=getPercentColor(red,green,blue,40);
+            var grad3=getPercentColor(red,green,blue,100);//original color
+            var elems=getPercentColor(red,green,blue,20);
+            return{
+                bs,ws,grad1,grad2,grad3,elems
+            };
+        }
+        function getPercentColor(red,green,blue,percent)
         {
-            "bs":"#096162",
-            "ws":"#25C0cB",
-            "grad1":"#000000",
-            "grad2":"rgb(70 149 144)",
-            "grad3":"rgb(36 231 200)",
-            "elems":"#000000"
-        };
-        setTheme(bluetheme);
-        WColorSelector.addEventListener("click",function()
+            var red=red*percent/100;
+            red=red>255?255:red;
+            var green=green*percent/100;
+            green=green>255?255:green;
+            var blue=blue*percent/100;
+            blue=blue>255?255:blue;
+            return `rgb(${red} ${green} ${blue})`;
+        }
+        setTheme(createTheme({red:57,green:155,blue:162}));
+
+        colorSelector.value="#399BA2";
+        function HexToRGB(hexcol)
         {
-            setTheme(redtheme);
-        })
-        BColorSelector.addEventListener("click",function()
-        {
-            setTheme(bluetheme);
-        })
+            return{
+                red:parseInt(hexcol.substring(1,3),16),
+                green:parseInt(hexcol.substring(3,5),16),
+                blue:parseInt(hexcol.substring(5,7),16)
+            }
+        }
     </script>
 </body>
 </html>
