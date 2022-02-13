@@ -57,7 +57,7 @@
             position: absolute;
             width:100px;
             height:70px;
-            border-radius: 30px;
+            border-radius: 100px;
             
             background-color: #000000;
             filter:drop-shadow(0px 0px 30px rgb(4, 4, 4));
@@ -70,11 +70,7 @@
             font-family: defFont;
             
         }
-        label:hover
-        {
-            border-radius: 120px;
-            background-color: #aaa8a8 !important;
-        }
+        
         .draggable
         {
             position:absolute;
@@ -125,6 +121,7 @@
         var inactiveShadow="black";
         const mode=window.innerWidth/window.innerHeight>1;
         var labelInactive="black";
+        var labelActive="white"
         if(mode)
         {
             
@@ -145,7 +142,7 @@
                 turn=!turn;
                 if(turn)
                 {
-                    labelW.style.color="white";
+                    labelW.style.color=labelActive;
                     labelB.style.color=labelInactive;
                    
                     board.style.transform="rotate(0deg)";
@@ -166,7 +163,7 @@
                 }
                 else
                 {
-                    labelB.style.color="white";
+                    labelB.style.color=labelActive;
                     labelW.style.color=labelInactive;
                     
                     board.style.transform="rotate(180deg)";
@@ -201,14 +198,14 @@
                 turn=!turn;
                 if(turn)
                 {
-                    labelW.style.color="white";
+                    labelW.style.color=labelActive;
                     labelB.style.color=labelInactive;
                     for(let i=0;i<Pieces.length;i++)
                     Pieces[i].style.transform="rotate(0deg)";
                 }
                 else
                 {
-                    labelB.style.color="white";
+                    labelB.style.color=labelActive;
                     labelW.style.color=labelInactive;
                     for(let i=0;i<Pieces.length;i++)
                     Pieces[i].style.transform="rotate(180deg)";
@@ -491,7 +488,7 @@
         labelW.style.top="100px";
         labelW.style.width="300px";
         labelW.innerHTML="White";
-        labelW.style.color="white";
+        labelW.style.color="black";
 
         var labelB=document.createElement("label");
         labelB.style.left=window.innerWidth/2-320-330+"px";
@@ -543,7 +540,7 @@
                 go.defaulttp="width,height,left,top,filter";
             }
             addDraggability(go);
-            go.style.filter=`drop-shadow(${(go.homeX-320)/24}px ${(go.homeY-320)/24}px 10px ${activeShadow})`;
+            go.style.filter=`drop-shadow(0 0 10px ${activeShadow})`;
             Pieces.push(go);
         }
         
@@ -696,7 +693,7 @@
                 }
             });
             boardOffsetX=0;
-            colorSelector.style.left=-50+window.innerWidth/2+"px";
+            colorSelector.style.left="270px";
             colorSelector.style.top="760px";
             labelW.style.left="330px";
             labelB.style.left="10px";
@@ -832,21 +829,29 @@
             sty.backgroundAttachment="fixed";
             chessBoard.refresh();
             activeShadow="#d1dfe5"
+            if(theme.baseColor.red+theme.baseColor.red+theme.baseColor.red>320)
+            {
+                labelActive=getPercentColor(theme.baseColor,7);
+            }
+            else
+            {
+                labelActive="white";
+            }
         }
         
         function createTheme({red,green,blue,alfa})
         {
-            var bs=getPercentColor(red,green,blue,60);
-            var ws=getPercentColor(red,green,blue,140);
-            var grad1=getPercentColor(red,green,blue,5);
-            var grad2=getPercentColor(red,green,blue,40);
-            var grad3=getPercentColor(red,green,blue,100);//original color
-            var elems=getPercentColor(red,green,blue,20);
+            var bs=getPercentColor({red,green,blue},60);
+            var ws=getPercentColor({red,green,blue},140);
+            var grad1=getPercentColor({red,green,blue},5);
+            var grad2=getPercentColor({red,green,blue},40);
+            var grad3=getPercentColor({red,green,blue},100);//original color
+            var elems=getPercentColor({red,green,blue},100);
             return{
-                bs,ws,grad1,grad2,grad3,elems
+                bs,ws,grad1,grad2,grad3,elems,baseColor:{red,green,blue,alfa}
             };
         }
-        function getPercentColor(red,green,blue,percent)
+        function getPercentColor({red,green,blue},percent)
         {
             var red=red*percent/100;
             red=red>255?255:red;
