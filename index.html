@@ -28,7 +28,7 @@
         }
         *
         {
-            
+            border: none;
             transform-origin: center;
         }
         canvas
@@ -203,48 +203,7 @@
             BOARD[k].fill(null);
         }
         
-        const tentativeMove=
-        {
-            x:0,
-            y:0,
-            listen:false,
-            kill:false,
-            prev:null,
-            prevCol:null,
-            color:"#2ae7a2",
-            setXY:function(x,y)
-            {
-                if(!this.listen)
-                return;
-                if(this.x==x  &&  this.y==y)
-                return;
-                this.x=x;
-                this.y=y;
-                if(this.prev)
-                this.prev.revert()
-                this.prev=sqs[y][x];
-                if(BOARD[x][y]==null)
-                {
-                    this.color="#2ae7a2";
-                }
-                else
-                {
-                    this.color="red";
-                }
-                this.prev.style.backgroundColor=this.color;
-            },
-            setListen:function(yes)
-            {
-                this.listen=yes;
-                if(!yes)
-                {
-                    this.prev.revert();
-                }
-            }
-        }
-
         
-       
         var board=document.createElement("div");
         var chessBoard=document.createElement("div");
         chessBoard.id="chessBoard";
@@ -279,6 +238,15 @@
             }
             sqs.push(arr);
         }
+        let blood=document.createElement("img");
+        
+        blood.style=
+        `position:absolute;
+        z-index=2;
+        width:80px;
+        height:80px;
+        `;
+        chessBoard.append(blood);
         chessBoard.refresh=function()
         {
             sqs.forEach(function(k,i)
@@ -326,6 +294,7 @@
         colorSelector.id="colorSelector";
         colorSelector.type="color";
         colorSelector.style.left=window.innerWidth/2+420+30+"px";
+        colorSelector.style.top=window.innerHeight-120+"px";
         colorSelector.value=whiteSquares;
         colorSelector.innerHTML="Color";
         board.appendChild(colorSelector);
@@ -399,6 +368,7 @@
                 chessBoard.style.left=window.innerWidth/2-320+"px";
                 boardOffsetX=window.innerWidth/2-320;
                 colorSelector.style.left=window.innerWidth/2+420+30+"px";
+                colorSelector.style.top=window.innerHeight-120+"px";
                 labelW.style.left=window.innerWidth/2+320+30+"px";
                 labelB.style.left=window.innerWidth/2-320-330+"px";
                 
@@ -621,6 +591,45 @@
         switchTurn();
     </script>
     <script id="driver code">
+        const tentativeMove=
+        {
+            x:0,
+            y:0,
+            listen:false,
+            kill:false,
+            prev:null,
+            prevCol:null,
+            color:"#2ae7a2",
+            setXY:function(x,y)
+            {
+                if(!this.listen)
+                return;
+                if(this.x==x  &&  this.y==y)
+                return;
+                this.x=x;
+                this.y=y;
+                if(this.prev)
+                this.prev.revert()
+                this.prev=sqs[y][x];
+                if(BOARD[x][y]==null)
+                {
+                    this.color="#2ae7a2";
+                }
+                else
+                {
+                    this.color="red";
+                }
+                this.prev.style.backgroundColor=this.color;
+            },
+            setListen:function(yes)
+            {
+                this.listen=yes;
+                if(!yes)
+                {
+                    this.prev.revert();
+                }
+            }
+        }
         var addDraggability=function(div)
         {
             var x,y;
@@ -661,7 +670,7 @@
                 if(turn!=div.team)
                 return;
                 var xy=getXY(e,false);
-                div.style.zIndex="2";
+                div.style.zIndex="3";
                 x=Number(xy.x-div.getBoundingClientRect().left);
                 y=Number(xy.y-div.getBoundingClientRect().top);
                 if(mode  &&  !turn)
@@ -720,9 +729,13 @@
                         if(!(already.team==div.team))
                         {
                             //kill what is already there
+                            let hx=already.homeX;
+                            let hy=already.homeY;
                             allotDeadLocation(already);
                             already.alive=false;
-                            
+                            blood.src="blood"+ ( Math.random()<0.5?"1":"1")  +".png";//add another image for blood
+                            blood.style.left=hx+"px";
+                            blood.style.top=hy+"px";
                             already.onmouseenter=null;
                             already.onmouseleave=null;
                             switchTurn();
@@ -829,7 +842,7 @@
             var ws=getPercentColor({red,green,blue},140);
             var grad1=getPercentColor({red,green,blue},5);
             var grad2=getPercentColor({red,green,blue},40);
-            var grad3=getPercentColor({red,green,blue},100);//original color
+            var grad3=getPercentColor({red,green,blue},100);
             var elems=getPercentColor({red,green,blue},100);
             return{
                 bs,ws,grad1,grad2,grad3,elems,baseColor:{red,green,blue,alfa}
