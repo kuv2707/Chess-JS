@@ -162,7 +162,7 @@
                     if(!Pieces[i].alive)
                     continue;
                     Pieces[i].style.transform=`rotate(${deg}deg)`;
-                    if(Pieces[i].team!=true)
+                    if(Pieces[i].team!=turn)
                     Pieces[i].style.filter=`drop-shadow(0 0 10px ${inactiveShadow})`;
                     else
                     Pieces[i].style.filter=`drop-shadow(0 0 10px ${activeShadow})`;
@@ -213,7 +213,7 @@
             let arr=new Array();
             for(let j=0;j<8;j++)
             {
-                let sq=document.createElement("button");
+                let sq=document.createElement("div");
                 sq.className="boardSquares";
                 sq.id="square"+i+"_"+j;
                 if((i+j)%2==0)
@@ -246,7 +246,7 @@
         width:80px;
         height:80px;
         `;
-        chessBoard.append(blood);
+        
         chessBoard.refresh=function()
         {
             sqs.forEach(function(k,i)
@@ -588,7 +588,7 @@
         labelB.addEventListener("click",playstart);
         labelW.addEventListener("touchstart",playend);
         labelW.addEventListener("click",playend);
-        switchTurn();
+        
     </script>
     <script id="driver code">
         const tentativeMove=
@@ -736,6 +736,8 @@
                             blood.src="blood"+ ( Math.random()<0.5?"1":"1")  +".png";//add another image for blood
                             blood.style.left=hx+"px";
                             blood.style.top=hy+"px";
+                            blood.remove();
+                            sqs[vy/80][vx/80].append(blood);
                             already.onmouseenter=null;
                             already.onmouseleave=null;
                             switchTurn();
@@ -806,9 +808,11 @@
                 go.defaulttp="width,height,left,top,filter";
             }
             addDraggability(go);
-            go.style.filter=`drop-shadow(0 0 10px ${activeShadow})`;
+            //go.style.filter=`drop-shadow(0 0 10px ${activeShadow})`;
             Pieces.push(go);
+
         }
+        switchTurn();
     </script>
     <script id="theme">
         const setTheme=function(theme)
