@@ -22,7 +22,7 @@
             min-height:100%;
             width:100%;
             overflow: hidden;
-            
+            transition-property: background;
             -webkit-user-select: none;
             user-select: none;
         }
@@ -30,6 +30,7 @@
         {
             border: none;
             transform-origin: center;
+            
         }
         canvas
         {
@@ -104,6 +105,7 @@
             height:80px;
             border-radius: 0px;
             border:none;
+            transition-duration: 0.5s;
         }
         #container
         {
@@ -214,6 +216,8 @@
             for(let j=0;j<8;j++)
             {
                 let sq=document.createElement("div");
+                if(mode)
+                sq.style.transitionProperty="background-color";
                 sq.className="boardSquares";
                 sq.id="square"+i+"_"+j;
                 if((i+j)%2==0)
@@ -733,7 +737,7 @@
                             let hy=already.homeY;
                             allotDeadLocation(already);
                             already.alive=false;
-                            blood.src="blood"+ ( Math.random()<0.5?"1":"1")  +".png";//add another image for blood
+                            blood.src="blood"+ ( Math.random()<0.5?"1":"2")  +".png";//add another image for blood
                             blood.style.left=hx+"px";
                             blood.style.top=hy+"px";
                             blood.remove();
