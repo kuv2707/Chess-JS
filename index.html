@@ -9,7 +9,7 @@
 </head>
 
 <body >
-    <style>
+    <style id="cssstylesheet">
         @font-face 
         {
             font-family: defFont;
@@ -218,6 +218,8 @@
                 let sq=document.createElement("div");
                 if(mode)
                 sq.style.transitionProperty="background-color";
+                else
+                sq.style.transitionProperty="none";
                 sq.className="boardSquares";
                 sq.id="square"+i+"_"+j;
                 if((i+j)%2==0)
@@ -243,7 +245,10 @@
             sqs.push(arr);
         }
         let blood=document.createElement("img");
-        
+        let img1=new Image();
+        img1.src="blood1.png";
+        let img2=new Image();
+        img2.src="blood2.png";
         blood.style=
         `position:absolute;
         z-index=2;
@@ -737,11 +742,13 @@
                             let hy=already.homeY;
                             allotDeadLocation(already);
                             already.alive=false;
-                            blood.src="blood"+ ( Math.random()<0.5?"1":"2")  +".png";//add another image for blood
+                            
+                            blood.src=(Math.random()<0.5?img1:img2).src;
                             blood.style.left=hx+"px";
                             blood.style.top=hy+"px";
                             blood.remove();
                             sqs[vy/80][vx/80].append(blood);
+
                             already.onmouseenter=null;
                             already.onmouseleave=null;
                             switchTurn();
@@ -812,7 +819,6 @@
                 go.defaulttp="width,height,left,top,filter";
             }
             addDraggability(go);
-            //go.style.filter=`drop-shadow(0 0 10px ${activeShadow})`;
             Pieces.push(go);
 
         }
