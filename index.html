@@ -608,7 +608,9 @@
             kill:false,
             prev:null,
             prevCol:null,
-            color:"#2ae7a2",
+            color:null,
+            greenCol:"#2ae7a2",
+            redCol:"red",
             setXY:function(x,y)
             {
                 if(!this.listen)
@@ -622,11 +624,11 @@
                 this.prev=sqs[y][x];
                 if(BOARD[x][y]==null)
                 {
-                    this.color="#2ae7a2";
+                    this.color=this.greenCol;
                 }
                 else
                 {
-                    this.color="red";
+                    this.color=this.redCol;
                 }
                 this.prev.style.backgroundColor=this.color;
             },
@@ -827,7 +829,7 @@
     <script id="theme">
         const setTheme=function(theme)
         {
-    theme.chromeTheme=theme.bs;
+    theme.chromeTheme=theme.elems;
             whiteSquares=theme.ws;
             blackSquares=theme.bs;
             document.querySelector('meta[name="theme-color"]').setAttribute('content', theme.chromeTheme);
@@ -839,8 +841,8 @@
             sty.backgroundRepeat="no-repeat"
             sty.backgroundAttachment="fixed";
             chessBoard.refresh();
-            activeShadow="#d1dfe5"
-            if(theme.baseColor.red+theme.baseColor.red+theme.baseColor.red>320)
+            activeShadow="#d1dfe5";
+            if(theme.baseColor.red+theme.baseColor.green+theme.baseColor.blue>320)
             {
                 labelActive=getPercentColor(theme.baseColor,7);
             }
@@ -848,6 +850,7 @@
             {
                 labelActive="white";
             }
+            tentativeMove.greenCol=theme.moveHighlight;
         }
         
         function createTheme({red,green,blue,alfa})
@@ -858,8 +861,9 @@
             var grad2=getPercentColor({red,green,blue},40);
             var grad3=getPercentColor({red,green,blue},100);
             var elems=getPercentColor({red,green,blue},100);
+            var moveHighlight=getPercentColor({red:green,green:blue,blue:red},180);
             return{
-                bs,ws,grad1,grad2,grad3,elems,baseColor:{red,green,blue,alfa}
+                bs,ws,grad1,grad2,grad3,elems,baseColor:{red,green,blue,alfa},moveHighlight
             };
         }
         function getPercentColor({red,green,blue},percent)
@@ -872,9 +876,7 @@
             blue=blue>255?255:blue;
             return `rgb(${red} ${green} ${blue})`;
         }
-        setTheme(createTheme({red:57,green:155,blue:162}));
-
-        colorSelector.value="#399BA2";
+        
         function HexToRGB(hexcol)
         {
             return{
@@ -883,6 +885,11 @@
                 blue:parseInt(hexcol.substring(5,7),16)
             }
         }
+        var defaultTheme=createTheme({red:57,green:155,blue:162});
+        //defaultTheme.moveHighlight=tentativeMove.greenCol;
+        setTheme(defaultTheme);
+
+        colorSelector.value="#399BA2";
     </script>
 </body>
 </html>
