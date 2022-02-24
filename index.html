@@ -870,7 +870,7 @@
             tentativeMove.greenCol=theme.moveHighlight;
         }
         
-        function createTheme({red,green,blue,alfa})
+        function createTheme({red,green,blue})
         {
             var bs=getPercentColor({red,green,blue},60);
             var ws=getPercentColor({red,green,blue},140);
@@ -880,7 +880,7 @@
             var elems=getPercentColor({red,green,blue},100);
             var moveHighlight=getPercentColor({red:green,green:blue,blue:red},180);
             return{
-                bs,ws,grad1,grad2,grad3,elems,baseColor:{red,green,blue,alfa},moveHighlight
+                bs,ws,grad1,grad2,grad3,elems,baseColor:{red,green,blue},moveHighlight
             };
         }
         function getPercentColor({red,green,blue},percent)
@@ -931,18 +931,18 @@
             prevAnim=setInterval(function()
             {
                 circle.setAttribute("r",640*Math.sin(k));
-                k+=0.008;
+                circle.setAttribute("fill-opacity",((Math.PI/2)-k*k)/(Math.PI/2));
+                k+=0.012;
                 if(k>Math.PI/2)
                 {
-                    circle.setAttribute("r","0");
-                    clearInterval(k);
                     svgExplosion.style.width="0px";
                     svgExplosion.style.height="0px";
+                    circle.setAttribute("r","0");
+                    clearInterval(prevAnim);
                 }
                 
             },8);
         }
-        
         
     </script>
      
