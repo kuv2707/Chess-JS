@@ -111,7 +111,21 @@
         {
             transition-duration: 0s;
         }
+        #Shockwave
+        {
+            position:absolute;
+            z-index: 4;
+            left:0px;
+            top:0px;
+        
+        }
     </style>
+    <div id="container">
+        <svg height="0" width="0" id="Shockwave">
+            <circle id="shock" cx="0" cy="0" r="0" stroke="none" stroke-width="3" fill-opacity="0.5" fill="rgba(144,56,98,255)" />
+            Sorry, your browser does not support inline SVG.  
+        </svg>
+    </div>
     <script id="GlobalVariables">
         var turn=false;
         var blackSquares="#6E1111";
@@ -121,6 +135,7 @@
         const Pieces=new Array();
         var activeShadow="#d1dfe5";
         var inactiveShadow="black";
+        var Theme;
         /*
 
             mode should represent whether the device is capable of handling many animations
@@ -155,7 +170,7 @@
                 labelW.style.color=labelActive;
                 labelB.style.color=labelInactive;
                 
-                board.style.transform=`rotate(${deg}deg)`;
+                table.style.transform=`rotate(${deg}deg)`;
                 labelB.style.transform=`rotate(${deg}deg)`;
                 labelW.style.transform=`rotate(${deg}deg)`;
                 for(let i=0;i<Pieces.length;i++)
@@ -206,7 +221,7 @@
         }
         
         
-        var board=document.createElement("div");
+        var table=document.querySelector("#container");
         var chessBoard=document.createElement("div");
         chessBoard.id="chessBoard";
         let sqs=new Array();
@@ -281,14 +296,14 @@
         chessBoard.width=640;
         chessBoard.height=640;
         chessBoard.style.left=window.innerWidth/2-320+"px";
-        board.appendChild(chessBoard);
+        table.appendChild(chessBoard);
         
         
         
-        board.className="#container";
+        
         if(mode)
         {
-            board.style=`
+            table.style=`
             width:100vw;
             height:100vh;
             position:relative;
@@ -297,7 +312,7 @@
             transition-property: transform;
             `;
         }
-        document.body.appendChild(board);
+        document.body.appendChild(table);
 
         
         var colorSelector=document.createElement("input");
@@ -307,7 +322,7 @@
         colorSelector.style.top=window.innerHeight-120+"px";
         colorSelector.value=whiteSquares;
         colorSelector.innerHTML="Color";
-        board.appendChild(colorSelector);
+        table.appendChild(colorSelector);
         
         
         var labelW=document.createElement("label");
@@ -325,8 +340,8 @@
 
         
         
-        board.appendChild(labelW);
-        board.appendChild(labelB);
+        table.appendChild(labelW);
+        table.appendChild(labelB);
         
         
         
@@ -745,7 +760,7 @@
                             let hy=already.homeY;
                             allotDeadLocation(already);
                             already.alive=false;
-                            
+                            animateDeathExplosion(xy.x,xy.y);
                             blood.src=(Math.random()<0.5?img1:img2).src;
                             blood.style.left=hx+"px";
                             blood.style.top=hy+"px";
@@ -792,7 +807,7 @@
             go.className="draggable";
             go.src="Fantasy/"+face[i]+".png";
             go.alt=face[i];
-            board.appendChild(go);
+            table.appendChild(go);
             go.homeX=cx;
             go.homeY=cy;
             go.alive=true;
@@ -830,6 +845,7 @@
     <script id="theme">
         const setTheme=function(theme)
         {
+            Theme=theme;
             theme.chromeTheme=theme.elems;
             whiteSquares=theme.ws;
             blackSquares=theme.bs;
@@ -892,5 +908,43 @@
 
         colorSelector.value="#399BA2";
     </script>
+    <script id="additional animations and dramas">
+        let svgExplosion=document.querySelector("#Shockwave");
+        let circle=document.querySelector("#shock");
+        
+        let prevAnim;
+        const animateDeathExplosion=function(x,y)
+        {
+            clearInterval(prevAnim);
+            prevAnim=0;
+            let teamColor;
+            if(turn)
+            teamColor=Theme.bs;
+            else
+            teamColor=Theme.ws;
+            svgExplosion.style.width=window.innerWidth+"px";
+            svgExplosion.style.height=window.innerHeight+"px";
+            circle.setAttribute("cx",x);
+            circle.setAttribute("cy",y);
+            circle.setAttribute("fill",teamColor);
+            let k=0;
+            prevAnim=setInterval(function()
+            {
+                circle.setAttribute("r",640*Math.sin(k));
+                k+=0.008;
+                if(k>Math.PI/2)
+                {
+                    circle.setAttribute("r","0");
+                    clearInterval(k);
+                    svgExplosion.style.width="0px";
+                    svgExplosion.style.height="0px";
+                }
+                
+            },8);
+        }
+        
+        
+    </script>
+     
 </body>
 </html>
