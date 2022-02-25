@@ -922,6 +922,7 @@
             teamColor=Theme.bs;
             else
             teamColor=Theme.ws;
+            teamColor="Red";
             svgExplosion.style.width=window.innerWidth+"px";
             svgExplosion.style.height=window.innerHeight+"px";
             circle.setAttribute("cx",x);
@@ -931,8 +932,8 @@
             prevAnim=setInterval(function()
             {
                 circle.setAttribute("r",640*Math.sin(k));
-                circle.setAttribute("fill-opacity",((Math.PI/2)-k*k)/(Math.PI/2));
-                k+=0.012;
+                circle.setAttribute("fill-opacity",((Math.PI/2)-k*k)/(Math.PI));
+                k+=0.02;
                 if(k>Math.PI/2)
                 {
                     svgExplosion.style.width="0px";
