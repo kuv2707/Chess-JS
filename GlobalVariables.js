@@ -8,8 +8,7 @@ var activeShadow="#d1dfe5";
 var inactiveShadow="black";
 var Theme;
 /*
-
-    mode should represent whether the device is capable of handling many animations
+   mode should represent whether the device is capable of handling many animations
 */
 const mode=window.innerWidth/window.innerHeight>1;
 var labelInactive="black";

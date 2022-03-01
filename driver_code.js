@@ -1,44 +1,4 @@
-const tentativeMove=
-{
-    x:0,
-    y:0,
-    listen:false,
-    kill:false,
-    prev:null,
-    prevCol:null,
-    color:null,
-    greenCol:"#2ae7a2",
-    redCol:"red",
-    setXY:function(x,y)
-    {
-        if(!this.listen)
-        return;
-        if(this.x==x  &&  this.y==y)
-        return;
-        this.x=x;
-        this.y=y;
-        if(this.prev)
-        this.prev.revert()
-        this.prev=sqs[y][x];
-        if(BOARD[x][y]==null)
-        {
-            this.color=this.greenCol;
-        }
-        else
-        {
-            this.color=this.redCol;
-        }
-        this.prev.style.backgroundColor=this.color;
-    },
-    setListen:function(yes)
-    {
-        this.listen=yes;
-        if(!yes)
-        {
-            this.prev.revert();
-        }
-    }
-}
+
 var addDraggability=function(div)
 {
     var x,y;
@@ -47,14 +7,12 @@ var addDraggability=function(div)
     {
         if(turn!=div.team)
         return;
-        div.style.width="85px";
-        div.style.height="85px";
+        div.scale(9/8);
         div.style.filter=`drop-shadow(0 0 20px ${activeShadow})`;
     };
     div.onmouseleave=function()
     {
-        div.style.width="80px";
-        div.style.height="80px";
+        div.scale(1);
         div.style.filter=`drop-shadow(0 0 10px ${turn==div.team&&mode==true?activeShadow:inactiveShadow})`;
     };
     div.drag=function(e)
@@ -79,7 +37,7 @@ var addDraggability=function(div)
         if(turn!=div.team)
         return;
         var xy=getXY(e,false);
-        div.style.zIndex="3";
+        div.style.zIndex="4";
         x=Number(xy.x-div.getBoundingClientRect().left);
         y=Number(xy.y-div.getBoundingClientRect().top);
         if(mode  &&  !turn)
@@ -93,8 +51,7 @@ var addDraggability=function(div)
             document.addEventListener("mousemove",div.drag)
             document.addEventListener("touchmove",div.drag)
         }
-        div.style.width="100px";
-        div.style.height="100px";
+        div.scale(100/80);
         document.addEventListener("mouseup",docmu)
         document.addEventListener("touchend",docmu)
         tentativeMove.setListen(true);
@@ -106,10 +63,9 @@ var addDraggability=function(div)
         if(!div.alive)
         return;
         var xy=getXY(e,true);
-        setTimeout(()=>div.style.zIndex="1",850);
+        setTimeout(()=>div.style.zIndex="3",850);
         
-        div.style.width=80+"px";
-        div.style.height=80+"px";
+        div.scale(1);
         div.style.transitionProperty=div.defaulttp;
         document.removeEventListener("mousemove",div.drag)
         document.removeEventListener("touchmove",div.drag)
@@ -208,6 +164,7 @@ for(let i=0;i<face.length;i++)
     }
     go.style.left=go.homeX+boardOffsetX+"px";
     go.style.top=go.homeY+boardOffsetY+"px";
+    go.style.zIndex="3";
     if(mode)
     {
         go.style.transitionProperty="width,height,left,top,filter,transform";
@@ -217,6 +174,34 @@ for(let i=0;i<face.length;i++)
     {
         go.style.transitionProperty="width,height,left,top,filter";
         go.defaulttp="width,height,left,top,filter";
+    }
+    go.scaleVal=1;
+    go.rotateVal=0;
+    go.translateCoords={x:0,y:0};
+    go.updateAppearance=function()
+    {
+        this.style.transform=
+        `
+        rotate(${this.rotateVal}deg)
+        scale(${this.scaleVal})
+        translate(${this.translateCoords.x}px,${this.translateCoords.y}px)
+        `;
+    }
+    go.rotate=function(value)
+    {
+        this.rotateVal=value;
+        this.updateAppearance();
+    }
+    go.scale=function(value)
+    {
+        this.scaleVal=value;
+        this.updateAppearance();
+    }
+    go.move=function(xx,yy)
+    {
+        this.translateCoords.x=xx;
+        this.translateCoords.y=yy;
+        this.updateAppearance();
     }
     addDraggability(go);
     Pieces.push(go);

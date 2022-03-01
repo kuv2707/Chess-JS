@@ -1,0 +1,5 @@
+z indices:
+2: selected piece
+1: pieces
+0: buttons and labels with event listeners
+-1: shockwave

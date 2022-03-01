@@ -22,7 +22,7 @@ if(mode)
             
             if(!Pieces[i].alive)
             continue;
-            Pieces[i].style.transform=`rotate(${deg}deg)`;
+            Pieces[i].rotate(deg);
             if(Pieces[i].team!=turn)
             Pieces[i].style.filter=`drop-shadow(0 0 10px ${inactiveShadow})`;
             else
@@ -46,14 +46,14 @@ else
             labelW.style.color=labelActive;
             labelB.style.color=labelInactive;
             for(let i=0;i<Pieces.length;i++)
-            Pieces[i].style.transform="rotate(0deg)";
+            Pieces[i].rotate(0);
         }
         else
         {
             labelB.style.color=labelActive;
             labelW.style.color=labelInactive;
             for(let i=0;i<Pieces.length;i++)
-            Pieces[i].style.transform="rotate(180deg)";
+            Pieces[i].rotate(180);
         }
     }
 } 
@@ -186,3 +186,45 @@ labelB.innerHTML="Black";
 
 table.appendChild(labelW);
 table.appendChild(labelB);
+
+const tentativeMove=
+{
+    x:0,
+    y:0,
+    listen:false,
+    kill:false,
+    prev:null,
+    prevCol:null,
+    color:null,
+    greenCol:"#2ae7a2",
+    redCol:"red",
+    setXY:function(x,y)
+    {
+        if(!this.listen)
+        return;
+        if(this.x==x  &&  this.y==y)
+        return;
+        this.x=x;
+        this.y=y;
+        if(this.prev)
+        this.prev.revert()
+        this.prev=sqs[y][x];
+        if(BOARD[x][y]==null)
+        {
+            this.color=this.greenCol;
+        }
+        else
+        {
+            this.color=this.redCol;
+        }
+        this.prev.style.backgroundColor=this.color;
+    },
+    setListen:function(yes)
+    {
+        this.listen=yes;
+        if(!yes)
+        {
+            this.prev.revert();
+        }
+    }
+}

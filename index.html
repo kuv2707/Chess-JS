@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0000AA">
     <link rel="stylesheet" href="styles.css">
+    
     <title>Chess dev</title>
 </head>
 <body >
@@ -15,12 +16,20 @@
             Shockwave emission is unsupported on this device  
         </svg>
     </div>
+    <script>
+        window.onload=function()
+        {
+            document.querySelector("#container").style.opacity="1";
+            console.log("Start")
+        }
+    </script>
     <script src="additionalAnimsAndDramas.js"></script>
     <script src="GlobalVariables.js"></script>
     <script src="GUI.js"></script>
     <script src="landsc_portrait.js"></script>
-    <script src="driver_code.js"></script>
     <script src="theme.js"></script>
+    <script src="driver_code.js"></script>
+    
     
     <noscript>Javascript is required to run the game!</noscript>
 </body>

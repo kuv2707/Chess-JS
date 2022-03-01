@@ -1,4 +1,7 @@
 let svgExplosion=document.querySelector("#Shockwave_canvas");
+svgExplosion.style.width="100%";
+    svgExplosion.style.height="100%";
+    svgExplosion.style.zIndex="1";
 let circle=document.querySelector("#shock");
 
 let prevAnim;
@@ -12,8 +15,7 @@ const animateDeathExplosion=function(x,y)
     // else
     // teamColor=Theme.ws;
     teamColor="Red";
-    svgExplosion.style.width=window.innerWidth+"px";
-    svgExplosion.style.height=window.innerHeight+"px";
+    //svgExplosion.style.zIndex="3";
     circle.setAttribute("cx",x);
     circle.setAttribute("cy",y);
     circle.setAttribute("fill",teamColor);
@@ -25,8 +27,7 @@ const animateDeathExplosion=function(x,y)
         k+=0.02;
         if(k>Math.PI/2)
         {
-            svgExplosion.style.width="0px";
-            svgExplosion.style.height="0px";
+            //svgExplosion.style.zIndex="-2";
             circle.setAttribute("r","0");
             clearInterval(prevAnim);
         }
