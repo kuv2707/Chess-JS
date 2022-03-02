@@ -53,7 +53,7 @@ label
     text-align: center;
     font-size: 50px;
     transition-duration: 0.8s;
-    transition-property: color,left,border-radius,background-color;
+    transition-property: color,left,background-color;
     
 }
 
