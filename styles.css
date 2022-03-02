@@ -16,7 +16,6 @@ html,body
 }
 *
 {
-    transform-origin: center;
     font-family: defFont;
 }
 canvas

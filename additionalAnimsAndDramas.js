@@ -1,6 +1,6 @@
 let svgExplosion=document.querySelector("#Shockwave_canvas");
-svgExplosion.style.width="100%";
-    svgExplosion.style.height="100%";
+svgExplosion.style.width=window.innerWidth;
+    svgExplosion.style.height=window.innerHeight;
     svgExplosion.style.zIndex="1";
 let circle=document.querySelector("#shock");
 
