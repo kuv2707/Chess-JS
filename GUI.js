@@ -162,11 +162,9 @@ document.body.appendChild(table);
 var colorSelector=document.createElement("input");
 colorSelector.id="colorSelector";
 colorSelector.type="color";
-colorSelector.style.left=window.innerWidth/2+420+30+"px";
-colorSelector.style.top=window.innerHeight-120+"px";
 colorSelector.value=whiteSquares;
 colorSelector.innerHTML="Color";
-table.appendChild(colorSelector);
+sidebar.appendChild(colorSelector);
 
 
 var labelW=document.createElement("label");

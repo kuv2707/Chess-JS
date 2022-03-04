@@ -25,19 +25,18 @@ canvas
 }
 #colorSelector
 {
-    position: absolute;
-    width:100px;
-    height:70px;
-    border-radius: 30px;
+    width:200px;
+    height:50px;
+    border-radius: 10px;
     background-color: #5ab9c1;
     border:none;
-    filter:drop-shadow(0px 0px 30px black);
+    filter:drop-shadow(0px 0px 20px black);
     text-align: center;
     font-size: 50px;
     top:20px;
     transition-duration: 0.8s;
     transition-property: left;
-    z-index: 2;
+    transform:translateX(20px) translateY(30px);
 }
 label
 {
@@ -103,5 +102,35 @@ label
     z-index: 4;
     left:0px;
     top:0px;
+    width:100%;
+    height:100%;
+}
 
+#sideBarDiv
+{
+    width:0;
+    height:100%;
+    position: fixed;
+    left:0;
+    top:0;
+    background-color: black;
+    overflow-x: hidden;
+    transition-property: width;
+    transition-duration: 0.8s;
+    z-index: 6;
+    border-radius: 20px;
+}
+#showHideBtn
+{
+    position:fixed;
+    width:25px;
+    height:25px;
+    left:0;
+    top:0;
+    background-color: rgba(0,0,0,0);
+    border-radius: 10px;
+    z-index: 6;
+    color:white;
+    font-size: 20px;
+    border:none;
 }

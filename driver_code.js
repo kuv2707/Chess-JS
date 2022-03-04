@@ -57,7 +57,7 @@ var addDraggability=function(div)
         tentativeMove.setListen(true);
     };
     div.addEventListener("mousedown",md)
-    div.addEventListener("touchstart",md)
+    div.addEventListener("touchstart",md,{passive:true})
     let mu=function(e)
     {
         if(!div.alive)

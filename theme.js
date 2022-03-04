@@ -8,6 +8,7 @@ const setTheme=function(theme)
     colorSelector.style.backgroundColor=theme.elems;
     labelW.style.backgroundColor=theme.elems;
     labelB.style.backgroundColor=theme.elems;
+    sidebar.style.backgroundColor=theme.elems;
     let sty=document.body.style;
     sty.background=`linear-gradient(180deg,${theme.grad1},${theme.grad2},${theme.grad3})`;
     sty.backgroundRepeat="no-repeat"

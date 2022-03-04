@@ -1,7 +1,5 @@
 let svgExplosion=document.querySelector("#Shockwave_canvas");
-svgExplosion.style.width=window.innerWidth;
-    svgExplosion.style.height=window.innerHeight;
-    svgExplosion.style.zIndex="1";
+svgExplosion.style.zIndex="1";
 let circle=document.querySelector("#shock");
 
 let prevAnim;

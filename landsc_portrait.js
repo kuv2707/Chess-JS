@@ -43,8 +43,7 @@ if(window.innerWidth/window.innerHeight>1)
     {
         chessBoard.style.left=window.innerWidth/2-320+"px";
         boardOffsetX=window.innerWidth/2-320;
-        colorSelector.style.left=window.innerWidth/2+420+30+"px";
-        colorSelector.style.top=window.innerHeight-120+"px";
+        
         labelW.style.left=window.innerWidth/2+320+30+"px";
         labelB.style.left=window.innerWidth/2-320-330+"px";
         
@@ -146,8 +145,7 @@ else
         }
     });
     boardOffsetX=0;
-    colorSelector.style.left="270px";
-    colorSelector.style.top="760px";
+    
     labelW.style.left="330px";
     labelB.style.left="10px";
     labelW.style.top="680px";
@@ -240,7 +238,7 @@ function rotate({x,y})
         "y":window.innerHeight-y}
 }
 
-labelB.addEventListener("touchstart",playstart);
+labelB.addEventListener("touchstart",playstart,{passive:true});
 labelB.addEventListener("click",playstart);
-labelW.addEventListener("touchstart",playend);
+labelW.addEventListener("touchstart",playend,{passive:true});
 labelW.addEventListener("click",playend);
