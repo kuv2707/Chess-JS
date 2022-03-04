@@ -25,10 +25,6 @@ let showHide=document.createElement("button");
 showHide.id="showHideBtn";
 showHide.innerText="☰";
 document.body.append(showHide);
-
-showHide.onclick=function()
-{
-    sidebar.toggle();
-    console.log("doint")
-}
+showHide.addEventListener("touch",()=>sidebar.toggle(),{passive:true});
+showHide.addEventListener("click",()=>sidebar.toggle(),{passive:true});
 
