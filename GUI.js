@@ -1,69 +1,3 @@
-let switchTurn;
-if(mode)
-{
-    
-    switchTurn=function()
-    {
-        turn=!turn;
-        let deg;
-        if(turn)
-        deg=0;
-        else
-        deg=180;
-        
-        labelW.style.color=labelActive;
-        labelB.style.color=labelInactive;
-        
-        table.style.transform=`rotate(${deg}deg)`;
-        labelB.style.transform=`rotate(${deg}deg)`;
-        labelW.style.transform=`rotate(${deg}deg)`;
-        for(let i=0;i<Pieces.length;i++)
-        {
-            
-            if(!Pieces[i].alive)
-            continue;
-            Pieces[i].rotate(deg);
-            if(Pieces[i].team!=turn)
-            Pieces[i].style.filter=`drop-shadow(0 0 10px ${inactiveShadow})`;
-            else
-            Pieces[i].style.filter=`drop-shadow(0 0 10px ${activeShadow})`;
-        }
-    }
-}
-else
-{
-    activeShadow="black";
-    
-    for(let i=0;i<Pieces.length;i++)
-    {
-        Pieces[i].style.filter=`drop-shadow(0px 0px 10px ${inactiveShadow})`;
-    }
-    switchTurn=function()
-    {
-        turn=!turn;
-        if(turn)
-        {
-            labelW.style.color=labelActive;
-            labelB.style.color=labelInactive;
-            for(let i=0;i<Pieces.length;i++)
-            Pieces[i].rotate(0);
-        }
-        else
-        {
-            labelB.style.color=labelActive;
-            labelW.style.color=labelInactive;
-            for(let i=0;i<Pieces.length;i++)
-            Pieces[i].rotate(180);
-        }
-    }
-} 
-const BOARD=new Array(8);
-for(let k=0;k<8;k++)
-{
-    BOARD[k]=new Array(8);
-    BOARD[k].fill(null);
-}
-
 
 var table=document.querySelector("#container");
 var chessBoard=document.createElement("div");
@@ -172,14 +106,14 @@ labelW.style.left=window.innerWidth/2+320+30+"px";
 labelW.style.top="100px";
 labelW.style.width="300px";
 labelW.innerHTML="White";
-labelW.style.color="black";
+labelW.style.backgroundColor="black";
 
 var labelB=document.createElement("label");
 labelB.style.left=window.innerWidth/2-320-330+"px";
 labelB.style.top="100px";
 labelB.style.width="300px";
 labelB.innerHTML="Black";
-
+labelB.style.backgroundColor="black";
 
 
 table.appendChild(labelW);
@@ -226,3 +160,12 @@ const tentativeMove=
         }
     }
 }
+
+document.body.addEventListener("click",function(e)
+{
+    if(sidebar.expanded)
+    {
+        sidebar.hide();
+        sidebar.expanded=false;
+    }
+})

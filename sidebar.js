@@ -25,6 +25,16 @@ let showHide=document.createElement("button");
 showHide.id="showHideBtn";
 showHide.innerText="☰";
 document.body.append(showHide);
-showHide.addEventListener("touch",()=>sidebar.toggle(),{passive:true});
-showHide.addEventListener("click",()=>sidebar.toggle(),{passive:true});
+showHide.addEventListener("touch",(e)=>
+{
+    e.stopPropagation();
+    sidebar.toggle();
+    
+},{passive:true});
+showHide.addEventListener("click",(e)=>
+{
+    e.stopPropagation();
+    sidebar.toggle();
+    
+},{passive:true});
 
