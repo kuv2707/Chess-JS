@@ -27,6 +27,8 @@ canvas
 {
     width:200px;
     height:50px;
+    position:relative;
+    left:50%;
     border-radius: 10px;
     background-color: #5ab9c1;
     border:none;
@@ -36,7 +38,7 @@ canvas
     top:20px;
     transition-duration: 0.8s;
     transition-property: left;
-    transform:translateX(20px) translateY(30px);
+    transform:translateX(-50%) translateY(30px);
 }
 label
 {
@@ -102,20 +104,19 @@ label
     z-index: 4;
     left:0px;
     top:0px;
-    width:100%;
     height:100%;
 }
 
 #sideBarDiv
 {
-    width:0;
-    height:100%;
+    width:100%;
+    height:25px;
     position: fixed;
-    left:0;
-    top:0;
+    left:0px;
+    top:0px;
     background-color: black;
-    overflow-x: hidden;
-    transition-property: width;
+    overflow-y: hidden;
+    transition-property: height;
     transition-duration: 0.8s;
     z-index: 6;
     border-radius: 20px;

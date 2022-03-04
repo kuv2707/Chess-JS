@@ -5,14 +5,16 @@ sidebar.expanded=false;
 sidebar.show=function()
 {
     //table.style.marginLeft="250px";
-    sidebar.style.width="250px";
+    sidebar.style.height="250px";
     sidebar.expanded=true;
+    console.log("shown sidebar")
 }
 sidebar.hide=function()
 {
     //table.style.marginLeft="0px";
-    sidebar.style.width="0px";
+    sidebar.style.height="25px";
     sidebar.expanded=false;
+    console.log("hid sidebar")
 }
 sidebar.toggle=function()
 {
