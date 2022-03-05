@@ -26,7 +26,7 @@ sidebar.toggle=function()
 let showHide=document.createElement("button");
 showHide.id="showHideBtn";
 showHide.innerText="☰";
-document.body.append(showHide);
+sidebar.append(showHide);
 showHide.addEventListener("touch",(e)=>
 {
     e.stopPropagation();
