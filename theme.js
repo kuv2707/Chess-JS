@@ -24,6 +24,9 @@ const setTheme=function(theme)
         labelActive="white";
     }
     tentativeMove.greenCol=theme.moveHighlight;
+    //add this theme in cookie
+    setCookie("theme",`${theme.baseColor.red},${theme.baseColor.green},${theme.baseColor.blue}`);
+    //console.log("modified cookie",document.cookie);
 }
 
 function createTheme({red,green,blue})
@@ -58,8 +61,57 @@ function HexToRGB(hexcol)
         blue:parseInt(hexcol.substring(5,7),16)
     }
 }
+function RGBtoHex(a,b,c)
+{
+    return "#"+a.toString(16)+b.toString(16)+c.toString(16);
+}
 var defaultTheme=createTheme({red:57,green:155,blue:162});
-//defaultTheme.moveHighlight=tentativeMove.greenCol;
+colorSelector.value=RGBtoHex(defaultTheme.baseColor.red,defaultTheme.baseColor.green,defaultTheme.baseColor.blue)
+
+
+
+//search for default theme in cookie
+let vals=[];
+let savedtheme=getCookie("theme");
+if(savedtheme)
+{
+    let cont="";
+    for(let i=6;i<savedtheme.length;i++)
+    {
+        if(savedtheme.charAt(i)==",")
+        {
+            vals.push(cont);
+            cont="";
+            continue;
+        }
+        cont+=savedtheme.charAt(i);
+    }
+    vals.push(cont);
+    console.log(vals);
+    defaultTheme=createTheme({red:vals[0],green:vals[1],blue:vals[2]});
+    colorSelector.value=RGBtoHex(Number(vals[0]),Number(vals[1]),Number(vals[2]));
+}
+
+
+
+
 setTheme(defaultTheme);
 
-colorSelector.value="#399BA2";
+function setCookie(name,value,exp_days=30) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exp_days*24*60*60*1000));
+    var expires = "expires=" + d.toGMTString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+function getCookie(name)
+{
+    let cookies=decodeURIComponent(document.cookie).split(";");
+    for(let k=0;k<cookies.length;k++)
+    {
+        if(cookies[k].includes(name))
+        {
+            return cookies[k];
+        }
+    }
+    return null;
+}
