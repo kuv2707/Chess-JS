@@ -25,7 +25,7 @@ const setTheme=function(theme)
     }
     tentativeMove.greenCol=theme.moveHighlight;
     //add this theme in cookie
-    setCookie("theme",`${theme.baseColor.red},${theme.baseColor.green},${theme.baseColor.blue}`);
+    window.localStorage.setItem("theme",`{"red":"${theme.baseColor.red}","green":"${theme.baseColor.green}","blue":"${theme.baseColor.blue}"}`);
     //console.log("modified cookie",document.cookie);
 }
 
@@ -39,7 +39,7 @@ function createTheme({red,green,blue})
     var elems=getPercentColor({red,green,blue},100);
     var moveHighlight=getPercentColor({red:green,green:blue,blue:red},180);
     return{
-        bs,ws,grad1,grad2,grad3,elems,baseColor:{red,green,blue},moveHighlight
+        bs,ws,grad1,grad2,grad3,elems,baseColor:{red:Number(red),green:Number(green),blue:Number(blue)},moveHighlight
     };
 }
 function getPercentColor({red,green,blue},percent)
@@ -61,48 +61,54 @@ function HexToRGB(hexcol)
         blue:parseInt(hexcol.substring(5,7),16)
     }
 }
+/**
+ * 
+ * @param {*} st hex number containing 1 or 2 digits
+ * @returns hex number padded with 0 to make it 2 digits long
+ */
+function TwoDig(st)
+{
+    if(st.length==1)
+    return '0'+st;
+    else
+    return st;
+}
+//maybe use Array.slice
 function RGBtoHex(a,b,c)
 {
-    return "#"+a.toString(16)+b.toString(16)+c.toString(16);
+    return "#"+TwoDig(a.toString(16))+TwoDig(b.toString(16))+TwoDig(c.toString(16));
 }
 var defaultTheme=createTheme({red:57,green:155,blue:162});
-colorSelector.value=RGBtoHex(defaultTheme.baseColor.red,defaultTheme.baseColor.green,defaultTheme.baseColor.blue)
 
 
 
 //search for default theme in cookie
+/**
+ * deprecating cookies in favor of window.localStorage
+ */
 let vals=[];
-let savedtheme=getCookie("theme");
-if(savedtheme)
+let savedthemestr=window.localStorage.getItem("theme");
+if(savedthemestr)
 {
-    let cont="";
-    for(let i=6;i<savedtheme.length;i++)
-    {
-        if(savedtheme.charAt(i)==",")
-        {
-            vals.push(cont);
-            cont="";
-            continue;
-        }
-        cont+=savedtheme.charAt(i);
-    }
-    vals.push(cont);
-    console.log(vals);
-    defaultTheme=createTheme({red:vals[0],green:vals[1],blue:vals[2]});
-    colorSelector.value=RGBtoHex(Number(vals[0]),Number(vals[1]),Number(vals[2]));
+    let savedTheme=JSON.parse(savedthemestr);
+    defaultTheme=createTheme(savedTheme);
 }
 
-
-
-
+console.log(defaultTheme.baseColor)
+console.log(Number(defaultTheme.baseColor.red).toString(16))
+colorSelector.value=RGBtoHex(defaultTheme.baseColor.red,defaultTheme.baseColor.green,defaultTheme.baseColor.blue)
 setTheme(defaultTheme);
 
+
+//useless now
+//copied from net
 function setCookie(name,value,exp_days=30) {
     var d = new Date();
     d.setTime(d.getTime() + (exp_days*24*60*60*1000));
     var expires = "expires=" + d.toGMTString();
     document.cookie = name + "=" + value + ";" + expires + ";path=/";
 }
+//self made
 function getCookie(name)
 {
     let cookies=decodeURIComponent(document.cookie).split(";");
