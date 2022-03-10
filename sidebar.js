@@ -23,6 +23,10 @@ sidebar.toggle=function()
     else
     sidebar.show();
 }
+sidebar.addEventListener("click",function(e)
+{
+    e.stopPropagation();
+});
 let showHide=document.createElement("button");
 showHide.id="showHideBtn";
 showHide.innerText="☰";

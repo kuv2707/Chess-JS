@@ -11,29 +11,24 @@ const animateDeathExplosion=function(x,y)
     clearInterval(prevAnim);
     prevAnim=0;
     let teamColor;
-    // if(turn)
-    // teamColor=Theme.bs;
-    // else
-    // teamColor=Theme.ws;
     teamColor="Red";
-    //svgExplosion.style.zIndex="3";
     circle.setAttribute("cx",x);
     circle.setAttribute("cy",y);
     circle.setAttribute("fill",teamColor);
     let k=0;
-    prevAnim=setInterval(function()
+    let animator=function()
     {
         circle.setAttribute("r",640*Math.sin(k));
         circle.setAttribute("fill-opacity",((Math.PI/2)-k*k)/(Math.PI));
-        k+=0.02;
+        k+=0.05;
         if(k>Math.PI/2)
         {
-            //svgExplosion.style.zIndex="-2";
             circle.setAttribute("r","0");
-            clearInterval(prevAnim);
         }
-        
-    },8);
+        else
+        window.requestAnimationFrame(animator);
+    };
+    window.requestAnimationFrame(animator);
 }
 
 
