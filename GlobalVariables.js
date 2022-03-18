@@ -13,6 +13,10 @@ var Theme;
 const mode=window.innerWidth/window.innerHeight>1;
 var labelInactive="black";
 var labelActive="white"
+var gameRules=
+{
+    rotatePerspective:true,
+}
 if(mode)
 {
     

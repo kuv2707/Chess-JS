@@ -1,3 +1,7 @@
+:root
+{
+    --boardOffsetY:25px;
+}
 @font-face 
 {
     font-family: defFont;
@@ -48,13 +52,10 @@ label
     border-radius: 100px;
     z-index: 2;
     background-color: #000000;
-    filter:drop-shadow(0px 0px 30px rgb(4, 4, 4));
-    
-    box-shadow: 0 0 20px white ;
     text-align: center;
     font-size: 50px;
     transition-duration: 0.8s;
-    transition-property: color,left,background-color;
+    transition-property: color,transform,background-color;
     
 }
 
@@ -64,7 +65,7 @@ label
     
     width: 80px;
     height: 80px;
-    transition-property: width,height,left,top,filter;
+    transition-property: transform;
     transition-duration: 0.8s;
     
     user-select: none;
@@ -80,7 +81,7 @@ label
     top:25px;
     display: grid;
     transition-duration: 0.8s;
-    transition-property: left;
+    transition-property: transform;
     
     grid-template-columns: repeat(8,80px);
     grid-template-rows: repeat(8,80px);
@@ -96,7 +97,6 @@ label
 #container
 {
     transition-duration: 0s;
-    opacity: 0;
 }
 #Shockwave_canvas
 {
@@ -133,4 +133,18 @@ label
     color:white;
     font-size: 20px;
     border:none;
+}
+
+.graveyard
+{
+    display:grid;
+    grid-template-columns: repeat(4,80px);
+    grid-template-rows: repeat(4,80px);
+    width:320px;
+    height:320px;
+    position:absolute;
+    left:0px;
+    top:0px;
+    transition-duration: 0.8s;
+    transition-property: transform;
 }

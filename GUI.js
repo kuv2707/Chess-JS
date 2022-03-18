@@ -1,5 +1,6 @@
 
 var table=document.querySelector("#container");
+table.rotated=false;
 var chessBoard=document.createElement("div");
 chessBoard.id="chessBoard";
 let sqs=new Array();
@@ -49,7 +50,7 @@ width:80px;
 height:80px;
 border-radius:15px;
 `;
-
+addTransformManager(blood);
 chessBoard.refresh=function()
 {
     sqs.forEach(function(k,i)
@@ -73,7 +74,7 @@ chessBoard.refresh=function()
 }
 chessBoard.width=640;
 chessBoard.height=640;
-chessBoard.style.left=window.innerWidth/2-320+"px";
+addTransformManager(chessBoard);
 table.appendChild(chessBoard);
 
 
@@ -102,20 +103,21 @@ sidebar.appendChild(colorSelector);
 
 
 var labelW=document.createElement("label");
-labelW.style.left=window.innerWidth/2+320+30+"px";
-labelW.style.top="100px";
+//labelW.style.left=window.innerWidth/2+320+30+"px";
+//labelW.style.top="100px";
 labelW.style.width="300px";
 labelW.innerHTML="White";
 labelW.style.backgroundColor="black";
 
 var labelB=document.createElement("label");
-labelB.style.left=window.innerWidth/2-320-330+"px";
-labelB.style.top="100px";
+//labelB.style.left=window.innerWidth/2-320-330+"px";
+//labelB.style.top="100px";
 labelB.style.width="300px";
 labelB.innerHTML="Black";
 labelB.style.backgroundColor="black";
 
-
+addTransformManager(labelW);
+addTransformManager(labelB);
 table.appendChild(labelW);
 table.appendChild(labelB);
 
@@ -168,4 +170,15 @@ document.body.addEventListener("click",function(e)
         sidebar.hide();
         sidebar.expanded=false;
     }
-})
+});
+
+
+
+var blackGraveyard=document.createElement("div");
+var whiteGraveyard=document.createElement("div");
+blackGraveyard.className="graveyard";
+whiteGraveyard.className="graveyard";
+table.append(blackGraveyard);
+table.append(whiteGraveyard);
+addTransformManager(blackGraveyard);
+addTransformManager(whiteGraveyard);

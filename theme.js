@@ -15,14 +15,6 @@ const setTheme=function(theme)
     sty.backgroundAttachment="fixed";
     chessBoard.refresh();
     activeShadow="#d1dfe5";
-    if(theme.baseColor.red+theme.baseColor.green+theme.baseColor.blue>320)
-    {
-        labelActive=getPercentColor(theme.baseColor,7);
-    }
-    else
-    {
-        labelActive="white";
-    }
     tentativeMove.greenCol=theme.moveHighlight;
     //add this theme in cookie
     window.localStorage.setItem("theme",`{"red":"${theme.baseColor.red}","green":"${theme.baseColor.green}","blue":"${theme.baseColor.blue}"}`);

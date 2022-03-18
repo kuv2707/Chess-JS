@@ -7,26 +7,33 @@ if(mode)
         turn=!turn;
         let deg;
         if(turn)
-        deg=0;
-        else
-        deg=180;
-        
-        labelW.style.color=labelActive;
-        labelB.style.color=labelInactive;
-        
-        table.style.transform=`rotate(${deg}deg)`;
-        labelB.style.transform=`rotate(${deg}deg)`;
-        labelW.style.transform=`rotate(${deg}deg)`;
-        for(let i=0;i<Pieces.length;i++)
         {
-            
-            if(!Pieces[i].alive)
-            continue;
-            Pieces[i].rotate(deg);
-            if(Pieces[i].team!=turn)
-            Pieces[i].style.filter=`drop-shadow(0 0 10px ${inactiveShadow})`;
-            else
-            Pieces[i].style.filter=`drop-shadow(0 0 10px ${activeShadow})`;
+            deg=0;
+            labelW.style.color=labelActive;
+            labelB.style.color=labelInactive;
+            table.rotated=false;
+        }
+        else
+        {
+            deg=180;
+            labelB.style.color=labelActive;
+            labelW.style.color=labelInactive;
+            table.rotated=true;
+        }
+        
+        
+        if(gameRules.rotatePerspective)
+        {
+            table.style.transform=`rotate(${deg}deg)`;
+            labelB.rotate(deg);
+            labelW.rotate(deg);
+            for(let i=0;i<Pieces.length;i++)
+            {
+                
+                if(!Pieces[i].alive)
+                continue;
+                Pieces[i].rotate(deg);
+            }
         }
     }
 }
@@ -34,10 +41,6 @@ else
 {
     activeShadow="black";
     
-    for(let i=0;i<Pieces.length;i++)
-    {
-        Pieces[i].style.filter=`drop-shadow(0px 0px 10px ${inactiveShadow})`;
-    }
     switchTurn=function()
     {
         turn=!turn;
@@ -64,3 +67,35 @@ for(let k=0;k<8;k++)
     BOARD[k].fill(null);
 }
 
+function addTransformManager(go)
+{
+    go.scaleVal=1;
+    go.rotateVal=0;
+    go.translateCoords={x:0,y:0};
+    go.updateAppearance=function()
+    {
+        this.style.transform=
+        `translate(${this.translateCoords.x}px,${this.translateCoords.y}px)
+        scale(${this.scaleVal})
+        rotate(${this.rotateVal}deg)
+        
+        
+        `;
+    }
+    go.rotate=function(value)
+    {
+        this.rotateVal=value;
+        this.updateAppearance();
+    }
+    go.scale=function(value)
+    {
+        this.scaleVal=value;
+        this.updateAppearance();
+    }
+    go.move=function(xx,yy=this.translateCoords.y)
+    {
+        this.translateCoords.x=xx;
+        this.translateCoords.y=yy;
+        this.updateAppearance();
+    }
+}

@@ -8,25 +8,24 @@ var addDraggability=function(div)
         if(turn!=div.team)
         return;
         div.scale(9/8);
-        div.style.filter=`drop-shadow(0 0 20px ${activeShadow})`;
+        //div.style.filter=`drop-shadow(0 0 20px ${activeShadow})`;
     };
     div.onmouseleave=function()
     {
         div.scale(1);
-        div.style.filter=`drop-shadow(0 0 10px ${turn==div.team&&mode==true?activeShadow:inactiveShadow})`;
+        //div.style.filter=`drop-shadow(0 0 10px ${turn==div.team&&mode==true?activeShadow:inactiveShadow})`;
     };
     div.drag=function(e)
     {
         e.stopPropagation();
         e.preventDefault();
-        div.style.transitionProperty="width,height";
+        div.style.transitionProperty="none";
         var xy=getXY(e,true);
-        div.style.left=xy.x-x+"px";
-        div.style.top=xy.y-y+"px";
-        div.style.filter=`drop-shadow(0 0 15px ${activeShadow})`;
+        div.move(xy.x-x,xy.y-y);
+        //div.style.filter=`drop-shadow(0 0 15px ${activeShadow})`;
         
-        let a=Math.floor(tentativeMove.x);
-        let b=Math.floor(tentativeMove.y);
+        //let a=Math.floor(tentativeMove.x);
+        //let b=Math.floor(tentativeMove.y);
         tentativeMove.setXY(Math.floor((xy.x-boardOffsetX)/80),
         Math.floor((xy.y-boardOffsetY)/80));
     }
@@ -66,7 +65,7 @@ var addDraggability=function(div)
         setTimeout(()=>div.style.zIndex="3",850);
         
         div.scale(1);
-        div.style.transitionProperty=div.defaulttp;
+        div.style.transitionProperty="transform";
         document.removeEventListener("mousemove",div.drag)
         document.removeEventListener("touchmove",div.drag)
         let vx=Math.floor((xy.x-boardOffsetX)/80)*80;
@@ -100,15 +99,14 @@ var addDraggability=function(div)
                     already.alive=false;
                     animateDeathExplosion(xy.x,xy.y);
                     blood.src=(Math.random()<0.5?img1:img2).src;
-                    blood.style.left=hx+"px";
-                    blood.style.top=hy+"px";
+                    
                     blood.remove();
                     sqs[vy/80][vx/80].append(blood);
 
                     already.onmouseenter=null;
                     already.onmouseleave=null;
                     switchTurn();
-                    already.style.filter=`drop-shadow(0px 0px 10px black)`;
+                    //already.style.filter=`drop-shadow(0px 0px 10px black)`;
                     
                     //repitition
                     BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
@@ -119,9 +117,7 @@ var addDraggability=function(div)
                 
             }
         }
-        
-        div.style.left=div.homeX+boardOffsetX+"px";
-        div.style.top=div.homeY+boardOffsetY+"px";
+        div.move(div.homeX+boardOffsetX,div.homeY+boardOffsetY);
     };
     let docmu=function(e)
     {
@@ -149,7 +145,7 @@ for(let i=0;i<face.length;i++)
     go.homeX=cx;
     go.homeY=cy;
     go.alive=true;
-    
+    addTransformManager(go);
     BOARD[go.homeX/80][go.homeY/80]=go;
     cx+=80;
     if(cx==640)
@@ -162,49 +158,23 @@ for(let i=0;i<face.length;i++)
         cy=480;
 
     }
-    go.style.left=go.homeX+boardOffsetX+"px";
-    go.style.top=go.homeY+boardOffsetY+"px";
+    go.move(go.homeX+boardOffsetX,go.homeY+boardOffsetY);
     go.style.zIndex="3";
     if(mode)
     {
-        go.style.transitionProperty="width,height,left,top,filter,transform";
-        go.defaulttp="width,height,left,top,filter,transform";
+        //go.style.transitionProperty="width,height,left,top,filter";
+        //go.defaulttp="width,height,left,top,filter,transform";
     }
     else
     {
-        go.style.transitionProperty="width,height,left,top,filter";
-        go.defaulttp="width,height,left,top,filter";
+        //go.style.transitionProperty="width,height,left,top,filter";
+        //go.defaulttp="width,height,left,top,filter";
     }
-    go.scaleVal=1;
-    go.rotateVal=0;
-    go.translateCoords={x:0,y:0};
-    go.updateAppearance=function()
-    {
-        this.style.transform=
-        `
-        rotate(${this.rotateVal}deg)
-        scale(${this.scaleVal})
-        translate(${this.translateCoords.x}px,${this.translateCoords.y}px)
-        `;
-    }
-    go.rotate=function(value)
-    {
-        this.rotateVal=value;
-        this.updateAppearance();
-    }
-    go.scale=function(value)
-    {
-        this.scaleVal=value;
-        this.updateAppearance();
-    }
-    go.move=function(xx,yy)
-    {
-        this.translateCoords.x=xx;
-        this.translateCoords.y=yy;
-        this.updateAppearance();
-    }
+    
+    
     addDraggability(go);
     Pieces.push(go);
 
 }
+window.dispatchEvent(new Event('resize'));
 switchTurn();

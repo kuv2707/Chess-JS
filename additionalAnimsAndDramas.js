@@ -18,7 +18,7 @@ const animateDeathExplosion=function(x,y)
     let k=0;
     let animator=function()
     {
-        circle.setAttribute("r",640*Math.sin(k));
+        circle.setAttribute("r",200*Math.sin(k));
         circle.setAttribute("fill-opacity",((Math.PI/2)-k*k)/(Math.PI));
         k+=0.05;
         if(k>Math.PI/2)
@@ -39,9 +39,10 @@ let playstart=function()
     clearInterval(play);
     play=setInterval(function()
     {
-        let temp=Pieces[Math.floor(Math.random()*Pieces.length)].style;
-        temp.left=Math.floor(Math.random()*560/80)*80+boardOffsetX+"px";
-        temp.top=Math.floor(Math.random()*560/80)*80+boardOffsetY+"px";
+        let temp=Pieces[Math.floor(Math.random()*Pieces.length)];
+        if(temp.alive)
+        temp.move(Math.floor(Math.random()*560/80)*80+boardOffsetX,Math.floor(Math.random()*560/80)*80+boardOffsetY);
+        
     },50);
 }
 let playend=function()
@@ -49,8 +50,27 @@ let playend=function()
     clearInterval(play);
     for(let i=0;i<Pieces.length;i++)
     {
-        Pieces[i].style.top=Pieces[i].homeY+boardOffsetY+"px";
-        Pieces[i].style.left=Pieces[i].homeX+boardOffsetX+"px";
+        if(Pieces[i].alive)
+        Pieces[i].move(Pieces[i].homeX+boardOffsetX,Pieces[i].homeY+boardOffsetY);
     }
     window.dispatchEvent(new Event('resize'));
+}
+
+
+
+
+function printBoard()
+{
+    for(let i=0;i<BOARD.length;i++)
+    {
+        let s="";
+        for(let j=0;j<BOARD.length;j++)
+        {
+            if(BOARD[j][i]!=null)
+            s+=BOARD[j][i].id+" |";
+            else
+            s+="   |";
+        }
+        console.log(s);
+    }
 }

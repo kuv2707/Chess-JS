@@ -2,28 +2,44 @@ let xb=-330;
 let yb=220;
 let xw=0;
 let yw=220;
-var allotDeadLocation;
-if(window.innerWidth/window.innerHeight>1)
+var allotDeadLocation=function(piece)
 {
-    //landscape view
-    labelB.style.textShadow=`            
+    piece.style="position:relative"
+    piece.updateAppearence=null;
+    piece.scale(0,0);
+    piece.move(0,0);
+    setTimeout(()=> piece.scale(1,1),1)
+    if(piece.team==false)
+    {
+        
+        blackGraveyard.append(piece)
+    }
+    else
+    {
+        whiteGraveyard.append(piece);
+    }
+    console.log(piece);
+
+}
+
+labelB.style.textShadow=`            
         0 0 7px #fff,
         0 0 10px #fff, 
         0 0 21px #fff, 
         0 0 42px #0af, 
-        0 0 82px #0af, 
-        0 0 92px #0af, 
-        0 0 102px #0af,
-        0 0 151px #0af`;
+        0 0 82px #0af 
+        `;
     labelW.style.textShadow=`            
         0 0 7px #fff,
         0 0 10px #fff, 
         0 0 21px #fff, 
         0 0 42px #0fa, 
-        0 0 82px #0fa, 
-        0 0 92px #0fa, 
-        0 0 102px #0fa,
-        0 0 151px #0fa`;
+        0 0 82px #0fa
+        `;
+if(window.innerWidth/window.innerHeight>1)
+{
+    //landscape view
+    
         var sync;
     colorSelector.addEventListener("focus", function (e) 
     {
@@ -41,24 +57,19 @@ if(window.innerWidth/window.innerHeight>1)
     
     window.addEventListener("resize",function()
     {
-        chessBoard.style.left=window.innerWidth/2-320+"px";
+        chessBoard.move(window.innerWidth/2-320,0);
         boardOffsetX=window.innerWidth/2-320;
-        
-        labelW.style.left=window.innerWidth/2+320+30+"px";
-        labelB.style.left=window.innerWidth/2-320-330+"px";
-        
+        labelW.move(window.innerWidth/2+320+30,boardOffsetY+80);
+        labelB.move(window.innerWidth/2-320-330,boardOffsetY+80);
+        whiteGraveyard.move(window.innerWidth/2+320+30,200);
+        blackGraveyard.move(window.innerWidth/2-320-330,200);
         Pieces.forEach(function(dog)
         {
             if(dog.alive)
-            dog.style.left=dog.homeX+boardOffsetX+"px";
-            else
-            {
-                if(dog.team==false)
-                dog.style.left=window.innerWidth/2-320+dog.homeX+"px";
-                else
-                dog.style.left=window.innerWidth/2+320+dog.homeX+"px";
-            }
+            dog.move(dog.homeX+boardOffsetX);
         });
+
+        //position blackGraveyard and whiteGraveyard accordingly
     });
 
     sqs.forEach(function(k,i)
@@ -70,79 +81,22 @@ if(window.innerWidth/window.innerHeight>1)
         })
     })
     
-    allotDeadLocation=function(piece)
-    {
-        if(piece.team==false)
-        {
-            
-            piece.style.left=window.innerWidth/2-320+xb+"px";
-            piece.style.top=yb+boardOffsetY+"px";
-            piece.style.height="75px";
-            piece.style.width="75px";
-            piece.homeX=xb;
-            piece.homeY=yb;
-            xb+=75;
-            if(xb==-30)
-            {
-                xb=-330;
-                yb+=75;
-            }
-            
-        }
-        else
-        {
-            piece.style.left=window.innerWidth/2+330+xw+"px";
-            piece.style.top=yw+boardOffsetY+"px";
-            piece.style.height="75px";
-            piece.style.width="75px";
-            piece.homeX=xw+10;
-            piece.homeY=yw;
-            xw+=75;
-            if(xw==300)
-            {
-                xw=0;
-                yw+=75;
-            }
-        }
-        
-        
-    };
+    
 
 }
 else
 {
     //portrait view
-    labelB.style.textShadow=`            
-        0 0 7px #fff,
-        0 0 10px #fff, 
-        0 0 21px #fff, 
-        0 0 42px #0af, 
-        0 0 82px #0af 
-        `;
-    labelW.style.textShadow=`            
-        0 0 7px #fff,
-        0 0 10px #fff, 
-        0 0 21px #fff, 
-        0 0 42px #0fa, 
-        0 0 82px #0fa
-        `;
+    
     colorSelector.addEventListener("change", function (e) 
     {
         setTheme(createTheme(HexToRGB(e.target.value)));
         
     });
-    chessBoard.style.left="0px";
     Pieces.forEach(function(dog)
     {
         if(dog.alive)
         dog.style.left=dog.homeX+boardOffsetX+"px";
-        else
-        {
-            if(dog.team==false)
-            dog.style.left=window.innerWidth/2-320+dog.homeX+"px";
-            else
-            dog.style.left=window.innerWidth/2+320+dog.homeX+"px";
-        }
     });
     boardOffsetX=0;
     
@@ -151,6 +105,11 @@ else
     labelW.style.top="680px";
     labelB.style.top="680px";
 
+    whiteGraveyard.style.left="330px";
+    blackGraveyard.style.left="10px";
+    whiteGraveyard.style.top="780px";
+    blackGraveyard.style.top="780px";
+
     xb=0;
     xw=320;
     yb=840;
@@ -158,44 +117,7 @@ else
 
     
     
-    allotDeadLocation=function(piece)
-    {
-        if(piece.team==false)
-        {
-            
-            piece.style.left=xb+"px";
-            piece.style.top=yb+boardOffsetY+"px";
-            piece.style.height="75px";
-            piece.style.width="75px";
-            piece.homeX=xb;
-            piece.homeY=yb;
-            xb+=60;
-            if(xb==240)
-            {
-                xb=0;
-                yb+=60;
-            }
-            
-        }
-        else
-        {
-            piece.style.left=xw+"px";
-            piece.style.top=yw+boardOffsetY+"px";
-            piece.style.height="75px";
-            piece.style.width="75px";
-            piece.homeX=xw;
-            piece.homeY=yw;
-            xw+=60;
-            
-            if(xw==320+240)
-            {
-                xw=320;
-                yw+=60;
-            }
-        }
-        
-        
-    }
+    
 }
 
 function getXY(e,transforms)
@@ -216,9 +138,9 @@ function getXY(e,transforms)
         x=e.clientX;
         y=e.clientY;
     }
-    if(transforms)
+    if(transforms  &&  gameRules.rotatePerspective)
     {
-        if(turn)
+        if(!table.rotated)
         {
             return {"x":x,"y":y};
         }
@@ -242,3 +164,5 @@ labelB.addEventListener("touchstart",playstart,{passive:true});
 labelB.addEventListener("click",playstart);
 labelW.addEventListener("touchstart",playend,{passive:true});
 labelW.addEventListener("click",playend);
+
+
