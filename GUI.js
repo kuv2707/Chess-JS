@@ -1,5 +1,6 @@
 
 var table=document.querySelector("#container");
+addTransformManager(table);
 table.rotated=false;
 var chessBoard=document.createElement("div");
 chessBoard.id="chessBoard";
@@ -165,7 +166,7 @@ const tentativeMove=
 
 document.body.addEventListener("click",function(e)
 {
-    if(sidebar.expanded)
+    if(sidebar.expanded  &&  e.clientY>250)
     {
         sidebar.hide();
         sidebar.expanded=false;

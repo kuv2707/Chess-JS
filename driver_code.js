@@ -39,7 +39,7 @@ var addDraggability=function(div)
         div.style.zIndex="4";
         x=Number(xy.x-div.getBoundingClientRect().left);
         y=Number(xy.y-div.getBoundingClientRect().top);
-        if(mode  &&  !turn)
+        if(gameRules.rotatePerspective.board  &&  !turn)
         {
             x=80-x;
             y=80-y;
@@ -176,5 +176,5 @@ for(let i=0;i<face.length;i++)
     Pieces.push(go);
 
 }
-window.dispatchEvent(new Event('resize'));
 switchTurn();
+window.dispatchEvent(new Event('resize'));

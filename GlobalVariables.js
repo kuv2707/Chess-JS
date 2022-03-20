@@ -2,7 +2,7 @@ var turn=false;
 var blackSquares="#6E1111";
 var whiteSquares="#ffa1a1";
 var boardOffsetX=(window.innerWidth/window.innerHeight>1)?window.innerWidth/2-320:0;
-const boardOffsetY=25;
+var boardOffsetY=25;
 const Pieces=new Array();
 var activeShadow="#d1dfe5";
 var inactiveShadow="black";
@@ -15,7 +15,10 @@ var labelInactive="black";
 var labelActive="white"
 var gameRules=
 {
-    rotatePerspective:true,
+    rotatePerspective:{
+        board:true,
+        pieces:true
+    },
 }
 if(mode)
 {

@@ -16,7 +16,6 @@ sidebar.hide=function()
     sidebar.style.height="25px";
     sidebar.expanded=false;
     showHide.innerText="▼";
-    //console.log("hid sidebar")
 }
 sidebar.toggle=function()
 {
@@ -42,10 +41,10 @@ sidebar.addEventListener("mouseleave",(e)=>
     sidebar.hide();
     
 },{passive:true});
-showHide.addEventListener("click",(e)=>
+showHide.addEventListener("touchstart",(e)=>
 {
     e.stopPropagation();
-    sidebar.toggle();
+    sidebar.show();
     
 });
 

@@ -18,7 +18,7 @@ var allotDeadLocation=function(piece)
     {
         whiteGraveyard.append(piece);
     }
-    console.log(piece);
+    //console.log(piece);
 
 }
 
@@ -36,10 +36,49 @@ labelB.style.textShadow=`
         0 0 42px #0fa, 
         0 0 82px #0fa
         `;
-if(window.innerWidth/window.innerHeight>1)
+
+
+
+window.addEventListener("resize",function()
+{
+    if(window.innerWidth/window.innerHeight>1.5)
+    {
+        labelW.move(window.innerWidth/2+320+30,boardOffsetY+80);
+        labelB.move(window.innerWidth/2-320-330,boardOffsetY+80);
+        whiteGraveyard.move(window.innerWidth/2+320+30,200);
+        blackGraveyard.move(window.innerWidth/2-320-330,200);
+        gameRules.rotatePerspective.board=true;
+        if(!turn)
+        table.style.transform=`rotate(${180}deg)`;
+    }
+    else
+    {
+        labelW.move(window.innerWidth/2+30,680);
+        labelB.move(window.innerWidth/2-320,680);
+        whiteGraveyard.move(window.innerWidth/2+30,750);
+        blackGraveyard.move(window.innerWidth/2-320,750);
+        gameRules.rotatePerspective.board=false;
+        if(!turn)
+        table.style.transform=`rotate(${0}deg)`;
+    }
+    chessBoard.move(window.innerWidth/2-320,0);
+    boardOffsetX=window.innerWidth/2-320;
+    
+    Pieces.forEach(function(dog)
+    {
+    if(dog.alive)
+    dog.move(dog.homeX+boardOffsetX);
+    });
+
+    //position blackGraveyard and whiteGraveyard accordingly
+});
+
+
+if(window.innerWidth/window.innerHeight>1.5)
 {
     //landscape view
-    
+    gameRules.rotatePerspective.board=true;
+    gameRules.rotatePerspective.pieces=true;
         var sync;
     colorSelector.addEventListener("focus", function (e) 
     {
@@ -54,40 +93,13 @@ if(window.innerWidth/window.innerHeight>1)
     {
         clearInterval(sync);
     });
-    
-    window.addEventListener("resize",function()
-    {
-        chessBoard.move(window.innerWidth/2-320,0);
-        boardOffsetX=window.innerWidth/2-320;
-        labelW.move(window.innerWidth/2+320+30,boardOffsetY+80);
-        labelB.move(window.innerWidth/2-320-330,boardOffsetY+80);
-        whiteGraveyard.move(window.innerWidth/2+320+30,200);
-        blackGraveyard.move(window.innerWidth/2-320-330,200);
-        Pieces.forEach(function(dog)
-        {
-            if(dog.alive)
-            dog.move(dog.homeX+boardOffsetX);
-        });
-
-        //position blackGraveyard and whiteGraveyard accordingly
-    });
-
-    sqs.forEach(function(k,i)
-    {
-        k.forEach(function(l,j)
-        {
-            
-            l.style.borderRadius="15px";
-        })
-    })
-    
-    
-
+ 
 }
 else
 {
     //portrait view
-    
+    gameRules.rotatePerspective.board=false;
+    gameRules.rotatePerspective.pieces=true;
     colorSelector.addEventListener("change", function (e) 
     {
         setTheme(createTheme(HexToRGB(e.target.value)));
@@ -100,24 +112,6 @@ else
     });
     boardOffsetX=0;
     
-    labelW.style.left="330px";
-    labelB.style.left="10px";
-    labelW.style.top="680px";
-    labelB.style.top="680px";
-
-    whiteGraveyard.style.left="330px";
-    blackGraveyard.style.left="10px";
-    whiteGraveyard.style.top="780px";
-    blackGraveyard.style.top="780px";
-
-    xb=0;
-    xw=320;
-    yb=840;
-    yw=840;
-
-    
-    
-    
 }
 
 function getXY(e,transforms)
@@ -125,7 +119,7 @@ function getXY(e,transforms)
     let x=0,y=0;
     if(!mode)
     transforms=false;
-    if(e.type.substring(0,5)=="touch")
+    if(e.type.includes("touch"))
     {
         let evt=(typeof e.originalEvent==='undefined')?e:e.originalEvent;
         let touch=evt.touches[0]||evt.changedTouches[0];
@@ -133,12 +127,12 @@ function getXY(e,transforms)
         y=touch.pageY;
         
     }
-    if(e.type.substring(0,5)=="mouse")
+    if(e.type.includes("mouse"))
     {
-        x=e.clientX;
-        y=e.clientY;
+        x=e.pageX;
+        y=e.pageY;
     }
-    if(transforms  &&  gameRules.rotatePerspective)
+    if(transforms  &&  gameRules.rotatePerspective.board)
     {
         if(!table.rotated)
         {
@@ -146,18 +140,14 @@ function getXY(e,transforms)
         }
         else
         {
-            return rotate({"x":x,"y":y});
+            return{"x":window.innerWidth-x,
+           "y":window.innerHeight-y}
         }
     }
     else
     {
         return {"x":x,"y":y};
     }
-}
-function rotate({x,y})
-{
-    return{"x":window.innerWidth-x,
-        "y":window.innerHeight-y}
 }
 
 labelB.addEventListener("touchstart",playstart,{passive:true});

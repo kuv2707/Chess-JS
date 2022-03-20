@@ -22,12 +22,15 @@ if(mode)
         }
         
         
-        if(gameRules.rotatePerspective)
+        if(gameRules.rotatePerspective.board)
         {
             table.style.transform=`rotate(${deg}deg)`;
             labelB.rotate(deg);
             labelW.rotate(deg);
-            for(let i=0;i<Pieces.length;i++)
+            
+        }
+        if(gameRules.rotatePerspective.pieces)
+        {   for(let i=0;i<Pieces.length;i++)
             {
                 
                 if(!Pieces[i].alive)
@@ -84,11 +87,15 @@ function addTransformManager(go)
     }
     go.rotate=function(value)
     {
+        if(this.rotateVal==value)
+        return;
         this.rotateVal=value;
         this.updateAppearance();
     }
     go.scale=function(value)
     {
+        if(this.scaleVal==value)
+        return;
         this.scaleVal=value;
         this.updateAppearance();
     }

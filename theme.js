@@ -10,7 +10,8 @@ const setTheme=function(theme)
     //labelB.style.backgroundColor=theme.elems;
     sidebar.style.backgroundColor=theme.grad3;
     let sty=document.body.style;
-    sty.background=`linear-gradient(to top,${theme.grad1},${theme.grad2},${theme.grad3})`;
+    //sty.background=`radial-gradient(${theme.grad1},${theme.grad2},${theme.grad3})`;
+    sty.backgroundColor=getPercentColor(theme.baseColor,50);
     sty.backgroundRepeat="no-repeat"
     sty.backgroundAttachment="fixed";
     chessBoard.refresh();
