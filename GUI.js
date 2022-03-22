@@ -95,12 +95,6 @@ if(mode)
 document.body.appendChild(table);
 
 
-var colorSelector=document.createElement("input");
-colorSelector.id="colorSelector";
-colorSelector.type="color";
-colorSelector.value=whiteSquares;
-colorSelector.innerHTML="Color";
-sidebar.appendChild(colorSelector);
 
 
 var labelW=document.createElement("label");
@@ -183,3 +177,13 @@ table.append(blackGraveyard);
 table.append(whiteGraveyard);
 addTransformManager(blackGraveyard);
 addTransformManager(whiteGraveyard);
+
+
+
+
+var colorSelector=document.createElement("input");
+colorSelector.id="colorSelector";
+colorSelector.type="color";
+colorSelector.value=whiteSquares;
+colorSelector.innerHTML="Color";
+sidebar.appendChild(colorSelector);

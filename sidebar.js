@@ -13,7 +13,7 @@ sidebar.show=function()
 sidebar.hide=function()
 {
     //table.style.marginLeft="0px";
-    sidebar.style.height="25px";
+    sidebar.style.height="0px";
     sidebar.expanded=false;
     showHide.innerText="▼";
 }
@@ -48,3 +48,6 @@ showHide.addEventListener("touchstart",(e)=>
     
 });
 
+var lab=document.createElement("h2");
+lab.innerText="Theme color:";
+sidebar.append(lab);
