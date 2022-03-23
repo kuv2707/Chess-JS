@@ -99,10 +99,11 @@ function addTransformManager(go)
         this.scaleVal=value;
         this.updateAppearance();
     }
-    go.move=function(xx,yy=this.translateCoords.y)
+    go.move=function(xx,yy)
     {
         this.translateCoords.x=xx;
         this.translateCoords.y=yy;
         this.updateAppearance();
     }
 }
+

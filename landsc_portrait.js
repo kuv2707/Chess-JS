@@ -2,25 +2,7 @@ let xb=-330;
 let yb=220;
 let xw=0;
 let yw=220;
-var allotDeadLocation=function(piece)
-{
-    piece.style="position:relative"
-    piece.updateAppearence=null;
-    piece.scale(0,0);
-    piece.move(0,0);
-    setTimeout(()=> piece.scale(1,1),1)
-    if(piece.team==false)
-    {
-        
-        blackGraveyard.append(piece)
-    }
-    else
-    {
-        whiteGraveyard.append(piece);
-    }
-    //console.log(piece);
 
-}
 
 labelB.style.textShadow=`            
         0 0 7px #fff,
@@ -38,9 +20,9 @@ labelB.style.textShadow=`
         `;
 
 
-
-window.addEventListener("resize",function()
+var resizeFunction=function()
 {
+    console.log("Resized")
     if(window.innerWidth/window.innerHeight>1.5)
     {
         labelW.move(window.innerWidth/2+320+30,boardOffsetY+80);
@@ -67,11 +49,12 @@ window.addEventListener("resize",function()
     Pieces.forEach(function(dog)
     {
     if(dog.alive)
-    dog.move(dog.homeX+boardOffsetX);
+    dog.move(dog.homeX+boardOffsetX,dog.homeY+boardOffsetY);
     });
 
     //position blackGraveyard and whiteGraveyard accordingly
-});
+};
+window.addEventListener("resize",resizeFunction);
 
 
 if(window.innerWidth/window.innerHeight>1.5)

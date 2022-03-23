@@ -87,8 +87,6 @@ if(savedthemestr)
     defaultTheme=createTheme(savedTheme);
 }
 
-console.log(defaultTheme.baseColor)
-console.log(Number(defaultTheme.baseColor.red).toString(16))
 colorSelector.value=RGBtoHex(defaultTheme.baseColor.red,defaultTheme.baseColor.green,defaultTheme.baseColor.blue)
 setTheme(defaultTheme);
 

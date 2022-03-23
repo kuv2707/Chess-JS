@@ -44,7 +44,6 @@ var addDraggability=function(div)
             x=80-x;
             y=80-y;
         }
-        
         if(div.alive)
         {
             document.addEventListener("mousemove",div.drag)
@@ -63,7 +62,6 @@ var addDraggability=function(div)
         return;
         var xy=getXY(e,true);
         setTimeout(()=>div.style.zIndex="3",850);
-        
         div.scale(1);
         div.style.transitionProperty="transform";
         document.removeEventListener("mousemove",div.drag)
@@ -82,7 +80,6 @@ var addDraggability=function(div)
             if(already==null)
             {
                 switchTurn();
-                
                 BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
                 div.homeX=vx;
                 div.homeY=vy;
@@ -92,22 +89,8 @@ var addDraggability=function(div)
             {
                 if(!(already.team==div.team))
                 {
-                    //kill what is already there
-                    let hx=already.homeX;
-                    let hy=already.homeY;
-                    allotDeadLocation(already);
-                    already.alive=false;
-                    animateDeathExplosion(xy.x,xy.y);
-                    blood.src=(Math.random()<0.5?img1:img2).src;
-                    
-                    blood.remove();
-                    sqs[vy/80][vx/80].append(blood);
-
-                    already.onmouseenter=null;
-                    already.onmouseleave=null;
-                    switchTurn();
-                    //already.style.filter=`drop-shadow(0px 0px 10px black)`;
-                    
+                    kill(already);
+                   switchTurn();
                     //repitition
                     BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
                     div.homeX=vx;
@@ -133,6 +116,7 @@ var addDraggability=function(div)
 var cx=0;cy=0;
 var face=["br","bn","bb","bq","bk","bb","bn","br","bp","bp","bp","bp","bp","bp","bp","bp",
             "wp","wp","wp","wp","wp","wp","wp","wp","wr","wn","wb","wk","wq","wb","wn","wr"];
+
 for(let i=0;i<face.length;i++)
 {
     var go=document.createElement("img");
@@ -141,11 +125,10 @@ for(let i=0;i<face.length;i++)
     go.className="draggable";
     go.src="MediaResources/Fantasy/"+face[i]+".png";
     go.alt=face[i];
-    table.appendChild(go);
     go.homeX=cx;
     go.homeY=cy;
     go.alive=true;
-    addTransformManager(go);
+    go.style.zIndex="3"; 
     BOARD[go.homeX/80][go.homeY/80]=go;
     cx+=80;
     if(cx==640)
@@ -153,28 +136,15 @@ for(let i=0;i<face.length;i++)
         cx=0;
         cy+=80;
     }
-    if(cy==160  )
+    if(cy==160)
     {
         cy=480;
-
     }
-    go.move(go.homeX+boardOffsetX,go.homeY+boardOffsetY);
-    go.style.zIndex="3";
-    if(mode)
-    {
-        //go.style.transitionProperty="width,height,left,top,filter";
-        //go.defaulttp="width,height,left,top,filter,transform";
-    }
-    else
-    {
-        //go.style.transitionProperty="width,height,left,top,filter";
-        //go.defaulttp="width,height,left,top,filter";
-    }
-    
-    
+    addTransformManager(go);
+    go.move(window.innerWidth*Math.random(),window.innerHeight*Math.random());
     addDraggability(go);
     Pieces.push(go);
-
+    table.appendChild(go);
 }
 switchTurn();
-window.dispatchEvent(new Event('resize'));
+setTimeout(resizeFunction,5);
