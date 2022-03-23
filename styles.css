@@ -151,5 +151,6 @@ label
     top:0px;
     transition-duration: 0.8s;
     transition-property: transform;
-    
+    /*border:5px solid red;*/
+    margin-left:10px;
 }

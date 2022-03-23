@@ -141,7 +141,7 @@ for(let i=0;i<face.length;i++)
         cy=480;
     }
     addTransformManager(go);
-    go.move(window.innerWidth*Math.random(),window.innerHeight*Math.random());
+    //go.move(boardOffsetX+640*Math.random(),boardOffsetY+640*Math.random());
     addDraggability(go);
     Pieces.push(go);
     table.appendChild(go);
