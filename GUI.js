@@ -41,9 +41,9 @@ for(let i=0;i<8;i++)
 }
 let blood=document.createElement("img");
 let img1=new Image();
-img1.src="MediaResources/blood1.png";
+img1.src="Images/blood1.png";
 let img2=new Image();
-img2.src="MediaResources/blood2.png";
+img2.src="Images/blood2.png";
 blood.style=
 `position:absolute;
 z-index=2;
@@ -130,6 +130,8 @@ const tentativeMove=
     setXY:function(x,y)
     {
         if(!this.listen)
+        return;
+        if(x>7||y>7||x<0||y<0)
         return;
         if(this.x==x  &&  this.y==y)
         return;

@@ -17,7 +17,7 @@ var gameRules=
 {
     rotatePerspective:{
         board:true,
-        pieces:true
+        pieces:true//infact always true
     },
 }
 if(mode)

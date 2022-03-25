@@ -46,12 +46,13 @@ var resizeFunction=function()
     chessBoard.move(window.innerWidth/2-320,0);
     boardOffsetX=window.innerWidth/2-320;
     
-    Pieces.forEach(function(dog)
-    {
-    if(dog.alive)
-    dog.move(dog.homeX+boardOffsetX,dog.homeY+boardOffsetY);
-    });
 
+    for(let i=0;i<Pieces.length;i++)
+    {
+        let p=Pieces[i];
+        if(p.alive)
+        p.face.move(p.location.x+boardOffsetX,p.location.y+boardOffsetY);
+    }
     //position blackGraveyard and whiteGraveyard accordingly
 };
 window.addEventListener("resize",resizeFunction);
@@ -88,20 +89,17 @@ else
         setTheme(createTheme(HexToRGB(e.target.value)));
         
     });
-    Pieces.forEach(function(dog)
-    {
-        if(dog.alive)
-        dog.style.left=dog.homeX+boardOffsetX+"px";
-    });
-    boardOffsetX=0;
-    
 }
-
-function getXY(e,transforms)
+/**
+ * 
+ * @param {*} e event object
+ * @param {*} transforms BADLY needs renovation
+ * @returns 
+ */
+function getXY(e)
 {
     let x=0,y=0;
     if(!mode)
-    transforms=false;
     if(e.type.includes("touch"))
     {
         let evt=(typeof e.originalEvent==='undefined')?e:e.originalEvent;
@@ -115,7 +113,11 @@ function getXY(e,transforms)
         x=e.pageX;
         y=e.pageY;
     }
-    if(transforms  &&  gameRules.rotatePerspective.board)
+    /**
+     * table and pieces both rotatable: landscape mode
+     * pieces only rotatable: portrait mode
+     */
+    if(gameRules.rotatePerspective.board  &&  gameRules.rotatePerspective.pieces)
     {
         if(!table.rotated)
         {
@@ -127,7 +129,7 @@ function getXY(e,transforms)
            "y":window.innerHeight-y}
         }
     }
-    else
+    if(!gameRules.rotatePerspective.board  &&  gameRules.rotatePerspective.pieces)
     {
         return {"x":x,"y":y};
     }

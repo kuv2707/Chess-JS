@@ -6,22 +6,22 @@ const setTheme=function(theme)
     blackSquares=theme.bs;
     document.querySelector('meta[name="theme-color"]').setAttribute('content', theme.chromeTheme);
     colorSelector.style.backgroundColor=theme.elems;
-    //labelW.style.backgroundColor=theme.elems;
-    //labelB.style.backgroundColor=theme.elems;
     sidebar.style.backgroundColor=theme.grad3;
     let sty=document.body.style;
-    //sty.background=`radial-gradient(${theme.grad1},${theme.grad2},${theme.grad3})`;
     sty.backgroundColor=getPercentColor(theme.baseColor,50);
     sty.backgroundRepeat="no-repeat"
     sty.backgroundAttachment="fixed";
     chessBoard.refresh();
     activeShadow="#d1dfe5";
     tentativeMove.greenCol=theme.moveHighlight;
-    //add this theme in cookie
+    //add this theme to local storage
     window.localStorage.setItem("theme",`{"red":"${theme.baseColor.red}","green":"${theme.baseColor.green}","blue":"${theme.baseColor.blue}"}`);
-    //console.log("modified cookie",document.cookie);
 }
-
+/**
+ * 
+ * @param {any} param0 color object storing rgb values as numbers
+ * @returns theme object consisting of different shades of color accepted, in css style string
+ */
 function createTheme({red,green,blue})
 {
     var bs=getPercentColor({red,green,blue},60);
@@ -35,15 +35,18 @@ function createTheme({red,green,blue})
         bs,ws,grad1,grad2,grad3,elems,baseColor:{red:Number(red),green:Number(green),blue:Number(blue)},moveHighlight
     };
 }
+/**
+ * 
+ * @param {any} param0 color object storing rgb values as numbers
+ * @param {Number} percent percentage of rgb in final color
+ * @returns css style string of color adjusted to specified percentage of rgb
+ */
 function getPercentColor({red,green,blue},percent)
 {
     var red=red*percent/100;
-    red=red>255?255:red;
     var green=green*percent/100;
-    green=green>255?255:green;
     var blue=blue*percent/100;
-    blue=blue>255?255:blue;
-    return `rgb(${red} ${green} ${blue})`;
+    return `rgb(${red>255?255:red} ${green>255?255:green} ${blue>255?255:blue})`;
 }
 
 function HexToRGB(hexcol)
@@ -56,7 +59,7 @@ function HexToRGB(hexcol)
 }
 /**
  * 
- * @param {*} st hex number containing 1 or 2 digits
+ * @param {String} st hex number containing 1 or 2 digits
  * @returns hex number padded with 0 to make it 2 digits long
  */
 function TwoDig(st)

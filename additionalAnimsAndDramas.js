@@ -57,20 +57,3 @@ let playend=function()
 }
 
 
-
-
-function printBoard()
-{
-    for(let i=0;i<BOARD.length;i++)
-    {
-        let s="";
-        for(let j=0;j<BOARD.length;j++)
-        {
-            if(BOARD[j][i]!=null)
-            s+=BOARD[j][i].id+" |";
-            else
-            s+="   |";
-        }
-        console.log(s);
-    }
-}

@@ -46,7 +46,7 @@ showHide.addEventListener("touchstart",(e)=>
     e.stopPropagation();
     sidebar.show();
     
-});
+},{passive:true});
 
 var lab=document.createElement("h2");
 lab.innerText="Theme color:";
