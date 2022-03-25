@@ -14,9 +14,10 @@ html,body
     min-height:100%;
     width:100%;
     overflow:hidden;
-    transition-property: background;
+    transition-property: background-color;
     -webkit-user-select: none;
     user-select: none;
+    background-color: #330033;
 }
 *
 {
@@ -60,10 +61,11 @@ label
     
 }
 
-.draggable
+.ChessPiece
 {
     position:absolute;
-    
+    font-size: 60px;
+    text-align: center;
     width: 80px;
     height: 80px;
     transition-property: transform;

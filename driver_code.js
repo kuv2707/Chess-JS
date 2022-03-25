@@ -1,135 +1,9 @@
-
-var addDraggability=function(div)
-{
-    var x,y;
-    //only for pointer-based devices
-    div.onmouseenter=function()
-    {
-        if(turn!=div.team)
-        return;
-        div.scale(9/8);
-        //div.style.filter=`drop-shadow(0 0 20px ${activeShadow})`;
-    };
-    div.onmouseleave=function()
-    {
-        div.scale(1);
-        //div.style.filter=`drop-shadow(0 0 10px ${turn==div.team&&mode==true?activeShadow:inactiveShadow})`;
-    };
-    div.drag=function(e)
-    {
-        e.stopPropagation();
-        e.preventDefault();
-        div.style.transitionProperty="none";
-        var xy=getXY(e,true);
-        div.move(xy.x-x,xy.y-y);
-        //div.style.filter=`drop-shadow(0 0 15px ${activeShadow})`;
-        
-        //let a=Math.floor(tentativeMove.x);
-        //let b=Math.floor(tentativeMove.y);
-        tentativeMove.setXY(Math.floor((xy.x-boardOffsetX)/80),
-        Math.floor((xy.y-boardOffsetY)/80));
-    }
-    let md=function(e)
-    {
-        if(!div.alive)
-        return;
-        if(turn!=div.team)
-        return;
-        var xy=getXY(e,false);
-        div.style.zIndex="4";
-        x=Number(xy.x-div.getBoundingClientRect().left);
-        y=Number(xy.y-div.getBoundingClientRect().top);
-        if(gameRules.rotatePerspective.board  &&  !turn)
-        {
-            x=80-x;
-            y=80-y;
-        }
-        if(div.alive)
-        {
-            document.addEventListener("mousemove",div.drag)
-            document.addEventListener("touchmove",div.drag)
-        }
-        div.scale(100/80);
-        document.addEventListener("mouseup",docmu)
-        document.addEventListener("touchend",docmu)
-        tentativeMove.setListen(true);
-    };
-    div.addEventListener("mousedown",md)
-    div.addEventListener("touchstart",md,{passive:true})
-    let mu=function(e)
-    {
-        if(!div.alive)
-        return;
-        var xy=getXY(e,true);
-        setTimeout(()=>div.style.zIndex="3",850);
-        div.scale(1);
-        div.style.transitionProperty="transform";
-        document.removeEventListener("mousemove",div.drag)
-        document.removeEventListener("touchmove",div.drag)
-        let vx=Math.floor((xy.x-boardOffsetX)/80)*80;
-        let vy=Math.floor((xy.y-boardOffsetY)/80)*80;
-        
-        if(!(vx>=640 ||  vy>=640  ||  vx<0  ||  vy<0))
-        {
-            /**
-             * a successful turn is when:
-             * already is null
-             * or it is of different team
-             */
-            var already=BOARD[vx/80][vy/80];//indexoutofbounds exception never occurs
-            if(already==null)
-            {
-                switchTurn();
-                BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
-                div.homeX=vx;
-                div.homeY=vy;
-                BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=div;
-            }
-            else
-            {
-                if(!(already.team==div.team))
-                {
-                    kill(already);
-                   switchTurn();
-                    //repitition
-                    BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=null;
-                    div.homeX=vx;
-                    div.homeY=vy;
-                    BOARD[Math.floor(div.homeX/80)][Math.floor(div.homeY/80)]=div;
-                }
-                
-            }
-        }
-        div.move(div.homeX+boardOffsetX,div.homeY+boardOffsetY);
-    };
-    let docmu=function(e)
-    {
-        document.removeEventListener("mousemove",div.drag)
-        document.removeEventListener("touchmove",div.drag)
-        document.removeEventListener("mouseup",docmu)
-        document.removeEventListener("touchend",docmu)
-        mu(e);
-        tentativeMove.setListen(false);
-    };
-    
-}
 var cx=0;cy=0;
-var face=["br","bn","bb","bq","bk","bb","bn","br","bp","bp","bp","bp","bp","bp","bp","bp",
-            "wp","wp","wp","wp","wp","wp","wp","wp","wr","wn","wb","wk","wq","wb","wn","wr"];
 
-for(let i=0;i<face.length;i++)
+for(let i=0;i<Piece.face.length;i++)
 {
-    var go=document.createElement("img");
-    go.id=face[i];
-    go.team=go.id.charAt(0)=='b'?false:true;//false means black
-    go.className="draggable";
-    go.src="MediaResources/Fantasy/"+face[i]+".png";
-    go.alt=face[i];
-    go.homeX=cx;
-    go.homeY=cy;
-    go.alive=true;
-    go.style.zIndex="3"; 
-    BOARD[go.homeX/80][go.homeY/80]=go;
+    let p=new Piece(Piece.face[i].charAt(0)=='b'?false:true,{x:cx,y:cy},Piece.face[i])
+    BOARD[cx/80][cy/80]=p;
     cx+=80;
     if(cx==640)
     {
@@ -140,11 +14,11 @@ for(let i=0;i<face.length;i++)
     {
         cy=480;
     }
-    addTransformManager(go);
-    //go.move(boardOffsetX+640*Math.random(),boardOffsetY+640*Math.random());
-    addDraggability(go);
-    Pieces.push(go);
-    table.appendChild(go);
+    p.face.move(boardOffsetX+80+480*Math.random(),boardOffsetY+80+480*Math.random());
+    Pieces.push(p);
+    table.appendChild(p.face);
 }
 switchTurn();
 setTimeout(resizeFunction,5);
+
+

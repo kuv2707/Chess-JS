@@ -35,9 +35,10 @@ if(mode)
                 
                 if(!Pieces[i].alive)
                 continue;
-                Pieces[i].rotate(deg);
+                Pieces[i].face.rotate(deg);
             }
         }
+        printBoard();
     }
 }
 else
@@ -106,4 +107,20 @@ function addTransformManager(go)
         this.updateAppearance();
     }
 }
-
+function generateFEN()
+{
+    
+}
+function printBoard()
+{
+    console.clear();
+    for(let i=0;i<8;i++)
+    {
+        let s="||"
+        for(let j=0;j<8;j++)
+        {
+            s+=(BOARD[j][i]?BOARD[j][i].symbol:"  ")+"|";
+        }
+        console.log(8-i+s+"|");
+    }
+}
