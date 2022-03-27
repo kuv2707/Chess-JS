@@ -1,19 +1,20 @@
 var x,y;
 var currentlySelected;
+
 var symbols=
 {
-    "br":"♜",
-    "bn":"♞",
-    "bq":"♛",
-    "bk":"♚",
-    "bb":"♝",
-    "bp":"♟",
-    "wr":"♖",
-    "wn":"♘",
-    "wq":"♕",
-    "wk":"♔",
-    "wb":"♗",
-    "wp":"♙",
+    br:["♜",rookMoves],
+    bn:["♞",knightMoves],
+    bq:["♛",queenMoves],
+    bk:["♚",kingMoves],
+    bb:["♝",bishopMoves],
+    bp:["♟",pawnMoves],
+    wr:["♖",rookMoves],
+    wn:["♘",knightMoves],
+    wq:["♕",queenMoves],
+    wk:["♔",kingMoves],
+    wb:["♗",bishopMoves],
+    wp:["♙",pawnMoves],
     
 }
 class Piece
@@ -31,7 +32,8 @@ class Piece
         this.team=team;
         this.location=location;
         this.alive=true;
-        this.symbol=symbols[type];
+        this.symbol=symbols[type][0];
+        this.movegive=symbols[type][1];
         let k=document.createElement("img");
         k.id=type;
         k.style.zIndex="3";
@@ -54,6 +56,10 @@ class Piece
     {
         this.location.x=x;
         this.location.y=y;
+    }
+    getAllowedMoves()
+    {
+        return this.movegive(this);
     }
     get typeOfPiece()
     {
@@ -97,6 +103,7 @@ class Piece
         x=Number(xy.x-this.translateCoords.x);
         y=Number(xy.y-this.translateCoords.y);
         currentlySelected=this.soul;
+        chessBoard.highlight(currentlySelected.getAllowedMoves());
         document.addEventListener("mousemove",Piece.drag)
         document.addEventListener("touchmove",Piece.drag)
         this.scale(100/80);
@@ -119,6 +126,7 @@ class Piece
     {
         if(!this.alive)
         return;
+        chessBoard.refresh();//COSTLIER THAN IT SHOULD BE:MAKE A FUNCTION TO REVERT HIGHLIGHTED SQUARES
         var xy=getXY(e,true);
         setTimeout(()=>e.target.style.zIndex="3",850);//e.target is same as this object
         this.face.scale(1);
@@ -132,29 +140,44 @@ class Piece
         {
             /**
              * a successful turn is when:
+             * vx/80,vy/80 is contained in this piece's allowed moves
              * already is null
              * or it is of different team
              */
-            var already=BOARD[vx/80][vy/80];//indexoutofbounds exception never occurs
-            if(already==null)
+            let am=this.getAllowedMoves();
+            let legal=true;//to be made false once all pieces get their legal move giver function defined
+            // for(let i=0;i<am.length;i++)
+            // {
+            //     if(  (am[i].x==Math.floor(vx/80))  &&  (am[i].y==Math.floor(vy/80)))
+            //     {
+            //         //moved within allowed bounds
+            //         legal=true;
+            //     }
+            // }
+            if(legal)
             {
-                BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=null;
-                this.setLocation(vx,vy)
-                BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=this;
-                switchTurn();
-            }
-            else
-            {
-                if(!(already.team==this.team))
+                var already=BOARD[vx/80][vy/80];//indexoutofbounds exception never occurs
+                if(already==null)
                 {
-                    kill(already);
-                    //repitition
                     BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=null;
                     this.setLocation(vx,vy)
                     BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=this;
                     switchTurn();
                 }
-                
+                else
+                {
+                    if(!(already.team==this.team))
+                    {
+                        kill(already);
+                        console.log(vx,vy);
+                        //repitition
+                        BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=null;
+                        this.setLocation(vx,vy)
+                        BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=this;
+                        switchTurn();
+                    }
+                    
+                }
             }
         }
         

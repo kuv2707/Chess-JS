@@ -41,7 +41,7 @@ let playstart=function()
     {
         let temp=Pieces[Math.floor(Math.random()*Pieces.length)];
         if(temp.alive)
-        temp.move(Math.floor(Math.random()*560/80)*80+boardOffsetX,Math.floor(Math.random()*560/80)*80+boardOffsetY);
+        temp.face.move(Math.floor(Math.random()*560/80)*80+boardOffsetX,Math.floor(Math.random()*560/80)*80+boardOffsetY);
         
     },50);
 }
@@ -51,7 +51,7 @@ let playend=function()
     for(let i=0;i<Pieces.length;i++)
     {
         if(Pieces[i].alive)
-        Pieces[i].move(Pieces[i].homeX+boardOffsetX,Pieces[i].homeY+boardOffsetY);
+        Pieces[i].face.move(Pieces[i].location.x+boardOffsetX,Pieces[i].location.y+boardOffsetY);
     }
     window.dispatchEvent(new Event('resize'));
 }

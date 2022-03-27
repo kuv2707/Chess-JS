@@ -73,6 +73,13 @@ chessBoard.refresh=function()
     })
     
 }
+chessBoard.highlight=function(array)
+{
+    array?.forEach(function(move)
+    {
+        sqs[move.y][move.x].style.backgroundColor="white";
+    })
+}
 chessBoard.width=640;
 chessBoard.height=640;
 addTransformManager(chessBoard);
@@ -88,7 +95,7 @@ if(mode)
     height:100vh;
     position:relative;
     transform-origin: 50vw 50vh;
-    transition-duration: 0s;
+    transition-duration: 1.6s;
     transition-property: transform;
     `;
 }
@@ -137,8 +144,7 @@ const tentativeMove=
         return;
         this.x=x;
         this.y=y;
-        if(this.prev)
-        this.prev.revert()
+        this.prev?.revert()
         this.prev=sqs[y][x];
         if(BOARD[x][y]==null)
         {
@@ -155,7 +161,8 @@ const tentativeMove=
         this.listen=yes;
         if(!yes)
         {
-            this.prev.revert();
+            this.prev?.revert();
+            this.prev=null;
         }
     }
 }

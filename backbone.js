@@ -38,7 +38,7 @@ if(mode)
                 Pieces[i].face.rotate(deg);
             }
         }
-        printBoard();
+        //printBoard();
     }
 }
 else
@@ -83,7 +83,6 @@ function addTransformManager(go)
         scale(${this.scaleVal})
         rotate(${this.rotateVal}deg)
         
-        
         `;
     }
     go.rotate=function(value)
@@ -123,4 +122,9 @@ function printBoard()
         }
         console.log(8-i+s+"|");
     }
+}
+
+function pieceAt(x,y)
+{
+    return BOARD[x][y];
 }

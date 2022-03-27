@@ -6,11 +6,11 @@ const setTheme=function(theme)
     blackSquares=theme.bs;
     document.querySelector('meta[name="theme-color"]').setAttribute('content', theme.chromeTheme);
     colorSelector.style.backgroundColor=theme.elems;
-    sidebar.style.backgroundColor=theme.grad3;
+    sidebar.style.backgroundColor=getPercentColor(theme.baseColor,85);
     let sty=document.body.style;
-    sty.backgroundColor=getPercentColor(theme.baseColor,50);
-    sty.backgroundRepeat="no-repeat"
-    sty.backgroundAttachment="fixed";
+    sty.backgroundColor=theme.elems;
+    //sty.backgroundRepeat="no-repeat"
+    //sty.backgroundAttachment="fixed";
     chessBoard.refresh();
     activeShadow="#d1dfe5";
     tentativeMove.greenCol=theme.moveHighlight;

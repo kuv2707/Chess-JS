@@ -22,7 +22,6 @@ labelB.style.textShadow=`
 
 var resizeFunction=function()
 {
-    console.log("Resized")
     if(window.innerWidth/window.innerHeight>1.5)
     {
         labelW.move(window.innerWidth/2+320+30,boardOffsetY+80);
@@ -58,9 +57,8 @@ var resizeFunction=function()
 window.addEventListener("resize",resizeFunction);
 
 
-if(window.innerWidth/window.innerHeight>1.5)
+if(gameRules.highPerformance)
 {
-    //landscape view
     gameRules.rotatePerspective.board=true;
     gameRules.rotatePerspective.pieces=true;
         var sync;
@@ -81,7 +79,6 @@ if(window.innerWidth/window.innerHeight>1.5)
 }
 else
 {
-    //portrait view
     gameRules.rotatePerspective.board=false;
     gameRules.rotatePerspective.pieces=true;
     colorSelector.addEventListener("change", function (e) 
@@ -92,9 +89,8 @@ else
 }
 /**
  * 
- * @param {*} e event object
- * @param {*} transforms BADLY needs renovation
- * @returns 
+ * @param {Event} e event object
+ * @returns coordinates of mouseevent or touchevent with respect to current perspective
  */
 function getXY(e)
 {
