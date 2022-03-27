@@ -44,6 +44,7 @@ class Piece
         this.face.soul=this;
         addTransformManager(k);
         this.face.addEventListener("mousedown",this.mouseD)
+        this.face.addEventListener("touchstart",this.mouseD,{passive:true})
         this.face.addEventListener("mouseenter",this.mouseEnter)
         this.face.addEventListener("mouseleave",this.mouseLeave)
     }
@@ -104,6 +105,8 @@ class Piece
         y=Number(xy.y-this.translateCoords.y);
         currentlySelected=this.soul;
         chessBoard.highlight(currentlySelected.getAllowedMoves());
+        movestart=true;
+        console.log(currentlySelected,currentlySelected.getAllowedMoves())
         document.addEventListener("mousemove",Piece.drag)
         document.addEventListener("touchmove",Piece.drag)
         this.scale(100/80);
@@ -124,6 +127,7 @@ class Piece
 
     mu=function(e)
     {
+        movestart=false;
         if(!this.alive)
         return;
         chessBoard.refresh();//COSTLIER THAN IT SHOULD BE:MAKE A FUNCTION TO REVERT HIGHLIGHTED SQUARES

@@ -96,14 +96,21 @@ const bishopMoves=function(piece)
 }
 const pawnMoves=function(piece)
 {
+    let now=piece.location;
+    let x=now.x/80;
+    let y=now.y/80;
     let array=new Array();
     if(piece.team==true)
     {
-        array.push({x:Math.floor(this.location.x/80),y:Math.floor(this.location.y/80)-1,kill:false});
+        array.push({x:x,y:y-1,kill:false});
+        if(y==6  &&  !pieceAt(x,y-2))
+        array.push({x:x,y:y-2,kill:false});
     }
     else
     {
-        array.push({x:Math.floor(this.location.x/80),y:Math.floor(this.location.y/80)+1,kill:false});
+        array.push({x:x,y:y+1,kill:false});
+        if(y==1   &&  !pieceAt(x,y+2))
+        array.push({x:x,y:y+2,kill:false});
     }
     return array;
 }

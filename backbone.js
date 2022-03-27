@@ -1,69 +1,41 @@
-let switchTurn;
-if(mode)
+let switchTurn=function()
 {
-    
-    switchTurn=function()
+    turn=!turn;
+    let deg;
+    if(turn)
     {
-        turn=!turn;
-        let deg;
-        if(turn)
-        {
-            deg=0;
-            labelW.style.color=labelActive;
-            labelB.style.color=labelInactive;
-            table.rotated=false;
-        }
-        else
-        {
-            deg=180;
-            labelB.style.color=labelActive;
-            labelW.style.color=labelInactive;
-            table.rotated=true;
-        }
+        deg=0;
+        labelW.style.color=labelActive;
+        labelB.style.color=labelInactive;
+        table.rotated=false;
+    }
+    else
+    {
+        deg=180;
+        labelB.style.color=labelActive;
+        labelW.style.color=labelInactive;
+        table.rotated=true;
+    }
+    
+    
+    if(gameRules.rotatePerspective.board)
+    {
+        table.style.transform=`rotate(${deg}deg)`;
+        labelB.rotate(deg);
+        labelW.rotate(deg);
         
-        
-        if(gameRules.rotatePerspective.board)
+    }
+    if(gameRules.rotatePerspective.pieces)
+    {   for(let i=0;i<Pieces.length;i++)
         {
-            table.style.transform=`rotate(${deg}deg)`;
-            labelB.rotate(deg);
-            labelW.rotate(deg);
             
+            if(!Pieces[i].alive)
+            continue;
+            Pieces[i].face.rotate(deg);
         }
-        if(gameRules.rotatePerspective.pieces)
-        {   for(let i=0;i<Pieces.length;i++)
-            {
-                
-                if(!Pieces[i].alive)
-                continue;
-                Pieces[i].face.rotate(deg);
-            }
-        }
-        //printBoard();
     }
+    //printBoard();
 }
-else
-{
-    activeShadow="black";
-    
-    switchTurn=function()
-    {
-        turn=!turn;
-        if(turn)
-        {
-            labelW.style.color=labelActive;
-            labelB.style.color=labelInactive;
-            for(let i=0;i<Pieces.length;i++)
-            Pieces[i].rotate(0);
-        }
-        else
-        {
-            labelB.style.color=labelActive;
-            labelW.style.color=labelInactive;
-            for(let i=0;i<Pieces.length;i++)
-            Pieces[i].rotate(180);
-        }
-    }
-} 
 const BOARD=new Array(8);
 for(let k=0;k<8;k++)
 {

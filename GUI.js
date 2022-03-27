@@ -1,4 +1,5 @@
-
+var highlightMovesBenign="pink";
+var highlightMovesMalicious="red";
 var table=document.querySelector("#container");
 addTransformManager(table);
 table.rotated=false;
@@ -22,7 +23,7 @@ for(let i=0;i<8;i++)
             sq.style.backgroundColor=blackSquares;
             sq.revert=function()
             {
-                this.style.backgroundColor=blackSquares;
+                this.style.backgroundColor=this.highlightedForMoves&&movestart?this.highlightedForMoves:blackSquares;
             }
         }
         else
@@ -30,7 +31,7 @@ for(let i=0;i<8;i++)
             sq.style.backgroundColor=whiteSquares;
             sq.revert=function()
             {
-                this.style.backgroundColor=whiteSquares;
+                this.style.backgroundColor=this.highlightedForMoves&&movestart?this.highlightedForMoves:whiteSquares;
             }
             
         }
@@ -58,10 +59,11 @@ chessBoard.refresh=function()
     {
         k.forEach(function(l,j)
         {
-            
+            l.highlightedForMoves=null;
             if((i+j)%2==0)
             {
                 l.style.backgroundColor=blackSquares;
+                
                 
             }
             else
@@ -77,7 +79,8 @@ chessBoard.highlight=function(array)
 {
     array?.forEach(function(move)
     {
-        sqs[move.y][move.x].style.backgroundColor="white";
+        sqs[move.y][move.x].style.backgroundColor=highlightMovesBenign;
+        sqs[move.y][move.x].highlightedForMoves=highlightMovesBenign;
     })
 }
 chessBoard.width=640;
@@ -146,6 +149,11 @@ const tentativeMove=
         this.y=y;
         this.prev?.revert()
         this.prev=sqs[y][x];
+        if(!this.prev.highlightedForMoves)
+        {
+            this.prev=null;
+            return;
+        }
         if(BOARD[x][y]==null)
         {
             this.color=this.greenCol;
