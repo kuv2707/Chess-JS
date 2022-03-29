@@ -146,33 +146,87 @@ function getSlantMoves(piece,array)
     }   
     return array;
 }
-const rookMoves=function(piece)
+const rookMoves=function()
 {
-    return getRectMoves(piece,new Array());
+    return getRectMoves(this,new Array());
 }
-const knightMoves=function(piece)
+const knightMoves=function()
 {
-
-}
-const kingMoves=function(piece)
-{
-    
-}
-const queenMoves=function(piece)
-{
-    return getRectMoves(piece,getSlantMoves(piece,new Array()));
-}
-const bishopMoves=function(piece)
-{
-    return getSlantMoves(piece,new Array());
-}
-const pawnMoves=function(piece)
-{
-    let now=piece.location;
+    let now=this.location;
     let x=now.x/80;
     let y=now.y/80;
     let array=new Array();
-    if(piece.team==true)
+    let piece=this;
+    array.push({x:x+2,y:y+1,kill:false});
+    array.push({x:x+2,y:y-1,kill:false});
+    array.push({x:x-2,y:y-1,kill:false});
+    array.push({x:x-2,y:y+1,kill:false});
+    array.push({x:x-1,y:y+2,kill:false});
+    array.push({x:x-1,y:y-2,kill:false});
+    array.push({x:x+1,y:y-2,kill:false});
+    array.push({x:x+1,y:y+2,kill:false});
+
+    array=array.filter(function(value)
+    {
+        let ret=true;
+        if(pieceAt(value.x,value.y))
+        {
+            if(pieceAt(value.x,value.y).team==piece.team)
+            ret=false;
+            else
+            value.kill=true;
+        }
+        return ret;
+    })
+    return array;
+}
+const kingMoves=function()
+{
+    let now=this.location;
+    let x=now.x/80;
+    let y=now.y/80;
+    let array=new Array();
+    let piece=this;
+    array.push({x:x+1,y:y,kill:false});
+    array.push({x:x+1,y:y-1,kill:false});
+    array.push({x:x+1,y:y+1,kill:false});
+
+    array.push({x:x-1,y:y-1,kill:false});
+    array.push({x:x-1,y:y,kill:false});
+    array.push({x:x-1,y:y+1,kill:false});
+    
+    array.push({x:x,y:y-1,kill:false});
+    array.push({x:x,y:y+1,kill:false});
+
+    array=array.filter(function(value)
+    {
+        let ret=true;
+        if(pieceAt(value.x,value.y))
+        {
+            if(pieceAt(value.x,value.y).team==piece.team)
+            ret=false;
+            else
+            value.kill=true;
+        }
+        return ret;
+    })
+    return array;
+}
+const queenMoves=function()
+{
+    return getRectMoves(this,getSlantMoves(this,new Array()));
+}
+const bishopMoves=function()
+{
+    return getSlantMoves(this,new Array());
+}
+const pawnMoves=function()
+{
+    let now=this.location;
+    let x=now.x/80;
+    let y=now.y/80;
+    let array=new Array();
+    if(this.team==true)
     {
         if(!pieceAt(x,y-1))
         {
@@ -180,11 +234,11 @@ const pawnMoves=function(piece)
             if(y==6  &&  !pieceAt(x,y-2))
             array.push({x:x,y:y-2,kill:false});
         }
-        if(pieceAt(x+1,y-1) &&  pieceAt(x+1,y-1).team!=piece.team)
+        if(pieceAt(x+1,y-1) &&  pieceAt(x+1,y-1).team!=this.team)
         {
             array.push({x:x+1,y:y-1,kill:true});
         }
-        if(pieceAt(x-1,y-1) &&  pieceAt(x-1,y-1).team!=piece.team)
+        if(pieceAt(x-1,y-1) &&  pieceAt(x-1,y-1).team!=this.team)
         {
             array.push({x:x-1,y:y-1,kill:true});
         }
@@ -198,11 +252,11 @@ const pawnMoves=function(piece)
             array.push({x:x,y:y+2,kill:false});
         }
         
-        if(pieceAt(x+1,y+1) &&  pieceAt(x+1,y+1).team!=piece.team)
+        if(pieceAt(x+1,y+1) &&  pieceAt(x+1,y+1).team!=this.team)
         {
             array.push({x:x+1,y:y+1,kill:true});
         }
-        if(pieceAt(x-1,y+1) &&  pieceAt(x-1,y+1).team!=piece.team)
+        if(pieceAt(x-1,y+1) &&  pieceAt(x-1,y+1).team!=this.team)
         {
             array.push({x:x-1,y:y+1,kill:true});
         }

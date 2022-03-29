@@ -37,14 +37,14 @@ class Piece
         let k=document.createElement("img");
         k.id=type;
         k.style.zIndex="3";
-        k.alt=symbols[type];
+        k.alt=symbols[type][0];
         k.className="ChessPiece";
         k.src="Images/Fantasy/"+type+".png";
         this.face=k;
         this.face.soul=this;
         addTransformManager(k);
         this.face.addEventListener("mousedown",this.mouseD)
-        this.face.addEventListener("touchstart",this.mouseD,{passive:true})
+        this.face.addEventListener("touchstart",this.mouseD,{passive:false})
         this.face.addEventListener("mouseenter",this.mouseEnter)
         this.face.addEventListener("mouseleave",this.mouseLeave)
     }
@@ -60,7 +60,11 @@ class Piece
     }
     getAllowedMoves()
     {
-        return this.movegive(this);
+        /**
+         * filter out those moves which might lead to check
+         * 
+         */
+        return this.movegive();
     }
     get typeOfPiece()
     {
@@ -74,13 +78,13 @@ class Piece
     {
         if(turn!=this.soul.team)
         return;
-        this.scale(9/8);
+        this.scale(9/8,9/8);
         //console.log(this.soul);
     }
     mouseLeave()
     {
         //console.log(this);
-        this.scale(1);
+        this.scale(1,1);
         //console.log(this.soul);
     }
     static drag=function(e)
@@ -95,10 +99,9 @@ class Piece
     }
     mouseD(e)
     {
-        if(!this.soul.alive)
-        return;
         if(turn!=this.soul.team)
         return;
+        e.preventDefault();
         var xy=getXY(e,false);
         this.style.zIndex="4";
         x=Number(xy.x-this.translateCoords.x);
@@ -106,7 +109,7 @@ class Piece
         currentlySelected=this.soul;
         chessBoard.highlight(currentlySelected.getAllowedMoves());
         movestart=true;
-        console.log(currentlySelected,currentlySelected.getAllowedMoves())
+        //console.log(currentlySelected,currentlySelected.getAllowedMoves())
         document.addEventListener("mousemove",Piece.drag)
         document.addEventListener("touchmove",Piece.drag)
         this.scale(100/80);
@@ -128,8 +131,6 @@ class Piece
     mu=function(e)
     {
         movestart=false;
-        if(!this.alive)
-        return;
         chessBoard.refresh();//COSTLIER THAN IT SHOULD BE:MAKE A FUNCTION TO REVERT HIGHLIGHTED SQUARES
         var xy=getXY(e,true);
         setTimeout(()=>e.target.style.zIndex="3",850);//e.target is same as this object
@@ -149,15 +150,15 @@ class Piece
              * or it is of different team
              */
             let am=this.getAllowedMoves();
-            let legal=true;//to be made false once all pieces get their legal move giver function defined
-            // for(let i=0;i<am.length;i++)
-            // {
-            //     if(  (am[i].x==Math.floor(vx/80))  &&  (am[i].y==Math.floor(vy/80)))
-            //     {
-            //         //moved within allowed bounds
-            //         legal=true;
-            //     }
-            // }
+            let legal=false;
+            for(let i=0;i<am.length;i++)
+            {
+                if(  (am[i].x==Math.floor(vx/80))  &&  (am[i].y==Math.floor(vy/80)))
+                {
+                    //moved within allowed bounds
+                    legal=true;
+                }
+            }
             if(legal)
             {
                 var already=BOARD[vx/80][vy/80];//indexoutofbounds exception never occurs
@@ -173,7 +174,7 @@ class Piece
                     if(!(already.team==this.team))
                     {
                         kill(already);
-                        console.log(vx,vy);
+                        //console.log(vx,vy);
                         //repitition
                         BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=null;
                         this.setLocation(vx,vy)
@@ -184,7 +185,6 @@ class Piece
                 }
             }
         }
-        
         this.face.move(this.location.x+boardOffsetX,this.location.y+boardOffsetY);
     }
 }

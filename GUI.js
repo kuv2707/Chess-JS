@@ -41,6 +41,7 @@ for(let i=0;i<8;i++)
     sqs.push(arr);
 }
 let blood=document.createElement("img");
+blood.id="bloodSplash";
 let img1=new Image();
 img1.src="Images/blood1.png";
 let img2=new Image();

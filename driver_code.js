@@ -19,6 +19,7 @@ for(let i=0;i<Piece.face.length;i++)
     table.appendChild(p.face);
 }
 switchTurn();
-setTimeout(resizeFunction,5);
+
+window.addEventListener("load",resizeFunction);
 
 

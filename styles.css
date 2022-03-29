@@ -140,7 +140,11 @@ label
     font-size: 20px;
     border:none;
 }
-
+#bloodSplash
+{
+    width:80px;
+    height:80px;
+}
 .graveyard
 {
     display:grid;
