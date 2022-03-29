@@ -1,5 +1,5 @@
 var highlightMovesBenign="pink";
-var highlightMovesMalicious="red";
+var highlightMovesMalicious="#8A1919";
 var table=document.querySelector("#container");
 addTransformManager(table);
 table.rotated=false;
@@ -79,8 +79,24 @@ chessBoard.highlight=function(array)
 {
     array?.forEach(function(move)
     {
-        sqs[move.y][move.x].style.backgroundColor=highlightMovesBenign;
-        sqs[move.y][move.x].highlightedForMoves=highlightMovesBenign;
+        try
+        {
+            if(!move.kill)
+            {
+                sqs[move.y][move.x].style.backgroundColor=highlightMovesBenign;
+                sqs[move.y][move.x].highlightedForMoves=highlightMovesBenign;
+            }
+            else
+            {
+                sqs[move.y][move.x].style.backgroundColor=highlightMovesMalicious;
+                sqs[move.y][move.x].highlightedForMoves=highlightMovesMalicious;
+            }
+        }
+        catch(outofboundserror)
+        {
+
+        }
+        
     })
 }
 chessBoard.width=640;

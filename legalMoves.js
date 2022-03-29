@@ -70,9 +70,81 @@ function getRectMoves(piece,array)
     }
     return array;
 }
+/**
+ * 
+ * @param {Piece} piece the piece whose allowed moves are to be retrieved
+ * @param {Array} array the array to which the moves are to be appended
+ */
 function getSlantMoves(piece,array)
 {
-    
+    let now=piece.location;
+    let x=now.x/80;
+    let y=now.y/80;
+    for(let i=1;i<8;i++)
+    {
+        if( x+i<8  &&  x+i>=0  &&  y+i<8  &&  y+i>=0)
+        {
+            let ob={x:x+i,y:y+i,kill:false};
+            array.push(ob);
+            if(pieceAt(x+i,y+i))
+            {
+                if(pieceAt(x+i,y+i).team==piece.team)
+                array.pop();
+                else
+                ob.kill=true;
+                break;
+            }            
+        }
+    }
+    for(let i=-1;i>-8;i--)
+    {
+        if( x+i<8  &&  x+i>-1  &&  y+i<8  &&  y+i>=0)
+        {
+            let ob={x:x+i,y:y+i,kill:false};
+            array.push(ob);
+            if(pieceAt(x+i,y+i))
+            {
+                if(pieceAt(x+i,y+i).team==piece.team)
+                array.pop();
+                else
+                ob.kill=true;
+                break;
+            }           
+        }
+    }
+    for(let i=1;i<8;i++)
+    {
+        if( x+i<8  &&  x+i>=0  &&  y-i<8  &&  y-i>=0)
+        {
+            let ob={x:x+i,y:y-i,kill:false};
+            array.push(ob);
+            if(pieceAt(x+i,y-i))
+            {
+                if(pieceAt(x+i,y-i).team==piece.team)
+                array.pop();
+                else
+                ob.kill=true;
+                break;
+            }         
+        }  
+    }
+    for(let i=-1;i>-8;i--)
+    {
+        if( x+i<8  &&  x+i>=0  &&  y-i<8  &&  y-i>=0)
+        {
+            let ob={x:x+i,y:y-i,kill:false};
+            array.push(ob);
+            if(pieceAt(x+i,y-i))
+            {
+                if(pieceAt(x+i,y-i).team==piece.team)
+                array.pop();
+                else
+                ob.kill=true;
+                break;
+            }         
+        }
+    }   
+    return array;
 }
 const rookMoves=function(piece)
 {
@@ -88,11 +160,11 @@ const kingMoves=function(piece)
 }
 const queenMoves=function(piece)
 {
-    
+    return getRectMoves(piece,getSlantMoves(piece,new Array()));
 }
 const bishopMoves=function(piece)
 {
-    
+    return getSlantMoves(piece,new Array());
 }
 const pawnMoves=function(piece)
 {
@@ -102,15 +174,38 @@ const pawnMoves=function(piece)
     let array=new Array();
     if(piece.team==true)
     {
-        array.push({x:x,y:y-1,kill:false});
-        if(y==6  &&  !pieceAt(x,y-2))
-        array.push({x:x,y:y-2,kill:false});
+        if(!pieceAt(x,y-1))
+        {
+            array.push({x:x,y:y-1,kill:false});
+            if(y==6  &&  !pieceAt(x,y-2))
+            array.push({x:x,y:y-2,kill:false});
+        }
+        if(pieceAt(x+1,y-1) &&  pieceAt(x+1,y-1).team!=piece.team)
+        {
+            array.push({x:x+1,y:y-1,kill:true});
+        }
+        if(pieceAt(x-1,y-1) &&  pieceAt(x-1,y-1).team!=piece.team)
+        {
+            array.push({x:x-1,y:y-1,kill:true});
+        }
     }
     else
     {
-        array.push({x:x,y:y+1,kill:false});
-        if(y==1   &&  !pieceAt(x,y+2))
-        array.push({x:x,y:y+2,kill:false});
+        if(!pieceAt(x,y+1))
+        {
+            array.push({x:x,y:y+1,kill:false});
+            if(y==1   &&  !pieceAt(x,y+2))
+            array.push({x:x,y:y+2,kill:false});
+        }
+        
+        if(pieceAt(x+1,y+1) &&  pieceAt(x+1,y+1).team!=piece.team)
+        {
+            array.push({x:x+1,y:y+1,kill:true});
+        }
+        if(pieceAt(x-1,y+1) &&  pieceAt(x-1,y+1).team!=piece.team)
+        {
+            array.push({x:x-1,y:y+1,kill:true});
+        }
     }
     return array;
 }

@@ -98,5 +98,14 @@ function printBoard()
 
 function pieceAt(x,y)
 {
-    return BOARD[x][y];
+    try
+    {
+        return BOARD[x][y];
+
+    }
+    catch(error)
+    {
+        console.log(x,y,"out of bounds");
+        return null;
+    }
 }
