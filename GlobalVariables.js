@@ -1,4 +1,6 @@
 var turn=false;
+var BLACK_TEAM=0;
+var WHITE_TEAM=1;
 var movestart=false;
 var blackSquares="#6E1111";
 var whiteSquares="#ffa1a1";
@@ -23,8 +25,8 @@ var gameRules=
 if(navigator.userAgent.includes("Win")||navigator.userAgent.includes("mac")||window.innerWidth/window.innerHeight>1.5)
 {
     gameRules.highPerformance=true;
+    
 }
-
 if(gameRules.highPerformance)
 {
     gameRules.rotatePerspective.board=true;

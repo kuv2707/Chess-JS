@@ -30,7 +30,7 @@ var resizeFunction=function()
         blackGraveyard.move(window.innerWidth/2-320-330,200);
         gameRules.rotatePerspective.board=true;
         if(!turn)
-        table.style.transform=`rotate(${180}deg)`;
+        table.rotate(180);
     }
     else
     {
@@ -40,7 +40,7 @@ var resizeFunction=function()
         blackGraveyard.move(window.innerWidth/2-320,750);
         gameRules.rotatePerspective.board=false;
         if(!turn)
-        table.style.transform=`rotate(${0}deg)`;
+        table.rotate(0);
     }
     chessBoard.move(window.innerWidth/2-320,0);
     boardOffsetX=window.innerWidth/2-320;
@@ -59,9 +59,7 @@ window.addEventListener("resize",resizeFunction);
 
 if(gameRules.highPerformance)
 {
-    gameRules.rotatePerspective.board=true;
-    gameRules.rotatePerspective.pieces=true;
-        var sync;
+       var sync;
     colorSelector.addEventListener("focus", function (e) 
     {
         sync=setInterval(function()
@@ -79,14 +77,14 @@ if(gameRules.highPerformance)
 }
 else
 {
-    gameRules.rotatePerspective.board=false;
-    gameRules.rotatePerspective.pieces=true;
     colorSelector.addEventListener("change", function (e) 
     {
         setTheme(createTheme(HexToRGB(e.target.value)));
         
     });
 }
+
+
 /**
  * 
  * @param {Event} e event object

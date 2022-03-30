@@ -22,4 +22,4 @@ switchTurn();
 
 window.addEventListener("load",resizeFunction);
 
-
+//define player objects which control labels etc

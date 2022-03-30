@@ -3,18 +3,18 @@ var currentlySelected;
 
 var symbols=
 {
-    br:["♜",rookMoves],
-    bn:["♞",knightMoves],
-    bq:["♛",queenMoves],
-    bk:["♚",kingMoves],
-    bb:["♝",bishopMoves],
-    bp:["♟",pawnMoves],
-    wr:["♖",rookMoves],
-    wn:["♘",knightMoves],
-    wq:["♕",queenMoves],
-    wk:["♔",kingMoves],
-    wb:["♗",bishopMoves],
-    wp:["♙",pawnMoves],
+    br:["♜",rookMoves,4],
+    bn:["♞",knightMoves,3],
+    bq:["♛",queenMoves,5],
+    bk:["♚",kingMoves,6],
+    bb:["♝",bishopMoves,2],
+    bp:["♟",pawnMoves,1],
+    wr:["♖",rookMoves,4],
+    wn:["♘",knightMoves,3],
+    wq:["♕",queenMoves,5],
+    wk:["♔",kingMoves,6],
+    wb:["♗",bishopMoves,2],
+    wp:["♙",pawnMoves,1],
     
 }
 class Piece
@@ -34,6 +34,7 @@ class Piece
         this.alive=true;
         this.symbol=symbols[type][0];
         this.movegive=symbols[type][1];
+        this.weight=symbols[type][2];
         let k=document.createElement("img");
         k.id=type;
         k.style.zIndex="3";

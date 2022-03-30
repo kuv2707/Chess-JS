@@ -226,7 +226,7 @@ const pawnMoves=function()
     let x=now.x/80;
     let y=now.y/80;
     let array=new Array();
-    if(this.team==true)
+    if(this.team==WHITE_TEAM)
     {
         if(!pieceAt(x,y-1))
         {

@@ -2,7 +2,7 @@ var highlightMovesBenign="pink";
 var highlightMovesMalicious="#8A1919";
 var table=document.querySelector("#container");
 addTransformManager(table);
-table.rotated=false;
+
 var chessBoard=document.createElement("div");
 chessBoard.id="chessBoard";
 let sqs=new Array();
@@ -12,10 +12,7 @@ for(let i=0;i<8;i++)
     for(let j=0;j<8;j++)
     {
         let sq=document.createElement("div");
-        if(mode)
         sq.style.transitionProperty="background-color";
-        else
-        sq.style.transitionProperty="none";
         sq.className="boardSquares";
         sq.id="square"+i+"_"+j;
         if((i+j)%2==0)

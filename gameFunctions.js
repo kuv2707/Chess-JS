@@ -4,7 +4,7 @@ var kill=function(piece)
     let x=piece.location.x;
     let y=piece.location.y;
     animateDeathExplosion(boardOffsetX+x+40,boardOffsetY+y+40);
-    blood.src=(Math.random()<0.5?img1:img2).src;
+    blood.src=(piece.weight<=3?img1:img2).src;
     blood.remove();
     sqs[y/80][x/80].append(blood);
     piece.drag=null;
@@ -19,7 +19,7 @@ var kill=function(piece)
     piece.face.move(0,0);
     piece.face.style.opacity="0.8"
     setTimeout(()=> piece.face.scale(1,1),1)
-    if(piece.team==false)
+    if(piece.team==BLACK_TEAM)
     {
         
         blackGraveyard.append(piece.face)

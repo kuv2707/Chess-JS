@@ -7,20 +7,20 @@ let switchTurn=function()
         deg=0;
         labelW.style.color=labelActive;
         labelB.style.color=labelInactive;
-        table.rotated=false;
+        
     }
     else
     {
         deg=180;
         labelB.style.color=labelActive;
         labelW.style.color=labelInactive;
-        table.rotated=true;
+        
     }
     
     
     if(gameRules.rotatePerspective.board)
     {
-        table.style.transform=`rotate(${deg}deg)`;
+        table.rotate(deg);
         labelB.rotate(deg);
         labelW.rotate(deg);
         
@@ -29,8 +29,6 @@ let switchTurn=function()
     {   for(let i=0;i<Pieces.length;i++)
         {
             
-            if(!Pieces[i].alive)
-            continue;
             Pieces[i].face.rotate(deg);
         }
     }
@@ -48,6 +46,7 @@ function addTransformManager(go)
     go.scaleVal=1;
     go.rotateVal=0;
     go.translateCoords={x:0,y:0};
+    go.rotated=false;
     go.updateAppearance=function()
     {
         this.style.transform=
@@ -63,6 +62,10 @@ function addTransformManager(go)
         return;
         this.rotateVal=value;
         this.updateAppearance();
+        if(value%360==0)
+        this.rotated=false;
+        else
+        this.rotated=true;
     }
     go.scale=function(value)
     {
