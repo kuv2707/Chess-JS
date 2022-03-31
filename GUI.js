@@ -147,10 +147,10 @@ function endHover(e)
     e.target.move(e.target.translateCoords.x,e.target.translateCoords.y+15);
     //e.target.style.filter="none";
 }
-labelB.addEventListener("mouseenter",popOnHover);
-labelB.addEventListener("mouseleave",endHover);
-labelW.addEventListener("mouseenter",popOnHover);
-labelW.addEventListener("mouseleave",endHover);
+// labelB.addEventListener("mouseenter",popOnHover);
+// labelB.addEventListener("mouseleave",endHover);
+// labelW.addEventListener("mouseenter",popOnHover);
+// labelW.addEventListener("mouseleave",endHover);
 addTransformManager(labelW);
 addTransformManager(labelB);
 table.appendChild(labelW);

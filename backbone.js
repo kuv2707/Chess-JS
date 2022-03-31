@@ -5,16 +5,19 @@ let switchTurn=function()
     if(turn)
     {
         deg=0;
-        labelW.style.color=labelActive;
-        labelB.style.color=labelInactive;
+        //labelW.style.backgroundColor="green";
+        //labelB.style.backgroundColor="black";
+        labelW.classList.add("myTurn");
+        labelB.classList.remove("myTurn");
         
     }
     else
     {
         deg=180;
-        labelB.style.color=labelActive;
-        labelW.style.color=labelInactive;
-        
+        //labelW.style.backgroundColor="black";
+        //labelB.style.backgroundColor="green";
+        labelB.classList.add("myTurn");
+        labelW.classList.remove("myTurn");
     }
     
     
@@ -114,7 +117,7 @@ function pieceAt(x,y)
     }
     catch(error)
     {
-        console.log(x,y,"out of bounds");
+        //console.log(x,y,"out of bounds");
         return null;
     }
 }

@@ -53,13 +53,36 @@ h2{
     border-radius: 100px;
     z-index: 2;
     background-color: #000000;
+    color:white;
     text-align: center;
     font-size: 50px;
     transition-duration: 0.8s;
     transition-property: color,transform,background-color,filter;
     
 }
-
+.endangered
+{
+    animation: danger 1s infinite;
+}
+.myTurn
+{
+    animation: turn 15s infinite;
+}
+@keyframes turn
+{
+    0%
+    {
+        background-color: rgb(78, 169, 85);
+    }
+    50%
+    {
+        background-color: rgb(18, 111, 78);
+    }
+    100%
+    {
+        background-color: rgb(78, 169, 85);
+    }
+}
 .ChessPiece
 {
     position:absolute;

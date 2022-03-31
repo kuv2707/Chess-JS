@@ -113,7 +113,7 @@ class Piece
         //console.log(currentlySelected,currentlySelected.getAllowedMoves())
         document.addEventListener("mousemove",Piece.drag)
         document.addEventListener("touchmove",Piece.drag)
-        this.scale(100/80);
+        this.scale(120/80);
         document.addEventListener("mouseup",Piece.docmu)
         document.addEventListener("touchend",Piece.docmu)
         tentativeMove.setListen(true);

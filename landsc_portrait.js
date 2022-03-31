@@ -3,7 +3,7 @@ let yb=220;
 let xw=0;
 let yw=220;
 
-
+/**
 labelB.style.textShadow=`            
         0 0 7px #fff,
         0 0 10px #fff, 
@@ -19,7 +19,7 @@ labelB.style.textShadow=`
         0 0 82px #0fa
         `;
 
-
+*/
 var resizeFunction=function()
 {
     if(window.innerWidth/window.innerHeight>1.2)
