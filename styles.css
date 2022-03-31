@@ -45,7 +45,7 @@ h2{
     transition-duration: 0.8s;
     transition-property: left;
 }
-label
+.playerLabel
 {
     position: absolute;
     width:100px;
@@ -56,7 +56,7 @@ label
     text-align: center;
     font-size: 50px;
     transition-duration: 0.8s;
-    transition-property: color,transform,background-color;
+    transition-property: color,transform,background-color,filter;
     
 }
 

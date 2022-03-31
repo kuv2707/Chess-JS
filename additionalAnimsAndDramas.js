@@ -53,7 +53,7 @@ let playend=function()
         if(Pieces[i].alive)
         Pieces[i].face.move(Pieces[i].location.x+boardOffsetX,Pieces[i].location.y+boardOffsetY);
     }
-    window.dispatchEvent(new Event('resize'));
+    resizeFunction();
 }
 
 

@@ -29,7 +29,7 @@ let switchTurn=function()
     {   for(let i=0;i<Pieces.length;i++)
         {
             
-            Pieces[i].face.rotate(deg);
+            Pieces[i].face.rotate(deg);//does flip() seem better?
         }
     }
     //printBoard();
@@ -47,11 +47,12 @@ function addTransformManager(go)
     go.rotateVal=0;
     go.translateCoords={x:0,y:0};
     go.rotated=false;
+    go.flipval=1;
     go.updateAppearance=function()
     {
         this.style.transform=
         `translate(${this.translateCoords.x}px,${this.translateCoords.y}px)
-        scale(${this.scaleVal})
+        scale(${this.scaleVal},${this.flipval*this.scaleVal})
         rotate(${this.rotateVal}deg)
         
         `;
@@ -78,6 +79,11 @@ function addTransformManager(go)
     {
         this.translateCoords.x=xx;
         this.translateCoords.y=yy;
+        this.updateAppearance();
+    }
+    go.flip=function()
+    {
+        go.flipval*=-1;
         this.updateAppearance();
     }
 }

@@ -22,7 +22,7 @@ var gameRules=
     },
     highPerformance:false,
 }
-if(navigator.userAgent.includes("Win")||navigator.userAgent.includes("mac")||window.innerWidth/window.innerHeight>1.5)
+if(navigator.userAgent.includes("Win")||navigator.userAgent.includes("mac")||window.innerWidth/window.innerHeight>1.2)
 {
     gameRules.highPerformance=true;
     

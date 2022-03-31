@@ -22,7 +22,7 @@ labelB.style.textShadow=`
 
 var resizeFunction=function()
 {
-    if(window.innerWidth/window.innerHeight>1.5)
+    if(window.innerWidth/window.innerHeight>1.2)
     {
         labelW.move(window.innerWidth/2+320+30,boardOffsetY+80);
         labelB.move(window.innerWidth/2-320-330,boardOffsetY+80);

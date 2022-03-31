@@ -15,6 +15,7 @@ for(let i=0;i<Piece.face.length;i++)
         cy=480;
     }
     p.face.move(boardOffsetX+80+480*Math.random(),boardOffsetY+80+480*Math.random());
+    //p.face.flip();
     Pieces.push(p);
     table.appendChild(p.face);
 }
