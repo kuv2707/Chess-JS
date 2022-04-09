@@ -151,7 +151,7 @@ class Piece
              * or it is of different team
              */
             let am=this.getAllowedMoves();
-            let legal=true;
+            let legal=false;
             for(let i=0;i<am.length;i++)
             {
                 if(  (am[i].x==Math.floor(vx/80))  &&  (am[i].y==Math.floor(vy/80)))
