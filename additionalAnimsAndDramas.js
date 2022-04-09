@@ -1,10 +1,9 @@
 let svgExplosion=document.querySelector("#Shockwave_canvas");
+addTransformManager(svgExplosion);
 svgExplosion.style.zIndex="1";
-svgExplosion.setAttribute("width",window.innerWidth);
-if(mode)
-svgExplosion.style.width="100%";
 let circle=document.querySelector("#shock");
-
+circle.setAttribute("cx","200");
+circle.setAttribute("cy","200");
 let prevAnim;
 const animateDeathExplosion=function(x,y)
 {
@@ -12,12 +11,12 @@ const animateDeathExplosion=function(x,y)
     prevAnim=0;
     let teamColor;
     teamColor="Red";
-    circle.setAttribute("cx",x);
-    circle.setAttribute("cy",y);
+    
     circle.setAttribute("fill",teamColor);
     let k=0;
     let animator=function()
     {
+        svgExplosion.move(x-200,y-200);
         circle.setAttribute("r",200*Math.sin(k));
         circle.setAttribute("fill-opacity",((Math.PI/2)-k*k)/(Math.PI));
         k+=0.05;
