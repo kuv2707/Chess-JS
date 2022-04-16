@@ -4,25 +4,28 @@ svgExplosion.style.zIndex="1";
 let circle=document.querySelector("#shock");
 circle.setAttribute("cx","200");
 circle.setAttribute("cy","200");
+circle.setAttribute("r",200*Math.sin(0));
 let prevAnim;
 const animateDeathExplosion=function(x,y)
 {
     clearInterval(prevAnim);
     prevAnim=0;
-    let teamColor;
-    teamColor="Red";
-    
+    let teamColor="Red";
+    svgExplosion.move(x-200,y-200);
     circle.setAttribute("fill",teamColor);
     let k=0;
+    circle.setAttribute("r",200*Math.sin(k));
     let animator=function()
     {
-        svgExplosion.move(x-200,y-200);
-        circle.setAttribute("r",200*Math.sin(k));
-        circle.setAttribute("fill-opacity",((Math.PI/2)-k*k)/(Math.PI));
+        
+        
+        circle.setAttribute("r",""+200*Math.sin(k));
+        circle.setAttribute("fill-opacity",((Math.PI/2)-k)/(Math.PI));
         k+=0.05;
         if(k>Math.PI/2)
         {
             circle.setAttribute("r","0");
+            console.log("end")
         }
         else
         window.requestAnimationFrame(animator);

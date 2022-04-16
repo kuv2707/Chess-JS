@@ -1,28 +1,31 @@
 let switchTurn=function()
 {
     turn=!turn;
+    turnCount++;
     let deg;
-    if(turn)
+    chessBoard.clear("move");
+    if(turnCount>enPassantLoc.expiryMove)
+    enPassantLoc.clear();
+    if(turn)//white's turn
     {
         deg=0;
-        //labelW.style.backgroundColor="green";
-        //labelB.style.backgroundColor="black";
-        labelW.classList.add("myTurn");
-        labelB.classList.remove("myTurn");
+        labelW.style.backgroundColor="rgba(25, 255, 25, .45)";
+        labelB.style.backgroundColor="rgba(255, 255, 255, .45)";
+        
         
     }
     else
     {
         deg=180;
-        //labelW.style.backgroundColor="black";
-        //labelB.style.backgroundColor="green";
-        labelB.classList.add("myTurn");
-        labelW.classList.remove("myTurn");
+        labelW.style.backgroundColor="rgba(255, 255, 255, .45)";
+        labelB.style.backgroundColor="rgba(25, 255, 25, .45)";
+        
     }
     
     
     if(gameRules.rotatePerspective.board)
     {
+        /*use chessboard instead of table for rotation*/
         table.rotate(deg);
         labelB.rotate(deg);
         labelW.rotate(deg);
@@ -120,4 +123,19 @@ function pieceAt(x,y)
         //console.log(x,y,"out of bounds");
         return null;
     }
+}
+
+
+function setFEN(fen)
+{
+    for(let i=0;i<fen.length;i++)
+    {
+        let c=fen.charAt(i);
+        
+    }
+}
+
+function getFEN(board=BOARD)
+{
+
 }

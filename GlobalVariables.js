@@ -1,4 +1,5 @@
 var turn=false;
+var turnCount=-1;
 var BLACK_TEAM=0;
 var WHITE_TEAM=1;
 var movestart=false;

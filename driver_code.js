@@ -2,7 +2,7 @@ var cx=0;cy=0;
 
 for(let i=0;i<Piece.face.length;i++)
 {
-    let p=new Piece(Piece.face[i].charAt(0)=='b'?false:true,{x:cx,y:cy},Piece.face[i])
+    let p=new Piece(Piece.face[i].charAt(0)=='b'?BLACK_TEAM:WHITE_TEAM,{x:cx,y:cy},Piece.face[i])
     BOARD[cx/80][cy/80]=p;
     cx+=80;
     if(cx==640)

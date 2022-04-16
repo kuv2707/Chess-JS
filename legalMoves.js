@@ -4,6 +4,17 @@
  * y: y coordinate
  * kill: indicates whether there is a piece at (x,y) which will be killed
  */
+
+let enPassantLoc={x:-2,y:-2,expiryMove:-1,pawn:null,clear:function()
+{
+    this.x=-2;
+    this.y=-2;
+    this.expiryMove=-1;
+    this.pawn=null;
+    chessBoard.clear("enp");
+}};
+
+
 /**
  * to be used by rook,queen
  * @param {Piece} piece the piece whose allowed moves are to be retrieved
@@ -210,6 +221,9 @@ const kingMoves=function()
         }
         return ret;
     })
+
+
+    //castling add
     return array;
 }
 const queenMoves=function()
@@ -259,6 +273,20 @@ const pawnMoves=function()
         if(pieceAt(x-1,y+1) &&  pieceAt(x-1,y+1).team!=this.team)
         {
             array.push({x:x-1,y:y+1,kill:true});
+        }
+        
+    }
+    if(Math.abs(enPassantLoc.x-x)==1)
+    {
+        if(this.team==WHITE_TEAM)
+        {
+            if(enPassantLoc.y-y==-1)
+            array.push({...enPassantLoc,kill:true});
+        }
+        if(this.team==BLACK_TEAM)
+        {
+            if(enPassantLoc.y-y==+1)
+            array.push({...enPassantLoc,kill:true});
         }
     }
     return array;

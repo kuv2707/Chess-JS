@@ -32,6 +32,7 @@ for(let i=0;i<8;i++)
             }
             
         }
+        sq.purpose="";
         chessBoard.append(sq);
         arr.push(sq);
     }
@@ -57,7 +58,8 @@ chessBoard.refresh=function()
     {
         k.forEach(function(l,j)
         {
-            l.highlightedForMoves=null;
+            if(!l.purpose=="")
+            return;
             if((i+j)%2==0)
             {
                 l.style.backgroundColor=blackSquares;
@@ -73,28 +75,43 @@ chessBoard.refresh=function()
     })
     
 }
-chessBoard.highlight=function(array)
+/**
+ * 
+ * @param {x:Number,y:Number,color:String,purpose:String} loc 
+ */
+chessBoard.highlight=function(loc)
 {
-    array?.forEach(function(move)
+    try
     {
-        try
-        {
-            if(!move.kill)
-            {
-                sqs[move.y][move.x].style.backgroundColor=highlightMovesBenign;
-                sqs[move.y][move.x].highlightedForMoves=highlightMovesBenign;
-            }
-            else
-            {
-                sqs[move.y][move.x].style.backgroundColor=highlightMovesMalicious;
-                sqs[move.y][move.x].highlightedForMoves=highlightMovesMalicious;
-            }
-        }
-        catch(outofboundserror)
-        {
+        sqs[loc.y][loc.x].style.backgroundColor=loc.color;
+        sqs[loc.y][loc.x].purpose=loc.purpose;
 
-        }
-        
+    }
+    catch(outofbound){}
+    
+}
+chessBoard.clear=function(purpose)
+{
+    sqs.forEach(function(k,i)
+    {
+        k.forEach(function(l,j)
+        {
+            if(purpose==l?.purpose)
+            {
+                l.purpose="";
+                if((i+j)%2==0)
+                {
+                    l.style.backgroundColor=blackSquares;
+                    
+                    
+                }
+                else
+                {
+                    l.style.backgroundColor=whiteSquares;
+                    
+                }
+            }
+        })
     })
 }
 chessBoard.width=640;
@@ -126,7 +143,6 @@ var labelW=document.createElement("label");
 //labelW.style.top="100px";
 labelW.style.width="300px";
 labelW.innerHTML="White";
-labelW.style.backgroundColor="black";
 labelW.className="playerLabel";
 
 var labelB=document.createElement("label");
@@ -134,7 +150,6 @@ var labelB=document.createElement("label");
 //labelB.style.top="100px";
 labelB.style.width="300px";
 labelB.innerHTML="Black";
-labelB.style.backgroundColor="black";
 labelB.className="playerLabel";
 
 function popOnHover(e)
@@ -224,6 +239,17 @@ table.append(blackGraveyard);
 table.append(whiteGraveyard);
 addTransformManager(blackGraveyard);
 addTransformManager(whiteGraveyard);
+for(let i=0;i<16;i++)
+{
+    let k=document.createElement("img");
+    k.style.opacity="0";
+    k.src=img1.src;
+    blackGraveyard.append(k);
+    k=document.createElement("img");
+    k.style.opacity="0";
+    k.src=img2.src;
+    whiteGraveyard.append(k);
+}
 
 
 

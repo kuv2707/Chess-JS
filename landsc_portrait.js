@@ -22,6 +22,7 @@ labelB.style.textShadow=`
 */
 var resizeFunction=function()
 {
+    //console.log("resizing")
     if(window.innerWidth/window.innerHeight>1.2)
     {
         labelW.move(window.innerWidth/2+320+30,boardOffsetY+80);
@@ -54,7 +55,12 @@ var resizeFunction=function()
     }
     //position blackGraveyard and whiteGraveyard accordingly
 };
-window.addEventListener("resize",resizeFunction);
+let res=-1;
+window.addEventListener("resize",function()
+{
+    clearTimeout(res);
+    res=setTimeout(resizeFunction,0.5);
+});
 
 
 if(gameRules.highPerformance)
