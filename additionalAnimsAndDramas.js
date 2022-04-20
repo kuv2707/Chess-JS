@@ -1,4 +1,5 @@
-let svgExplosion=document.querySelector("#Shockwave_canvas");
+let svgExplosion=document.createElement("svg");
+svgExplosion.id="#Shockwave_canvas";
 addTransformManager(svgExplosion);
 svgExplosion.style.zIndex="1";
 let circle=document.querySelector("#shock");
@@ -25,7 +26,7 @@ const animateDeathExplosion=function(x,y)
         if(k>Math.PI/2)
         {
             circle.setAttribute("r","0");
-            console.log("end")
+            svgExplosion.move(-400,-400);
         }
         else
         window.requestAnimationFrame(animator);
@@ -43,7 +44,7 @@ let playstart=function()
     {
         let temp=Pieces[Math.floor(Math.random()*Pieces.length)];
         if(temp.alive)
-        temp.face.move(Math.floor(Math.random()*560/80)*80+boardOffsetX,Math.floor(Math.random()*560/80)*80+boardOffsetY);
+        temp.face.move(Math.floor(Math.random()*560/80)*80,Math.floor(Math.random()*560/80)*80);
         
     },50);
 }
@@ -53,7 +54,7 @@ let playend=function()
     for(let i=0;i<Pieces.length;i++)
     {
         if(Pieces[i].alive)
-        Pieces[i].face.move(Pieces[i].location.x+boardOffsetX,Pieces[i].location.y+boardOffsetY);
+        Pieces[i].face.move(Pieces[i].location.x,Pieces[i].location.y);
     }
     resizeFunction();
 }

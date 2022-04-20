@@ -20,6 +20,7 @@ var symbols=
 }
 class Piece
 {
+    //to be replaced by a fenstring consisting of initial arrangement of board
     static face=["br","bn","bb","bq","bk","bb","bn","br","bp","bp","bp","bp","bp","bp","bp","bp",
             "wp","wp","wp","wp","wp","wp","wp","wp","wr","wn","wb","wk","wq","wb","wn","wr"];
 
@@ -42,7 +43,7 @@ class Piece
         k.style.zIndex="3";
         k.alt=symbols[type][0];
         k.className="ChessPiece";
-        k.src="Images/Fantasy/"+type+".png";
+        k.src=`Images/${sel.value}/${type}.png`;
         this.face=k;
         this.face.soul=this;
         addTransformManager(k);
@@ -146,22 +147,23 @@ class Piece
         this.face.style.transitionProperty="transform";
         document.removeEventListener("mousemove",Piece.drag)
         document.removeEventListener("touchmove",Piece.drag)
-        let vx=Math.floor((xy.x-boardOffsetX)/80)*80;
-        let vy=Math.floor((xy.y-boardOffsetY)/80)*80;
+        let vx=Math.floor((xy.x)/80);
+        let vy=Math.floor((xy.y)/80);
+        console.log(vx,vy);
         chessBoard.clear("move");
-        if(!(vx>=640 ||  vy>=640  ||  vx<0  ||  vy<0))
+        if(!(vx>=8 ||  vy>=8  ||  vx<0  ||  vy<0))
         {
             /**
              * a successful turn is when:
-             * vx/80,vy/80 is contained in this piece's allowed moves
-             * already is null
+             * vx,vy is contained in this piece's allowed moves
+             * "already" is null
              * or it is of different team
              */
             let am=this.getAllowedMoves();
             let legal=false;
             for(let i=0;i<am.length;i++)
             {
-                if(  (am[i].x==Math.floor(vx/80))  &&  (am[i].y==Math.floor(vy/80)))
+                if(  (am[i].x==vx)  &&  (am[i].y==vy))
                 {
                     //moved within allowed bounds
                     legal=true;
@@ -169,17 +171,17 @@ class Piece
             }
             if(legal)
             {
-                var already=BOARD[vx/80][vy/80];//indexoutofbounds exception never occurs
+                var already=BOARD[vx][vy];//indexoutofbounds exception never occurs
                 if(this.symbolFEN=="P"|| this.symbolFEN=="p")
                 {
                     //check if this very piece did an enpassant
                     let now=this.location;
                     let x=now.x/80;
                     let y=now.y/80;
-                    if(vy/80-y==2  ||  vy/80-y==-2)
+                    if(vy-y==2  ||  vy-y==-2)
                     {
                         enPassantLoc.x=x;
-                        enPassantLoc.y=(y+vy/80)/2;
+                        enPassantLoc.y=(y+vy)/2;
                         enPassantLoc.expiryMove=turnCount+1;
                         enPassantLoc.pawn=this;
                         chessBoard.clear("enp");
@@ -187,12 +189,16 @@ class Piece
                     }
 
                     //check if this very piece is capable of capturing an enpassant
+                    if(enPassantLoc.x==vx  &&  enPassantLoc.y==vy)
+                    {
+                        already=enPassantLoc.pawn;
+                    }
                 }
                 
                 if(already==null)
                 {
                     BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=null;
-                    this.setLocation(vx,vy)
+                    this.setLocation(vx*80,vy*80)
                     BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=this;
                     switchTurn();
                 }
@@ -202,7 +208,7 @@ class Piece
                     {
                         kill(already);
                         BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=null;
-                        this.setLocation(vx,vy)
+                        this.setLocation(vx*80,vy*80)
                         BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=this;
                         switchTurn();
                     }
@@ -216,7 +222,7 @@ class Piece
 
 
         }
-        this.face.move(this.location.x+boardOffsetX,this.location.y+boardOffsetY);
+        this.face.move(this.location.x,this.location.y);
     }
 }
 

@@ -9,16 +9,16 @@ let switchTurn=function()
     if(turn)//white's turn
     {
         deg=0;
-        labelW.style.backgroundColor="rgba(25, 255, 25, .45)";
-        labelB.style.backgroundColor="rgba(255, 255, 255, .45)";
+        labelW.style.color="rgba(25, 255, 25, 1.0)";
+        labelB.style.color="rgba(255, 255, 255, 1.0)";
         
         
     }
     else
     {
         deg=180;
-        labelW.style.backgroundColor="rgba(255, 255, 255, .45)";
-        labelB.style.backgroundColor="rgba(25, 255, 25, .45)";
+        labelW.style.color="rgba(255, 255, 255, 1.0)";
+        labelB.style.color="rgba(25, 255, 25, 1.0)";
         
     }
     
@@ -26,9 +26,9 @@ let switchTurn=function()
     if(gameRules.rotatePerspective.board)
     {
         /*use chessboard instead of table for rotation*/
-        table.rotate(deg);
-        labelB.rotate(deg);
-        labelW.rotate(deg);
+        chessBoard.rotate(deg);
+        //labelB.rotate(deg);
+        //labelW.rotate(deg);
         
     }
     if(gameRules.rotatePerspective.pieces)

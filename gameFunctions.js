@@ -3,9 +3,10 @@ var kill=function(piece)
     piece.alive=false;
     let x=piece.location.x;
     let y=piece.location.y;
-    animateDeathExplosion(boardOffsetX+x+40,boardOffsetY+y+40);
+    animateDeathExplosion(x,y);
     blood.src=(piece.weight<=3?img1:img2).src;
-    table.removeChild(piece.face);
+    piece.face.scale(0,0);
+    setTimeout(()=>chessBoard.removeChild(piece.face),0.8);
     let t=sqs[y/80][x/80];
     blood.move(boardOffsetX+Math.floor(x/80)*80,boardOffsetY+Math.floor(y/80)*80)
     piece.drag=null;
@@ -16,7 +17,6 @@ var kill=function(piece)
     piece.face.addEventListener("mouseenter",piece.mouseEnter)
     piece.face.addEventListener("mouseleave",piece.mouseLeave)
     piece.face.style="position:relative";
-    piece.face.scale(0,0);
     piece.face.move(0,0);
     setTimeout(()=> piece.face.scale(1,1),1);
     let subject;

@@ -4,18 +4,15 @@ document.body.append(sidebar);
 sidebar.expanded=false;
 sidebar.show=function()
 {
-    //table.style.marginLeft="250px";
     sidebar.style.height="250px";
     sidebar.expanded=true;
-    showHide.innerText="▲";
-    //console.log("shown sidebar")
+    showHide.scale(0);
 }
 sidebar.hide=function()
 {
-    //table.style.marginLeft="0px";
     sidebar.style.height="0px";
     sidebar.expanded=false;
-    showHide.innerText="▼";
+    showHide.scale(1);
 }
 sidebar.toggle=function()
 {
@@ -25,6 +22,7 @@ sidebar.toggle=function()
     sidebar.show();
 }
 let showHide=document.createElement("button");
+addTransformManager(showHide);
 showHide.id="showHideBtn";
 showHide.innerText="▼";
 sidebar.append(showHide);
@@ -34,11 +32,13 @@ sidebar.addEventListener("mouseenter",(e)=>
     e.stopPropagation();
     sidebar.show();
     
+    
 },{passive:true});
 sidebar.addEventListener("mouseleave",(e)=>
 {
     e.stopPropagation();
     sidebar.hide();
+    
     
 },{passive:true});
 showHide.addEventListener("touchstart",(e)=>
@@ -47,6 +47,35 @@ showHide.addEventListener("touchstart",(e)=>
     sidebar.show();
     
 },{passive:true});
+
+var a=document.createElement("a");
+a.className="sidebarElements";
+a.innerText="Piece set:";
+sidebar.append(a);
+
+var sel=document.createElement("select");
+sel.className="sidebarElements";
+let pieceThemes=["Fantasy","Eyes","Skull","Katz","Freak"];
+sel.value=pieceThemes[0];
+for(let i=0;i<pieceThemes.length;i++)
+{
+    let o=document.createElement("option");
+    o.innerText=pieceThemes[i];
+    sel.append(o);
+}
+sel.addEventListener("change",function(e)
+{
+    console.log(sel.value);
+    Pieces.forEach(function(e)
+    {
+        e.face.src=`Images/${sel.value}/${e.face.id}.png`;
+    })
+})
+sidebar.append(sel);
+
+
+
+
 
 var lab=document.createElement("h2");
 lab.innerText="Theme color:";
