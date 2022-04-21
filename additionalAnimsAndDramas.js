@@ -1,8 +1,7 @@
-let svgExplosion=document.createElement("svg");
-svgExplosion.id="#Shockwave_canvas";
-addTransformManager(svgExplosion);
-svgExplosion.style.zIndex="1";
 let circle=document.querySelector("#shock");
+let svgExplosion=circle.parentElement;
+svgExplosion.style.zIndex="1";
+addTransformManager(svgExplosion);
 circle.setAttribute("cx","200");
 circle.setAttribute("cy","200");
 circle.setAttribute("r",200*Math.sin(0));

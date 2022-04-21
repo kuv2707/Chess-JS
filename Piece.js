@@ -100,8 +100,8 @@ class Piece
         currentlySelected.face.style.transitionProperty="none";
         var xy=getXY(e,true);
         currentlySelected.face.move(xy.x-x,xy.y-y);
-        tentativeMove.setXY(Math.floor((xy.x-boardOffsetX)/80),
-        Math.floor((xy.y-boardOffsetY)/80));
+        tentativeMove.setXY(Math.floor((xy.x)/80),
+        Math.floor((xy.y)/80));
     }
     mouseD(e)
     {
@@ -133,8 +133,8 @@ class Piece
         document.removeEventListener("touchmove",Piece.drag,{passive:false})
         document.removeEventListener("mouseup",Piece.docmu)
         document.removeEventListener("touchend",Piece.docmu)
-        currentlySelected.mu(e);
         tentativeMove.setListen(false);
+        currentlySelected.mu(e);
     }
 
     mu=function(e)
@@ -206,7 +206,7 @@ class Piece
                 {
                     if(!(already.team==this.team))
                     {
-                        kill(already);
+                        kill(already,xy.x,xy.y);
                         BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=null;
                         this.setLocation(vx*80,vy*80)
                         BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=this;

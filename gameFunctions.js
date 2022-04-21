@@ -1,24 +1,20 @@
-var kill=function(piece)
+var kill=function(piece,mrelX,mrelY)
 {
     piece.alive=false;
     let x=piece.location.x;
     let y=piece.location.y;
-    animateDeathExplosion(x,y);
+    animateDeathExplosion(mrelX,mrelY);
     blood.src=(piece.weight<=3?img1:img2).src;
-    piece.face.scale(0,0);
-    setTimeout(()=>chessBoard.removeChild(piece.face),0.8);
-    let t=sqs[y/80][x/80];
-    blood.move(boardOffsetX+Math.floor(x/80)*80,boardOffsetY+Math.floor(y/80)*80)
+    blood.style.opacity="1"
+    piece.face.scale(0);
+    blood.move(x,y);
     piece.drag=null;
     piece.onmouseenter=null;
     piece.onmouseleave=null;
-    piece.face.addEventListener("mousedown",piece.mouseD)
-    piece.face.addEventListener("touchstart",piece.mouseD,{passive:false})
-    piece.face.addEventListener("mouseenter",piece.mouseEnter)
-    piece.face.addEventListener("mouseleave",piece.mouseLeave)
-    piece.face.style="position:relative";
-    piece.face.move(0,0);
-    setTimeout(()=> piece.face.scale(1,1),1);
+    piece.face.removeEventListener("mousedown",piece.mouseD)
+    piece.face.removeEventListener("touchstart",piece.mouseD,{passive:false})
+    piece.face.removeEventListener("mouseenter",piece.mouseEnter)
+    piece.face.removeEventListener("mouseleave",piece.mouseLeave)
     let subject;
     if(piece.team==BLACK_TEAM)
     subject=blackGraveyard;

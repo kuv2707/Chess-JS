@@ -25,10 +25,10 @@ var resizeFunction=function()
     if(window.innerWidth/window.innerHeight>1.2)
     {
         chessBoard.move(window.innerWidth/2-320,window.innerHeight/2-320);
-        labelW.move(window.innerWidth/2+320+30,window.innerHeight/2-320);
-        labelB.move(window.innerWidth/2-320-330,window.innerHeight/2-320);
-        whiteGraveyard.move(window.innerWidth/2+320+30,window.innerHeight/2-320+80);
-        blackGraveyard.move(window.innerWidth/2-320-330,window.innerHeight/2-320+80);
+        labelW.move(window.innerWidth/2+320+30,window.innerHeight/2-300);
+        labelB.move(window.innerWidth/2-320-330,window.innerHeight/2-300);
+        whiteGraveyard.move(window.innerWidth/2+320+30,window.innerHeight/2-300+80);
+        blackGraveyard.move(window.innerWidth/2-320-330,window.innerHeight/2-300+80);
         gameRules.rotatePerspective.board=true;
         if(!turn)
         chessBoard.rotate(180);

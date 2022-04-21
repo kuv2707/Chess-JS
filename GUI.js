@@ -22,18 +22,12 @@ for(let i=0;i<8;i++)
         if((i+j)%2==0)
         {
             sq.style.backgroundColor=blackSquares;
-            sq.revert=function()
-            {
-                this.style.backgroundColor=this.highlightedForMoves&&movestart?this.highlightedForMoves:blackSquares;
-            }
+           
         }
         else
         {
             sq.style.backgroundColor=whiteSquares;
-            sq.revert=function()
-            {
-                this.style.backgroundColor=this.highlightedForMoves&&movestart?this.highlightedForMoves:whiteSquares;
-            }
+            
             
         }
         sq.purpose="";
@@ -50,12 +44,14 @@ let img2=new Image();
 img2.src="Images/blood2.png";
 blood.style=
 `position:absolute;
-z-index=2;
 width:80px;
 height:80px;
 border-radius:15px;
+opacity:0;
+transition-property:none;
 `;
 addTransformManager(blood);
+chessBoard.append(blood);
 chessBoard.refresh=function()
 {
     sqs.forEach(function(k,i)
@@ -181,8 +177,7 @@ const tentativeMove=
     y:0,
     listen:false,
     kill:false,
-    prev:null,
-    prevCol:null,
+    last:null,
     color:null,
     greenCol:"#2ae7a2",
     redCol:"red",
@@ -196,30 +191,23 @@ const tentativeMove=
         return;
         this.x=x;
         this.y=y;
-        this.prev?.revert()
-        this.prev=sqs[y][x];
-        if(!this.prev.highlightedForMoves)
-        {
-            this.prev=null;
-            return;
-        }
-        if(BOARD[x][y]==null)
-        {
-            this.color=this.greenCol;
-        }
-        else
-        {
-            this.color=this.redCol;
-        }
-        this.prev.style.backgroundColor=this.color;
+        if(this.last)
+        this.last.style.backgroundColor=this.lastCol;
+        this.last=sqs[y][x];
+        this.lastCol=this.last.style.backgroundColor;
+        this.last.style.backgroundColor=this.greenCol;
+        
+        
+        
     },
     setListen:function(yes)
     {
         this.listen=yes;
         if(!yes)
         {
-            this.prev?.revert();
-            this.prev=null;
+            this.last.style.backgroundColor=this.lastCol;
+            this.lastCol=null;
+            this.last=null;
         }
     }
 }
