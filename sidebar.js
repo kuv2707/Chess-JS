@@ -55,7 +55,7 @@ sidebar.append(a);
 
 var sel=document.createElement("select");
 sel.className="sidebarElements";
-let pieceThemes=["Fantasy","Eyes","Skull","Katz","Freak"];
+let pieceThemes=["Fantasy","Fantasy 2","Eyes","Skull","Katz","Freak","Classic"];
 sel.value=pieceThemes[0];
 for(let i=0;i<pieceThemes.length;i++)
 {
@@ -69,7 +69,10 @@ sel.addEventListener("change",function(e)
     Pieces.forEach(function(e)
     {
         e.face.src=`Images/${sel.value}/${e.face.id}.png`;
+        if(e.faceChg)
+        e.faceChg();
     })
+    
 })
 sidebar.append(sel);
 

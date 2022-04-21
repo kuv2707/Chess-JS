@@ -26,6 +26,10 @@ var kill=function(piece,mrelX,mrelY)
             if(!subject.childNodes[i].occupied)
             {
                 subject.childNodes[i].src=piece.face.src;
+                piece.faceChg=function()
+                {
+                    subject.childNodes[i].src=piece.face.src;
+                }
                 subject.childNodes[i].occupied=true;
                 subject.childNodes[i].style.opacity="1";
                 break;
