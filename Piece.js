@@ -1,6 +1,5 @@
 var x,y;
 var currentlySelected;
-
 var symbols=
 {
     br:["♜",rookMoves,4,"r"],
@@ -66,17 +65,9 @@ class Piece
     {
         /**
          * filter out those moves which might lead to check
-         * 
+         * store move array to reduce processing on repeated calls to this function
          */
         return this.movegive();
-    }
-    get typeOfPiece()
-    {
-        return this.face.id;
-    }
-    get body()
-    {
-        return this.face;
     }
     mouseEnter()
     {
@@ -84,14 +75,11 @@ class Piece
         return;
         this.scale(9/8,9/8);
         this.style.setProperty("filter","drop-shadow(0 0 10px black)")
-        //console.log(this.soul);
     }
     mouseLeave()
     {
-        //console.log(this);
         this.scale(1,1);
         this.style.setProperty("filter","none");
-        //console.log(this.soul);
     }
     static drag=function(e)
     {
@@ -136,7 +124,6 @@ class Piece
         tentativeMove.setListen(false);
         currentlySelected.mu(e);
     }
-
     mu=function(e)
     {
         movestart=false;
@@ -149,7 +136,7 @@ class Piece
         document.removeEventListener("touchmove",Piece.drag)
         let vx=Math.floor((xy.x)/80);
         let vy=Math.floor((xy.y)/80);
-        console.log(vx,vy);
+        //console.log(vx,vy);
         chessBoard.clear("move");
         if(!(vx>=8 ||  vy>=8  ||  vx<0  ||  vy<0))
         {
@@ -187,14 +174,12 @@ class Piece
                         chessBoard.clear("enp");
                         chessBoard.highlight({...enPassantLoc,color:"orange",purpose:"enp"})
                     }
-
                     //check if this very piece is capable of capturing an enpassant
                     if(enPassantLoc.x==vx  &&  enPassantLoc.y==vy)
                     {
                         already=enPassantLoc.pawn;
                     }
                 }
-                
                 if(already==null)
                 {
                     BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=null;
@@ -212,15 +197,8 @@ class Piece
                         BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=this;
                         switchTurn();
                     }
-                    
                 }
-                
-
-
-
             }
-
-
         }
         this.face.move(this.location.x,this.location.y);
     }

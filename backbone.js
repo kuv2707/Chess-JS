@@ -11,34 +11,23 @@ let switchTurn=function()
         deg=0;
         labelW.style.color="rgba(25, 255, 25, 1.0)";
         labelB.style.color="rgba(255, 255, 255, 1.0)";
-        
-        
     }
     else
     {
         deg=180;
         labelW.style.color="rgba(255, 255, 255, 1.0)";
         labelB.style.color="rgba(25, 255, 25, 1.0)";
-        
     }
-    
-    
     if(gameRules.rotatePerspective.board)
     {
-        /*use chessboard instead of table for rotation*/
         chessBoard.rotate(deg);
-        //labelB.rotate(deg);
-        //labelW.rotate(deg);
-        
     }
     if(gameRules.rotatePerspective.pieces)
     {   for(let i=0;i<Pieces.length;i++)
         {
-            
             Pieces[i].face.rotate(deg);//does flip() seem better?
         }
     }
-    //printBoard();
 }
 const BOARD=new Array(8);
 for(let k=0;k<8;k++)
@@ -93,10 +82,7 @@ function addTransformManager(go)
         this.updateAppearance();
     }
 }
-function generateFEN()
-{
-    
-}
+
 function printBoard()
 {
     console.clear();
@@ -110,28 +96,28 @@ function printBoard()
         console.log(8-i+s+"|");
     }
 }
-
+/**
+ * @param {Number} x the x coordinate ranging from 0 to 7
+ * @param {Number} y the y coordinate ranging from 0 to 7
+ * @returns piece at given coordinates in the logical chess board of size 8x8
+ */
 function pieceAt(x,y)
 {
     try
     {
         return BOARD[x][y];
-
     }
     catch(error)
     {
-        //console.log(x,y,"out of bounds");
         return null;
     }
 }
-
 
 function setFEN(fen)
 {
     for(let i=0;i<fen.length;i++)
     {
         let c=fen.charAt(i);
-        
     }
 }
 

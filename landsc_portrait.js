@@ -1,25 +1,3 @@
-let xb=-330;
-let yb=220;
-let xw=0;
-let yw=220;
-
-/**
-labelB.style.textShadow=`            
-        0 0 7px #fff,
-        0 0 10px #fff, 
-        0 0 21px #fff, 
-        0 0 42px #0af, 
-        0 0 82px #0af 
-        `;
-    labelW.style.textShadow=`            
-        0 0 7px #fff,
-        0 0 10px #fff, 
-        0 0 21px #fff, 
-        0 0 42px #0fa, 
-        0 0 82px #0fa
-        `;
-
-*/
 var resizeFunction=function()
 {
     if(window.innerWidth/window.innerHeight>1.2)
@@ -52,7 +30,6 @@ window.addEventListener("resize",function()
     res=setTimeout(resizeFunction,0.5);
 });
 
-
 if(gameRules.highPerformance)
 {
        var sync;
@@ -76,7 +53,6 @@ else
     colorSelector.addEventListener("change", function (e) 
     {
         setTheme(createTheme(HexToRGB(e.target.value)));
-        
     });
 }
 
@@ -84,7 +60,8 @@ else
 /**
  * 
  * @param {Event} e event object
- * @returns coordinates of mouseevent or touchevent with respect to current perspective
+ * @returns coordinates of mouseevent or touchevent with respect to chessBoard object
+ * it doesnt care whether it is landscape or portrait mode, just that if the chessBoard object is rotated, then it will offset those changes
  */
 function getXY(e)
 {
@@ -103,19 +80,15 @@ function getXY(e)
         x=e.pageX;
         y=e.pageY;
     }
-    /**
-     * table and pieces both rotatable: landscape mode
-     * pieces only rotatable: portrait mode
-     */
-     if(!chessBoard.rotated)
-     {
-         return {"x":x-chessBoard.translateCoords.x,"y":y-chessBoard.translateCoords.y};
-     }
-     else
-     {
-         return{"x":640-(x-chessBoard.translateCoords.x),
-        "y":640-(y-chessBoard.translateCoords.y)}
-     }
+    if(!chessBoard.rotated)
+    {
+        return {"x":x-chessBoard.translateCoords.x,"y":y-chessBoard.translateCoords.y};
+    }
+    else
+    {
+        return{"x":640-(x-chessBoard.translateCoords.x),
+    "y":640-(y-chessBoard.translateCoords.y)}
+    }
 }
 
 labelB.addEventListener("touchstart",playstart,{passive:true});

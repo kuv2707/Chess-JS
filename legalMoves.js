@@ -14,7 +14,6 @@ let enPassantLoc={x:-2,y:-2,expiryMove:-1,pawn:null,clear:function()
     chessBoard.clear("enp");
 }};
 
-
 /**
  * to be used by rook,queen
  * @param {Piece} piece the piece whose allowed moves are to be retrieved

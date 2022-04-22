@@ -4,9 +4,11 @@ z indices:
 0: buttons and labels with event listeners
 -1: shockwave
 
-
+PROPERLY DECIDE Z INDEXES OF PIECES, LABELS AND SHOCKWAVE SVG
 
 
 to do:
 
-shockwave issue
+setFEN
+getFEN
+use setFEN to set initial board state

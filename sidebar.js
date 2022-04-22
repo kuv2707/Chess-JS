@@ -31,21 +31,16 @@ sidebar.addEventListener("mouseenter",(e)=>
 {
     e.stopPropagation();
     sidebar.show();
-    
-    
 },{passive:true});
 sidebar.addEventListener("mouseleave",(e)=>
 {
     e.stopPropagation();
     sidebar.hide();
-    
-    
 },{passive:true});
 showHide.addEventListener("touchstart",(e)=>
 {
     e.stopPropagation();
     sidebar.show();
-    
 },{passive:true});
 
 var a=document.createElement("a");
@@ -72,14 +67,17 @@ sel.addEventListener("change",function(e)
         if(e.faceChg)
         e.faceChg();
     })
-    
 })
 sidebar.append(sel);
-
-
-
 
 
 var lab=document.createElement("h2");
 lab.innerText="Theme color:";
 sidebar.append(lab);
+
+var colorSelector=document.createElement("input");
+colorSelector.id="colorSelector";
+colorSelector.type="color";
+colorSelector.value=whiteSquares;
+colorSelector.innerHTML="Color";
+sidebar.appendChild(colorSelector);

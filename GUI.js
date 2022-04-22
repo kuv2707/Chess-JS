@@ -22,13 +22,10 @@ for(let i=0;i<8;i++)
         if((i+j)%2==0)
         {
             sq.style.backgroundColor=blackSquares;
-           
         }
         else
         {
             sq.style.backgroundColor=whiteSquares;
-            
-            
         }
         sq.purpose="";
         chessBoard.append(sq);
@@ -63,17 +60,13 @@ chessBoard.refresh=function()
             if((i+j)%2==0)
             {
                 l.style.backgroundColor=blackSquares;
-                
-                
             }
             else
             {
                 l.style.backgroundColor=whiteSquares;
-                
             }
         })
     })
-    
 }
 /**
  * 
@@ -102,24 +95,17 @@ chessBoard.clear=function(purpose)
                 if((i+j)%2==0)
                 {
                     l.style.backgroundColor=blackSquares;
-                    
-                    
                 }
                 else
                 {
                     l.style.backgroundColor=whiteSquares;
-                    
                 }
             }
         })
     })
 }
-chessBoard.width=640;
-chessBoard.height=640;
 addTransformManager(chessBoard);
 table.appendChild(chessBoard);
-
-
 
 
 if(mode)
@@ -135,37 +121,16 @@ if(mode)
 }
 document.body.appendChild(table);
 
-
-
-
 var labelW=document.createElement("label");
-//labelW.style.left=window.innerWidth/2+320+30+"px";
-//labelW.style.top="100px";
 labelW.style.width="300px";
 labelW.innerHTML="White";
 labelW.className="playerLabel";
 
 var labelB=document.createElement("label");
-//labelB.style.left=window.innerWidth/2-320-330+"px";
-//labelB.style.top="100px";
 labelB.style.width="300px";
 labelB.innerHTML="Black";
 labelB.className="playerLabel";
 
-function popOnHover(e)
-{
-    e.target.move(e.target.translateCoords.x,e.target.translateCoords.y-15);
-    //e.target.style.filter="drop-shadow(5px 5px 10px black)";
-}
-function endHover(e)
-{
-    e.target.move(e.target.translateCoords.x,e.target.translateCoords.y+15);
-    //e.target.style.filter="none";
-}
-// labelB.addEventListener("mouseenter",popOnHover);
-// labelB.addEventListener("mouseleave",endHover);
-// labelW.addEventListener("mouseenter",popOnHover);
-// labelW.addEventListener("mouseleave",endHover);
 addTransformManager(labelW);
 addTransformManager(labelB);
 table.appendChild(labelW);
@@ -178,7 +143,7 @@ const tentativeMove=
     listen:false,
     kill:false,
     last:null,
-    color:null,
+    lastCol:null,
     greenCol:"#2ae7a2",
     redCol:"red",
     setXY:function(x,y)
@@ -196,9 +161,6 @@ const tentativeMove=
         this.last=sqs[y][x];
         this.lastCol=this.last.style.backgroundColor;
         this.last.style.backgroundColor=this.greenCol;
-        
-        
-        
     },
     setListen:function(yes)
     {
@@ -221,8 +183,6 @@ document.body.addEventListener("click",function(e)
     }
 });
 
-
-
 var blackGraveyard=document.createElement("div");
 var whiteGraveyard=document.createElement("div");
 blackGraveyard.className="graveyard";
@@ -242,13 +202,3 @@ for(let i=0;i<16;i++)
     k.src=img2.src;
     whiteGraveyard.append(k);
 }
-
-
-
-
-var colorSelector=document.createElement("input");
-colorSelector.id="colorSelector";
-colorSelector.type="color";
-colorSelector.value=whiteSquares;
-colorSelector.innerHTML="Color";
-sidebar.appendChild(colorSelector);

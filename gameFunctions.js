@@ -1,11 +1,18 @@
+/**
+ * 
+ * @param {Piece} piece the piece which is killed
+ * @param {Number} mrelX the x coordinate of point of lifting mouse button with respect to chessBoard object's location
+ * @param {Numbwe} mrelY the y coordinate of point of lifting mouse button with respect to chessBoard object's location
+ */
 var kill=function(piece,mrelX,mrelY)
 {
     piece.alive=false;
     let x=piece.location.x;
     let y=piece.location.y;
+    BOARD[x/80][y/80]=null;
     animateDeathExplosion(mrelX,mrelY);
     blood.src=(piece.weight<=3?img1:img2).src;
-    blood.style.opacity="1"
+    blood.style.opacity="1";
     piece.face.scale(0);
     blood.move(x,y);
     piece.drag=null;
