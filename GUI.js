@@ -15,7 +15,7 @@ for(let i=0;i<8;i++)
     let arr=new Array();
     for(let j=0;j<8;j++)
     {
-        let sq=document.createElement("div");
+        let sq=document.createElement("label");
         sq.style.transitionProperty="background-color";
         sq.className="boardSquares";
         sq.id="square"+i+"_"+j;
@@ -78,7 +78,7 @@ chessBoard.highlight=function(loc)
     {
         sqs[loc.y][loc.x].style.backgroundColor=loc.color;
         sqs[loc.y][loc.x].purpose=loc.purpose;
-
+        sqs[loc.y][loc.x].innerText=loc.purpose;
     }
     catch(outofbound){}
     
@@ -92,6 +92,7 @@ chessBoard.clear=function(purpose)
             if(purpose==l?.purpose)
             {
                 l.purpose="";
+                l.innerText="";
                 if((i+j)%2==0)
                 {
                     l.style.backgroundColor=blackSquares;
@@ -108,17 +109,6 @@ addTransformManager(chessBoard);
 table.appendChild(chessBoard);
 
 
-if(mode)
-{
-    table.style=`
-    width:100vw;
-    height:100vh;
-    position:relative;
-    transform-origin: 50vw 50vh;
-    transition-duration: 1.5s;
-    transition-property: transform;
-    `;
-}
 document.body.appendChild(table);
 
 var labelW=document.createElement("label");
@@ -143,7 +133,6 @@ const tentativeMove=
     listen:false,
     kill:false,
     last:null,
-    lastCol:null,
     greenCol:"#2ae7a2",
     redCol:"red",
     setXY:function(x,y)
@@ -157,20 +146,25 @@ const tentativeMove=
         this.x=x;
         this.y=y;
         if(this.last)
-        this.last.style.backgroundColor=this.lastCol;
+        this.reset();
         this.last=sqs[y][x];
-        this.lastCol=this.last.style.backgroundColor;
-        this.last.style.backgroundColor=this.greenCol;
+        this.last.style.border=`2px solid ${Theme.grad3}`
+        this.last.style.zIndex="1";
     },
     setListen:function(yes)
     {
         this.listen=yes;
         if(!yes)
         {
-            this.last.style.backgroundColor=this.lastCol;
-            this.lastCol=null;
+            if(this.last)
+            this.reset();
             this.last=null;
         }
+    },
+    reset:function()
+    {
+        this.last.style.border="none";
+        this.last.style.zIndex="0";
     }
 }
 

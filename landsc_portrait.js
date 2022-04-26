@@ -23,12 +23,7 @@ var resizeFunction=function()
         chessBoard.rotate(0);
     }
 };
-let res=-1;
-window.addEventListener("resize",function()
-{
-    clearTimeout(res);
-    res=setTimeout(resizeFunction,0.5);
-});
+window.addEventListener("resize",resizeFunction);
 
 if(gameRules.highPerformance)
 {
@@ -66,7 +61,6 @@ else
 function getXY(e)
 {
     let x=0,y=0;
-    if(!mode)
     if(e.type.includes("touch"))
     {
         let evt=(typeof e.originalEvent==='undefined')?e:e.originalEvent;

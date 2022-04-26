@@ -1,4 +1,4 @@
-var x,y;
+var x=0,y=0;
 var currentlySelected;
 var symbols=
 {

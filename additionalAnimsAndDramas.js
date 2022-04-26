@@ -5,11 +5,8 @@ addTransformManager(svgExplosion);
 circle.setAttribute("cx","200");
 circle.setAttribute("cy","200");
 circle.setAttribute("r",200*Math.sin(0));
-let prevAnim;
 const animateDeathExplosion=function(x,y)
 {
-    clearInterval(prevAnim);
-    prevAnim=0;
     let teamColor="Red";
     svgExplosion.move(x-200,y-200);
     circle.setAttribute("fill",teamColor);
@@ -18,14 +15,13 @@ const animateDeathExplosion=function(x,y)
     let animator=function()
     {
         
-        
-        circle.setAttribute("r",""+200*Math.sin(k));
+        let rad=200*Math.sin(k);
+        circle.setAttribute("r",rad);
         circle.setAttribute("fill-opacity",((Math.PI/2)-k)/(Math.PI));
         k+=0.05;
-        if(k>Math.PI/2)
+        if(k>Math.PI/2  )
         {
             circle.setAttribute("r","0");
-            svgExplosion.move(-400,-400);
         }
         else
         window.requestAnimationFrame(animator);

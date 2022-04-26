@@ -21,7 +21,7 @@ html,body
 *
 {
     font-family: defFont;
-    transition-duration: 0.5s;
+    transition-duration: 0.3s;
 }
 canvas
 {
@@ -63,7 +63,7 @@ select
     width:100px;
     height:420px;
     border-radius: 60px;
-    z-index: 20;
+    z-index: 2;
     color:white;
     text-align: center;
     font-size: 50px;
@@ -73,29 +73,7 @@ select
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, .25);
     backdrop-filter: blur(2px);
 }
-.endangered
-{
-    animation: danger 1s infinite;
-}
-.myTurn
-{
-    animation: turn 15s infinite;
-}
-@keyframes turn
-{
-    0%
-    {
-        background-color: rgb(78, 169, 85);
-    }
-    50%
-    {
-        background-color: rgb(18, 111, 78);
-    }
-    100%
-    {
-        background-color: rgb(78, 169, 85);
-    }
-}
+
 .ChessPiece
 {
     position:absolute;
@@ -129,6 +107,7 @@ select
     height:80px;
     border-radius: 15px;
     border:none;
+    transition-duration: 0.2s;
 }
 
 #Shockwave_canvas

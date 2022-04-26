@@ -112,13 +112,87 @@ function pieceAt(x,y)
         return null;
     }
 }
-
+const dict=
+{
+    R:'wr',
+    N:'wn',
+    Q:'wq',
+    K:'wk',
+    B:'wb',
+    P:'wp',
+    r:'br',
+    n:'bn',
+    q:'bq',
+    k:'bk',
+    b:'bb',
+    p:'bp'
+}
 function setFEN(fen)
 {
-    for(let i=0;i<fen.length;i++)
+    Pieces.forEach(function(e)
+    {
+        chessBoard.removeChild(e.face);
+    });
+    Pieces.length=0;
+    for(let i=0;i<8;i++)
+    {
+        for(let j=0;j<8;j++)
+        {
+            BOARD[i][j]=null;
+        }
+    }
+    turnCount=0;//necessary?
+    let x=0,y=0,i;
+    //place assignment
+    for(i=0;i<fen.length;i++)
     {
         let c=fen.charAt(i);
+        if(c==" ")
+        break;
+        if(!isNaN(c))
+        {
+            x+=Number(c)-1;
+            
+        }
+        if(c=="/")
+        {
+            y++;
+            x=0;
+        }
+        if(dict[c])
+        {
+            if(dict[c][0]=="b")
+            {
+                let p=new Piece(BLACK_TEAM,{x:x*80,y:y*80},dict[c]);
+                try{
+
+                    BOARD[x][y]=p;
+                }
+                catch(error)
+                {
+                    console.log(x,y)
+                }
+                Pieces.push(p);
+                chessBoard.append(p.face);
+                p.face.move(p.location.x,p.location.y);
+            }
+            if(dict[c][0]=="w")
+            {
+                let p=new Piece(WHITE_TEAM,{x:x*80,y:y*80},dict[c]);
+                BOARD[x][y]=p;
+                Pieces.push(p);
+                chessBoard.append(p.face);
+                p.face.move(p.location.x,p.location.y);
+            }
+            x++;
+        }
+        
     }
+    i++;
+    if(i>fen.length-1)return;
+    //i now stores character containing current player's turn
+    if((fen.charAt(i)=="b"  &&  turn)||(fen.charAt(i)=="w"  &&  !turn))
+    switchTurn();
 }
 
 function getFEN(board=BOARD)

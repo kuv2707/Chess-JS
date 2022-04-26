@@ -9,10 +9,7 @@ var boardOffsetX=(window.innerWidth/window.innerHeight>1)?window.innerWidth/2-32
 var boardOffsetY=25;
 const Pieces=new Array();
 var Theme;
-/*
-   mode should represent whether the device is capable of handling many animations
-*/
-const mode=window.innerWidth/window.innerHeight>1;
+
 var labelInactive="black";
 var labelActive="white"
 var gameRules=
