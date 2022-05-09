@@ -16,7 +16,6 @@ for(let i=0;i<8;i++)
     for(let j=0;j<8;j++)
     {
         let sq=document.createElement("label");
-        sq.style.transitionProperty="background-color";
         sq.className="boardSquares";
         sq.id="square"+i+"_"+j;
         if((i+j)%2==0)
@@ -148,8 +147,8 @@ const tentativeMove=
         if(this.last)
         this.reset();
         this.last=sqs[y][x];
-        this.last.style.border=`2px solid ${Theme.grad3}`
-        this.last.style.zIndex="1";
+        this.last.style.borderRadius=`1px`
+        
     },
     setListen:function(yes)
     {
@@ -163,8 +162,8 @@ const tentativeMove=
     },
     reset:function()
     {
-        this.last.style.border="none";
-        this.last.style.zIndex="0";
+        this.last.style.borderRadius="15px";
+        
     }
 }
 

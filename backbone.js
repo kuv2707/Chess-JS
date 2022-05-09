@@ -197,5 +197,5 @@ function setFEN(fen)
 
 function getFEN(board=BOARD)
 {
-
+    
 }

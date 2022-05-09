@@ -106,8 +106,9 @@ select
     width:80px;
     height:80px;
     border-radius: 15px;
-    border:none;
     transition-duration: 0.2s;
+    border:none;
+    transition-property: border-radius,background-color;
 }
 
 #Shockwave_canvas
