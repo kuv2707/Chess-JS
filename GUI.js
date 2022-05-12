@@ -27,6 +27,13 @@ for(let i=0;i<8;i++)
             sq.style.backgroundColor=whiteSquares;
         }
         sq.purpose="";
+        sq.addEventListener("contextmenu",function(e)
+        {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("context")
+            contextMenu.showAt(e);
+        })
         chessBoard.append(sq);
         arr.push(sq);
     }
@@ -76,7 +83,6 @@ chessBoard.highlight=function(loc)
     try
     {
         sqs[loc.y][loc.x].style.backgroundColor=loc.color;
-        sqs[loc.y][loc.x].purpose=loc.purpose;
         sqs[loc.y][loc.x].innerText=loc.purpose;
     }
     catch(outofbound){}
@@ -88,9 +94,8 @@ chessBoard.clear=function(purpose)
     {
         k.forEach(function(l,j)
         {
-            if(purpose==l?.purpose)
+            if(purpose==l.innerText)
             {
-                l.purpose="";
                 l.innerText="";
                 if((i+j)%2==0)
                 {
@@ -167,13 +172,14 @@ const tentativeMove=
     }
 }
 
-document.body.addEventListener("click",function(e)
+document.addEventListener("click",function(e)
 {
     if(sidebar.expanded  &&  e.clientY>250)
     {
         sidebar.hide();
         sidebar.expanded=false;
     }
+    contextMenu.hide();
 });
 
 var blackGraveyard=document.createElement("div");
@@ -194,4 +200,24 @@ for(let i=0;i<16;i++)
     k.style.opacity="0";
     k.src=img2.src;
     whiteGraveyard.append(k);
+}
+
+let contextMenu=document.createElement("div");
+addTransformManager(contextMenu);
+contextMenu.id="contextMenu";
+chessBoard.appendChild(contextMenu);
+contextMenu.scale(0,0);
+contextMenu.showAt=function(e)
+{
+    let {x,y}=getXY(e)
+    let bsq=e.target;
+    bsq.style.backgroundColor="beige";
+    bsq.innerText="beige";
+    contextMenu.scale(1,1);
+    contextMenu.move(x,y);
+    
+}
+contextMenu.hide=function()
+{
+    contextMenu.scale(0,0);
 }

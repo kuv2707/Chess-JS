@@ -181,3 +181,12 @@ select
 {
     transition-duration: 0ms;
 }
+#contextMenu
+{
+    width:150px;
+    height:300px;
+    z-index: 8;
+    border-radius: 15px;
+    position: absolute;
+    background-color: rgb(255, 149, 143);
+}

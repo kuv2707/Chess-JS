@@ -2,12 +2,17 @@ let circle=document.querySelector("#shock");
 let svgExplosion=circle.parentElement;
 svgExplosion.style.zIndex="1";
 addTransformManager(svgExplosion);
+svgExplosion.scale(0,0);
 circle.setAttribute("cx","200");
 circle.setAttribute("cy","200");
-circle.setAttribute("r",200*Math.sin(0));
+circle.setAttribute("r",200*Math.sin(1));
 const animateDeathExplosion=function(x,y)
 {
+    svgExplosion.scale(1,1);
     let teamColor="Red";
+    if(x+200>chessBoard.translateCoords.x+640)
+    svgExplosion.move(window.innerWidth-400,y-200);
+    else
     svgExplosion.move(x-200,y-200);
     circle.setAttribute("fill",teamColor);
     let k=0;
@@ -22,6 +27,7 @@ const animateDeathExplosion=function(x,y)
         if(k>Math.PI/2  )
         {
             circle.setAttribute("r","0");
+            svgExplosion.scale(0,0);
         }
         else
         window.requestAnimationFrame(animator);

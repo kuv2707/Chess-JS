@@ -60,6 +60,7 @@ else
  */
 function getXY(e)
 {
+    //console.log(e)
     let x=0,y=0;
     if(e.type.includes("touch"))
     {
@@ -69,7 +70,7 @@ function getXY(e)
         y=touch.pageY;
         
     }
-    if(e.type.includes("mouse"))
+    else
     {
         x=e.pageX;
         y=e.pageY;

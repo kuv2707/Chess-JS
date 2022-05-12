@@ -11,4 +11,8 @@ window.addEventListener("load",function()
         p.face.move(p.location.x,p.location.y);
     });
 });
+
+
+
+
 //define player objects which control labels etc
