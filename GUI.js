@@ -1,5 +1,4 @@
-var highlightMovesBenign="pink";
-var highlightMovesMalicious="#8A1919";
+
 const table=document.querySelector("#container");
 addTransformManager(table);
 
@@ -13,6 +12,14 @@ let sqs=new Array();
 for(let i=0;i<8;i++)
 {
     let arr=new Array();
+    let resB=function()
+    {
+        this.style.backgroundColor=blackSquares;
+    };
+    let resW=function()
+    {
+        this.style.backgroundColor=whiteSquares;
+    }
     for(let j=0;j<8;j++)
     {
         let sq=document.createElement("label");
@@ -20,13 +27,13 @@ for(let i=0;i<8;i++)
         sq.id="square"+i+"_"+j;
         if((i+j)%2==0)
         {
-            sq.style.backgroundColor=blackSquares;
+            sq.reset=resB;
         }
         else
         {
-            sq.style.backgroundColor=whiteSquares;
+            sq.reset=resW;
         }
-        sq.purpose="";
+        sq.reset();
         sq.addEventListener("contextmenu",function(e)
         {
             e.preventDefault();
@@ -61,16 +68,9 @@ chessBoard.refresh=function()
     {
         k.forEach(function(l,j)
         {
-            if(!l.purpose=="")
+            if(!l.innerText=="")
             return;
-            if((i+j)%2==0)
-            {
-                l.style.backgroundColor=blackSquares;
-            }
-            else
-            {
-                l.style.backgroundColor=whiteSquares;
-            }
+            l.reset();
         })
     })
 }
@@ -152,8 +152,7 @@ const tentativeMove=
         if(this.last)
         this.reset();
         this.last=sqs[y][x];
-        this.last.style.borderRadius=`1px`
-        
+        this.last.style.borderRadius=`0`
     },
     setListen:function(yes)
     {
@@ -174,11 +173,6 @@ const tentativeMove=
 
 document.addEventListener("click",function(e)
 {
-    if(sidebar.expanded  &&  e.clientY>250)
-    {
-        sidebar.hide();
-        sidebar.expanded=false;
-    }
     contextMenu.hide();
 });
 
@@ -209,15 +203,36 @@ chessBoard.appendChild(contextMenu);
 contextMenu.scale(0,0);
 contextMenu.showAt=function(e)
 {
+    contextMenu.hide();
     let {x,y}=getXY(e)
     let bsq=e.target;
     bsq.style.backgroundColor="beige";
     bsq.innerText="beige";
     contextMenu.scale(1,1);
+    if(chessBoard.rotated)
+    contextMenu.rotate(180);
+    else
+    contextMenu.rotate(0);
     contextMenu.move(x,y);
+    contextMenu.subject=bsq;
+    for(let i=0;i<4;i++)
+    {
+        let op=document.createElement("label");
+        op.className="ctxtMenuOptions";
+        op.innerText="option"+i;
+        contextMenu.append(op);
+
+    }
     
 }
 contextMenu.hide=function()
 {
-    contextMenu.scale(0,0);
+    contextMenu.scale(1,0);
+    contextMenu.innerHTML="";
+    if(contextMenu.subject)
+    {
+        contextMenu.subject.innerText="";
+        contextMenu.subject.reset();
+    }
+    
 }

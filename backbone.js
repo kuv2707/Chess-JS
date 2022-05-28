@@ -38,16 +38,15 @@ for(let k=0;k<8;k++)
 
 function addTransformManager(go)
 {
-    go.scaleVal=1;
+    go.scaleVal={x:1,y:1};
     go.rotateVal=0;
     go.translateCoords={x:0,y:0};
     go.rotated=false;
-    go.flipval=1;
     go.updateAppearance=function()
     {
         this.style.transform=
         `translate(${this.translateCoords.x}px,${this.translateCoords.y}px)
-        scale(${this.scaleVal},${this.flipval*this.scaleVal})
+        scale(${this.scaleVal.x},${this.scaleVal.y})
         rotate(${this.rotateVal}deg)
         
         `;
@@ -63,11 +62,13 @@ function addTransformManager(go)
         else
         this.rotated=true;
     }
-    go.scale=function(value)
+    go.scale=function(valueX,valueY)
     {
-        if(this.scaleVal==value)
+        if(valueY==undefined)
+        valueY=valueX;
+        if(this.scaleVal.x==valueX&&this.scaleVal.y==valueY)
         return;
-        this.scaleVal=value;
+        this.scaleVal={x:valueX,y:valueY};
         this.updateAppearance();
     }
     go.move=function(xx,yy)
@@ -201,3 +202,41 @@ function getFEN(board=BOARD)
 }
 
 
+
+
+//my implementation of array.flat
+/**
+ * 
+ * @param {Array} thisArr array on which this method is called
+ * @param {Number} depth maximum depth of recursion 
+ * @param {Array} retArr array containing flattened values upto specified depth
+ * @returns 
+ */
+function Flat(thisArr,depth=0,retArr)
+{
+    if(!retArr)
+    retArr=[];
+    if(depth==0)
+    return [...thisArr];
+    for(let i=0;i<thisArr.length;i++)
+    {
+        if(thisArr[i]?.constructor.name=="Array")
+        {
+            
+            let a=Flat(thisArr[i],depth-1,[]);
+            a.forEach(function(Value)
+            {
+                retArr.push(Value);
+            })
+
+        }
+        else
+        retArr.push(thisArr[i]);
+    }
+    return retArr;
+}
+document.addEventListener("touchmove",function(e)
+{
+    e.preventDefault();
+    e.stopPropagation();
+},{passive:false});//touch events are by default passive!!!

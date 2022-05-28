@@ -223,6 +223,11 @@ const kingMoves=function()
 
 
     //castling add
+    if(this.NOTcastlable)
+    {
+        this.NOTcastlable=true;
+        
+    }
     return array;
 }
 const queenMoves=function()

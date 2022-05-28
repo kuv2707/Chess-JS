@@ -62,19 +62,8 @@ function getXY(e)
 {
     //console.log(e)
     let x=0,y=0;
-    if(e.type.includes("touch"))
-    {
-        let evt=(typeof e.originalEvent==='undefined')?e:e.originalEvent;
-        let touch=evt.touches[0]||evt.changedTouches[0];
-        x=touch.pageX;
-        y=touch.pageY;
-        
-    }
-    else
-    {
-        x=e.pageX;
-        y=e.pageY;
-    }
+    x=e.pageX;
+    y=e.pageY;
     if(!chessBoard.rotated)
     {
         return {"x":x-chessBoard.translateCoords.x,"y":y-chessBoard.translateCoords.y};

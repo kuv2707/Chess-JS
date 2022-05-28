@@ -37,6 +37,7 @@ class Piece
         this.movegive=symbols[type][1];
         this.weight=symbols[type][2];
         this.symbolFEN=symbols[type][3];
+        this.legMovs={turn:-1,moves:[]}
         let k=document.createElement("img");
         k.id=type;
         k.style.zIndex="3";
@@ -46,10 +47,9 @@ class Piece
         this.face=k;
         this.face.soul=this;
         addTransformManager(k);
-        this.face.addEventListener("mousedown",this.mouseD)
-        this.face.addEventListener("touchstart",this.mouseD,{passive:false})
-        this.face.addEventListener("mouseenter",this.mouseEnter)
-        this.face.addEventListener("mouseleave",this.mouseLeave)
+        this.face.addEventListener("pointerdown",Piece.mouseD)
+        this.face.addEventListener("mouseenter",Piece.mouseEnter)
+        this.face.addEventListener("mouseleave",Piece.mouseLeave)
     }
     /**
      *  
@@ -67,31 +67,39 @@ class Piece
          * filter out those moves which might lead to check
          * store move array to reduce processing on repeated calls to this function
          */
-        return this.movegive();
+        if(this.legMovs.turn==turnCount){}
+        else
+        {
+            let k=this.movegive();
+            this.legMovs.turn=turnCount;
+            this.legMovs.moves=k;
+        }
+        return this.legMovs.moves;
     }
-    mouseEnter()
+    static mouseEnter()
     {
         if(turn!=this.soul.team)
         return;
         this.scale(9/8,9/8);
         this.style.setProperty("filter","drop-shadow(0 0 10px black)")
     }
-    mouseLeave()
+    static mouseLeave()
     {
         this.scale(1,1);
         this.style.setProperty("filter","none");
     }
     static drag=function(e)
     {
+        console.log(this)
         e.stopPropagation();
         e.preventDefault();
-        currentlySelected.face.style.transitionProperty="none";
+        this.style.transitionProperty="none";
         var xy=getXY(e,true);
-        currentlySelected.face.move(xy.x-x,xy.y-y);
+        this.move(xy.x-x,xy.y-y);
         tentativeMove.setXY(Math.floor((xy.x)/80),
         Math.floor((xy.y)/80));
     }
-    mouseD(e)
+    static mouseD(e)
     {
         if(turn!=this.soul.team)
         return;
@@ -107,33 +115,25 @@ class Piece
             chessBoard.highlight({x:val.x,y:val.y,color:val.kill?"red":"pink",purpose:"move"});
         })
         movestart=true;
-        document.addEventListener("mousemove",Piece.drag)
-        document.addEventListener("touchmove",Piece.drag,{passive:false})
+        this.setPointerCapture(e.pointerId)
+        this.addEventListener("pointermove",Piece.drag)
         this.scale(120/80);
-        document.addEventListener("mouseup",Piece.docmu)
-        document.addEventListener("touchend",Piece.docmu)
+        this.addEventListener("pointerup",Piece.mu)
         tentativeMove.setListen(true);
         e.stopPropagation();
     }
-    static docmu=function(e)
+    static mu=function(e)
     {
-        document.removeEventListener("mousemove",Piece.drag)
-        document.removeEventListener("touchmove",Piece.drag,{passive:false})
-        document.removeEventListener("mouseup",Piece.docmu)
-        document.removeEventListener("touchend",Piece.docmu)
         tentativeMove.setListen(false);
-        currentlySelected.mu(e);
-    }
-    mu=function(e)
-    {
         movestart=false;
-        
+        let guiElem=this;
+        let thisPiece=this.soul;
         var xy=getXY(e,true);
         setTimeout(()=>e.target.style.zIndex="3",850);//e.target is same as this object
-        this.face.scale(9/8,9/8);
-        this.face.style.transitionProperty="transform";
-        document.removeEventListener("mousemove",Piece.drag)
-        document.removeEventListener("touchmove",Piece.drag)
+        guiElem.scale(9/8,9/8);
+        guiElem.style.transitionProperty="transform";
+        
+        guiElem.removeEventListener("pointermove",Piece.drag)
         let vx=Math.floor((xy.x)/80);
         let vy=Math.floor((xy.y)/80);
         //console.log(vx,vy);
@@ -146,7 +146,7 @@ class Piece
              * "already" is null
              * or it is of different team
              */
-            let am=this.getAllowedMoves();
+            let am=thisPiece.getAllowedMoves();
             let legal=false;
             for(let i=0;i<am.length;i++)
             {
@@ -159,10 +159,10 @@ class Piece
             if(legal)
             {
                 var already=BOARD[vx][vy];//indexoutofbounds exception never occurs
-                if(this.symbolFEN=="P"|| this.symbolFEN=="p")
+                if(thisPiece.symbolFEN=="P"|| thisPiece.symbolFEN=="p")
                 {
                     //check if this very piece did an enpassant
-                    let now=this.location;
+                    let now=thisPiece.location;
                     let x=now.x/80;
                     let y=now.y/80;
                     if(vy-y==2  ||  vy-y==-2)
@@ -170,7 +170,7 @@ class Piece
                         enPassantLoc.x=x;
                         enPassantLoc.y=(y+vy)/2;
                         enPassantLoc.expiryMove=turnCount+1;
-                        enPassantLoc.pawn=this;
+                        enPassantLoc.pawn=thisPiece;
                         chessBoard.clear("enp");
                         chessBoard.highlight({...enPassantLoc,color:"orange",purpose:"enp"})
                     }
@@ -182,25 +182,25 @@ class Piece
                 }
                 if(already==null)
                 {
-                    BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=null;
-                    this.setLocation(vx*80,vy*80)
-                    BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=this;
+                    BOARD[Math.floor(thisPiece.location.x/80)][Math.floor(thisPiece.location.y/80)]=null;
+                    this.soul.setLocation(vx*80,vy*80)
+                    BOARD[Math.floor(thisPiece.location.x/80)][Math.floor(thisPiece.location.y/80)]=thisPiece;
                     switchTurn();
                 }
                 else
                 {
-                    if(!(already.team==this.team))
+                    if(!(already.team==thisPiece.team))
                     {
                         kill(already,xy.x,xy.y);
-                        BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=null;
-                        this.setLocation(vx*80,vy*80)
-                        BOARD[Math.floor(this.location.x/80)][Math.floor(this.location.y/80)]=this;
+                        BOARD[Math.floor(thisPiece.location.x/80)][Math.floor(thisPiece.location.y/80)]=null;
+                        thisPiece.setLocation(vx*80,vy*80)
+                        BOARD[Math.floor(thisPiece.location.x/80)][Math.floor(thisPiece.location.y/80)]=thisPiece;
                         switchTurn();
                     }
                 }
             }
         }
-        this.face.move(this.location.x,this.location.y);
+        guiElem.move(thisPiece.location.x,thisPiece.location.y);
     }
 }
 
