@@ -90,7 +90,6 @@ class Piece
     }
     static drag=function(e)
     {
-        console.log(this)
         e.stopPropagation();
         e.preventDefault();
         this.style.transitionProperty="none";
@@ -136,7 +135,6 @@ class Piece
         guiElem.removeEventListener("pointermove",Piece.drag)
         let vx=Math.floor((xy.x)/80);
         let vy=Math.floor((xy.y)/80);
-        //console.log(vx,vy);
         chessBoard.clear("move");
         if(!(vx>=8 ||  vy>=8  ||  vx<0  ||  vy<0))
         {

@@ -18,7 +18,6 @@ for(let i=0;i<pieceThemes.length;i++)
 }
 sel.addEventListener("change",function(e)
 {
-    console.log(sel.value);
     Pieces.forEach(function(e)
     {
         e.face.src=`Images/${sel.value}/${e.face.id}.png`;

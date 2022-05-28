@@ -60,7 +60,6 @@ else
  */
 function getXY(e)
 {
-    //console.log(e)
     let x=0,y=0;
     x=e.pageX;
     y=e.pageY;

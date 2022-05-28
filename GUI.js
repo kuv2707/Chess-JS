@@ -38,7 +38,6 @@ for(let i=0;i<8;i++)
         {
             e.preventDefault();
             e.stopPropagation();
-            console.log("context")
             contextMenu.showAt(e);
         })
         chessBoard.append(sq);
