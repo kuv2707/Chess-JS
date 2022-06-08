@@ -4,7 +4,7 @@ addTransformManager(table);
 
 var chessBoard=document.createElement("div");
 chessBoard.id="chessBoard";
-chessBoard.innerHTML+=`<svg height="0" width="640" id="Shockwave_canvas">
+chessBoard.innerHTML+=`<svg id="Shockwave_canvas" height="640" width="640" id="Shockwave_canvas">
 <circle id="shock" cx="0" cy="0" r="0" stroke="none" stroke-width="3" fill-opacity="0.5" fill="red" />
 Shockwave emission is unsupported on this device  
 </svg>`;
@@ -151,7 +151,7 @@ const tentativeMove=
         if(this.last)
         this.reset();
         this.last=sqs[y][x];
-        this.last.style.borderRadius=`0`
+        this.last.style.borderRadius=`50% 50% 50% 50% / 15% 15% 85% 85% `;
     },
     setListen:function(yes)
     {

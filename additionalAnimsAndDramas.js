@@ -1,33 +1,30 @@
 let circle=document.querySelector("#shock");
-let svgExplosion=circle.parentElement;
-svgExplosion.style.zIndex="1";
+let svgExplosion=document.querySelector("#Shockwave_canvas");
 addTransformManager(svgExplosion);
-svgExplosion.scale(0,0);
 circle.setAttribute("cx","200");
 circle.setAttribute("cy","200");
-circle.setAttribute("r",200*Math.sin(1));
+circle.setAttribute("r",200*Math.sin(0));
 const animateDeathExplosion=function(x,y)
 {
-    svgExplosion.scale(1,1);
+    svgExplosion.style.zIndex="1";
     let teamColor="Red";
-    if(x+200>chessBoard.translateCoords.x+640)
-    svgExplosion.move(window.innerWidth-400,y-200);
-    else
-    svgExplosion.move(x-200,y-200);
+    circle.setAttribute("cx",""+x);
+    circle.setAttribute("cy",""+y);
     circle.setAttribute("fill",teamColor);
+    circle.setAttribute("fill-opacity",0.5);
     let k=0;
     circle.setAttribute("r",200*Math.sin(k));
     let animator=function()
     {
         
         let rad=200*Math.sin(k);
-        circle.setAttribute("r",rad);
+        circle.setAttribute("r",""+rad);
         circle.setAttribute("fill-opacity",((Math.PI/2)-k)/(Math.PI));
         k+=0.05;
         if(k>Math.PI/2  )
         {
             circle.setAttribute("r","0");
-            svgExplosion.scale(0,0);
+            svgExplosion.style.zIndex="-1";
         }
         else
         window.requestAnimationFrame(animator);
