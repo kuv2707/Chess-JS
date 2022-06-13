@@ -9,8 +9,8 @@ let switchTurn=function()
     if(turn)//white's turn
     {
         deg=0;
-        labelW.style.color="rgba(25, 255, 25, 1.0)";
-        labelB.style.color="rgba(255, 255, 255, 1.0)";
+        labelW.style.color="rgb(25, 180, 25)";
+        labelB.style.color="rgb(255, 255, 255)";
     }
     else
     {

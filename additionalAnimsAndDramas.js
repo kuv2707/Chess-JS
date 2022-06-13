@@ -1,30 +1,30 @@
-let circle=document.querySelector("#shock");
-let svgExplosion=document.querySelector("#Shockwave_canvas");
-addTransformManager(svgExplosion);
-circle.setAttribute("cx","200");
-circle.setAttribute("cy","200");
-circle.setAttribute("r",200*Math.sin(0));
+let shockwave=document.createElement("canvas");
+shockwave.className="Shockwave_canvas";
+shockwave.width=640;
+shockwave.height=640;
+shockwave.style.zIndex="2";
+addTransformManager(shockwave);
+//shockwave.move(0,-640);//not needed as earlier shockwave had an id instead of classname which led to that issue
+chessBoard.append(shockwave);
+let g=shockwave.getContext("2d");
 const animateDeathExplosion=function(x,y)
 {
-    svgExplosion.style.zIndex="1";
-    let teamColor="Red";
-    circle.setAttribute("cx",""+x);
-    circle.setAttribute("cy",""+y);
-    circle.setAttribute("fill",teamColor);
-    circle.setAttribute("fill-opacity",0.5);
+    shockwave.style.zIndex="1";
+    g.beginPath();
     let k=0;
-    circle.setAttribute("r",200*Math.sin(k));
     let animator=function()
     {
-        
+        g.clearRect(0,0,shockwave.width,shockwave.height);
+        g.beginPath();
         let rad=200*Math.sin(k);
-        circle.setAttribute("r",""+rad);
-        circle.setAttribute("fill-opacity",((Math.PI/2)-k)/(Math.PI));
+        g.arc(x,y,rad,0,360);
+        g.fillStyle=`rgba(230,30,40,${((Math.PI/2)-k)/(Math.PI)})`;
+        g.fill();
         k+=0.05;
         if(k>Math.PI/2  )
         {
-            circle.setAttribute("r","0");
-            svgExplosion.style.zIndex="-1";
+            shockwave.style.zIndex="-1";
+            g.clearRect(0,0,shockwave.width,shockwave.height);
         }
         else
         window.requestAnimationFrame(animator);

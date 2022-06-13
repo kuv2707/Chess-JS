@@ -4,10 +4,7 @@ addTransformManager(table);
 
 var chessBoard=document.createElement("div");
 chessBoard.id="chessBoard";
-chessBoard.innerHTML+=`<svg id="Shockwave_canvas" height="640" width="640" id="Shockwave_canvas">
-<circle id="shock" cx="0" cy="0" r="0" stroke="none" stroke-width="3" fill-opacity="0.5" fill="red" />
-Shockwave emission is unsupported on this device  
-</svg>`;
+
 let sqs=new Array();
 for(let i=0;i<8;i++)
 {
