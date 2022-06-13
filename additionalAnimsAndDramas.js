@@ -16,9 +16,9 @@ const animateDeathExplosion=function(x,y)
     {
         g.clearRect(0,0,shockwave.width,shockwave.height);
         g.beginPath();
-        let rad=200*Math.sin(k);
+        let rad=300*Math.sin(k);
         g.arc(x,y,rad,0,360);
-        g.fillStyle=`rgba(230,30,40,${((Math.PI/2)-k)/(Math.PI)})`;
+        g.fillStyle=`rgba(150,30,40,${((Math.PI)-2*k)/(Math.PI)})`;
         g.fill();
         k+=0.05;
         if(k>Math.PI/2  )
