@@ -191,9 +191,7 @@ function setFEN(fen)
     }
     i++;
     if(i>fen.length-1)return;
-    //i now stores character containing current player's turn
-    if((fen.charAt(i)=="b"  &&  turn)||(fen.charAt(i)=="w"  &&  !turn))
-    switchTurn();
+    //there is more to implement:turn info,enp,castling,turncount,halfmoves
 }
 
 function getFEN(board=BOARD)

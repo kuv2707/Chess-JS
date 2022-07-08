@@ -128,8 +128,8 @@ table.appendChild(labelB);
 
 const tentativeMove=
 {
-    x:0,
-    y:0,
+    x:-1,
+    y:-1,
     listen:false,
     kill:false,
     last:null,
@@ -159,6 +159,8 @@ const tentativeMove=
             if(this.last)
             this.reset();
             this.last=null;
+            this.x=-1;
+            this.y=-1;
         }
     },
     reset:function()
