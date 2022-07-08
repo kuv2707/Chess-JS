@@ -1,12 +1,12 @@
 let switchTurn=function()
 {
-    turn=!turn;
+    turn=(turn===BLACK_TEAM)?WHITE_TEAM:BLACK_TEAM;
     turnCount++;
     let deg;
     chessBoard.clear("move");
     if(turnCount>enPassantLoc.expiryMove)
     enPassantLoc.clear();
-    if(turn)//white's turn
+    if(turn==WHITE_TEAM)
     {
         deg=0;
         labelW.style.color="rgb(25, 180, 25)";
@@ -15,8 +15,8 @@ let switchTurn=function()
     else
     {
         deg=180;
-        labelW.style.color="rgba(255, 255, 255, 1.0)";
-        labelB.style.color="rgba(25, 255, 25, 1.0)";
+        labelB.style.color="rgb(25, 180, 25)";
+        labelW.style.color="rgb(255, 255, 255)";
     }
     if(gameRules.rotatePerspective.board)
     {
@@ -25,7 +25,7 @@ let switchTurn=function()
     if(gameRules.rotatePerspective.pieces)
     {   for(let i=0;i<Pieces.length;i++)
         {
-            Pieces[i].face.rotate(deg);//does flip() seem better?
+            Pieces[i].face.rotate(deg);
         }
     }
 }

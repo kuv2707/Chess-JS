@@ -1,4 +1,7 @@
 var x=0,y=0;
+/**
+ * 
+ */
 var currentlySelected;
 var symbols=
 {
@@ -47,6 +50,11 @@ class Piece
         this.face=k;
         this.face.soul=this;
         addTransformManager(k);
+        this.face.addEventListener("contextmenu",function(e)
+        {
+            e.preventDefault();
+            e.stopPropagation();
+        });
         this.face.addEventListener("pointerdown",Piece.mouseD)
         this.face.addEventListener("mouseenter",Piece.mouseEnter)
         this.face.addEventListener("mouseleave",Piece.mouseLeave)
@@ -123,6 +131,9 @@ class Piece
     }
     static mu=function(e)
     {
+        if(this.soul!=currentlySelected)
+        return;
+        currentlySelected=null;
         tentativeMove.setListen(false);
         movestart=false;
         let guiElem=this;
@@ -177,6 +188,10 @@ class Piece
                     {
                         already=enPassantLoc.pawn;
                     }
+                }
+                if(thisPiece.symbolFEN=="R"|| thisPiece.symbolFEN=="r")
+                {
+                    thisPiece.NOTcastlable=true;
                 }
                 if(already==null)
                 {

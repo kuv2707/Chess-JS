@@ -1,7 +1,7 @@
-var turn=false;
 var turnCount=-1;
-var BLACK_TEAM=0;
-var WHITE_TEAM=1;
+var BLACK_TEAM="bt";
+var WHITE_TEAM="wt";
+var turn=BLACK_TEAM;
 var movestart=false;
 var blackSquares="#6E1111";
 var whiteSquares="#ffa1a1";

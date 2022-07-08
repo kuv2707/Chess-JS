@@ -149,6 +149,7 @@ const tentativeMove=
         this.reset();
         this.last=sqs[y][x];
         this.last.style.borderRadius=`50% 50% 50% 50% / 15% 15% 85% 85% `;
+        //this.last.style.borderRadius=`100% `;
     },
     setListen:function(yes)
     {

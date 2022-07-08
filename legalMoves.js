@@ -223,9 +223,10 @@ const kingMoves=function()
 
 
     //castling add
-    if(this.NOTcastlable)
+    if(this.NOTcastlable==undefined)
     {
         this.NOTcastlable=true;
+        
         
     }
     return array;

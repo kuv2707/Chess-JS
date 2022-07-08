@@ -1,7 +1,7 @@
 var cx=0;cy=0;
 
 setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-switchTurn();
+switchTurn();//begin game
 
 window.addEventListener("load",function()
 {
