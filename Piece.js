@@ -45,6 +45,7 @@ class Piece
         k.id=type;
         k.style.zIndex="3";
         k.alt=symbols[type][0];
+        k.style.color=(team===BLACK_TEAM)?"black":"white";
         k.className="ChessPiece";
         k.src=`Images/${sel.value}/${type}.png`;
         this.face=k;

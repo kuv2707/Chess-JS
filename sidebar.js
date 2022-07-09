@@ -8,7 +8,7 @@ sidebar.expanded=false;
 
 var sel=document.createElement("select");
 sel.className="sidebarElements";
-let pieceThemes=["Fantasy","Fantasy 2","Eyes","Skull","Katz","Freak","Classic"];
+let pieceThemes=["Fantasy","Fantasy 2","Eyes","Skull","Katz","Freak","Classic","None"];
 sel.value=pieceThemes[0];
 for(let i=0;i<pieceThemes.length;i++)
 {
