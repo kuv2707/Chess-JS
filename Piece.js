@@ -140,7 +140,7 @@ class Piece
         let guiElem=this;
         let thisPiece=this.soul;
         var xy=getXY(e,true);
-        setTimeout(()=>e.target.style.zIndex="3",850);//e.target is same as this object
+        e.target.style.zIndex="3";
         guiElem.scale(9/8,9/8);
         guiElem.style.transitionProperty="transform";
         
@@ -160,9 +160,9 @@ class Piece
             let legal=false;
             for(let i=0;i<am.length;i++)
             {
-                if(  (am[i].x==vx)  &&  (am[i].y==vy))
+                if((am[i].x==vx)  &&  (am[i].y==vy))
                 {
-                    //moved within allowed bounds
+                    //moved to a legal location
                     legal=true;
                 }
             }
