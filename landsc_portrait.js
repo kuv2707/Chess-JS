@@ -74,9 +74,9 @@ function getXY(e)
     }
 }
 
-labelB.addEventListener("touchstart",playstart,{passive:true});
-labelB.addEventListener("click",playstart);
-labelW.addEventListener("touchstart",playend,{passive:true});
-labelW.addEventListener("click",playend);
+// labelB.addEventListener("touchstart",playstart,{passive:true});
+// labelB.addEventListener("click",playstart);
+// labelW.addEventListener("touchstart",playend,{passive:true});
+// labelW.addEventListener("click",playend);
 
 
