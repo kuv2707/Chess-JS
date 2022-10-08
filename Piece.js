@@ -47,7 +47,7 @@ class Piece
         k.alt=symbols[type][0];
         k.style.color=(team===BLACK_TEAM)?"black":"white";
         k.className="ChessPiece";
-        k.src=`Images/${sel.value}/${type}.png`;
+        k.src=`Images/${sel.value}/${type}.svg`;
         this.face=k;
         this.face.soul=this;
         addTransformManager(k);
