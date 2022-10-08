@@ -2,7 +2,7 @@
  * FORMAT OF STORING MOVES:
  * x:x coordinate
  * y: y coordinate
- * kill: indicates whether there is a piece at (x,y) which will be killed
+ * sqCol: indicates whether there is a piece at (x,y) which will be killed
  */
 
 let enPassantLoc={x:-2,y:-2,expiryMove:-1,pawn:null,clear:function()
@@ -27,7 +27,7 @@ function getRectMoves(piece,array)
     //horizontal scan
     for(let i=x-1;i>=0;i--)
     {
-        let ob={x:i,y:y,kill:false};
+        let ob={x:i,y:y,sqCol:"pink"};
         array.push(ob);
         if(pieceAt(i,y))
         {
@@ -40,7 +40,7 @@ function getRectMoves(piece,array)
     }
     for(let i=x+1;i<8;i++)
     {
-        let ob={x:i,y:y,kill:false};
+        let ob={x:i,y:y,sqCol:"pink"};
         array.push(ob);
         if(pieceAt(i,y))
         {
@@ -54,7 +54,7 @@ function getRectMoves(piece,array)
     //vertical scan
     for(let i=y-1;i>-1;i--)
     {
-        let ob={x:x,y:i,kill:false};
+        let ob={x:x,y:i,sqCol:"pink"};
         array.push(ob);
         if(pieceAt(x,i))
         {
@@ -67,7 +67,7 @@ function getRectMoves(piece,array)
     }
     for(let i=y+1;i<8;i++)
     {
-        let ob={x:x,y:i,kill:false};
+        let ob={x:x,y:i,sqCol:"pink"};
         array.push(ob);
         if(pieceAt(x,i))
         {
@@ -94,7 +94,7 @@ function getSlantMoves(piece,array)
     {
         if( x+i<8  &&  x+i>=0  &&  y+i<8  &&  y+i>=0)
         {
-            let ob={x:x+i,y:y+i,kill:false};
+            let ob={x:x+i,y:y+i,sqCol:"pink"};
             array.push(ob);
             if(pieceAt(x+i,y+i))
             {
@@ -110,7 +110,7 @@ function getSlantMoves(piece,array)
     {
         if( x+i<8  &&  x+i>-1  &&  y+i<8  &&  y+i>=0)
         {
-            let ob={x:x+i,y:y+i,kill:false};
+            let ob={x:x+i,y:y+i,sqCol:"pink"};
             array.push(ob);
             if(pieceAt(x+i,y+i))
             {
@@ -126,7 +126,7 @@ function getSlantMoves(piece,array)
     {
         if( x+i<8  &&  x+i>=0  &&  y-i<8  &&  y-i>=0)
         {
-            let ob={x:x+i,y:y-i,kill:false};
+            let ob={x:x+i,y:y-i,sqCol:"pink"};
             array.push(ob);
             if(pieceAt(x+i,y-i))
             {
@@ -142,7 +142,7 @@ function getSlantMoves(piece,array)
     {
         if( x+i<8  &&  x+i>=0  &&  y-i<8  &&  y-i>=0)
         {
-            let ob={x:x+i,y:y-i,kill:false};
+            let ob={x:x+i,y:y-i,sqCol:"pink"};
             array.push(ob);
             if(pieceAt(x+i,y-i))
             {
@@ -167,14 +167,14 @@ const knightMoves=function()
     let y=now.y/80;
     let array=new Array();
     let piece=this;
-    array.push({x:x+2,y:y+1,kill:false});
-    array.push({x:x+2,y:y-1,kill:false});
-    array.push({x:x-2,y:y-1,kill:false});
-    array.push({x:x-2,y:y+1,kill:false});
-    array.push({x:x-1,y:y+2,kill:false});
-    array.push({x:x-1,y:y-2,kill:false});
-    array.push({x:x+1,y:y-2,kill:false});
-    array.push({x:x+1,y:y+2,kill:false});
+    array.push({x:x+2,y:y+1,sqCol:"pink"});
+    array.push({x:x+2,y:y-1,sqCol:"pink"});
+    array.push({x:x-2,y:y-1,sqCol:"pink"});
+    array.push({x:x-2,y:y+1,sqCol:"pink"});
+    array.push({x:x-1,y:y+2,sqCol:"pink"});
+    array.push({x:x-1,y:y-2,sqCol:"pink"});
+    array.push({x:x+1,y:y-2,sqCol:"pink"});
+    array.push({x:x+1,y:y+2,sqCol:"pink"});
 
     array=array.filter(function(value)
     {
@@ -197,16 +197,16 @@ const kingMoves=function()
     let y=now.y/80;
     let array=new Array();
     let piece=this;
-    array.push({x:x+1,y:y,kill:false});
-    array.push({x:x+1,y:y-1,kill:false});
-    array.push({x:x+1,y:y+1,kill:false});
+    array.push({x:x+1,y:y,sqCol:"pink"});
+    array.push({x:x+1,y:y-1,sqCol:"pink"});
+    array.push({x:x+1,y:y+1,sqCol:"pink"});
 
-    array.push({x:x-1,y:y-1,kill:false});
-    array.push({x:x-1,y:y,kill:false});
-    array.push({x:x-1,y:y+1,kill:false});
+    array.push({x:x-1,y:y-1,sqCol:"pink"});
+    array.push({x:x-1,y:y,sqCol:"pink"});
+    array.push({x:x-1,y:y+1,sqCol:"pink"});
     
-    array.push({x:x,y:y-1,kill:false});
-    array.push({x:x,y:y+1,kill:false});
+    array.push({x:x,y:y-1,sqCol:"pink"});
+    array.push({x:x,y:y+1,sqCol:"pink"});
 
     array=array.filter(function(value)
     {
@@ -223,12 +223,50 @@ const kingMoves=function()
 
 
     //castling add
-    if(this.NOTcastlable==undefined)
+    if(piece.NOTcastlable!=undefined)
+    return array;
+    //piece might be eligible for castling
+
+    //right rook k saath
     {
-        this.NOTcastlable=true;
-        
-        
+        if(pieceAt(x+1,y)==null
+        &&  pieceAt(x+2,y)==null
+        &&  pieceAt(x+3,y).NOTcastlable==undefined
+        &&  pieceAt(x+3,y).symbolFEN=="R")
+        {
+            array.push({x:x+2,y:y,sqCol:"purple",spcl:function()
+            {
+                let rook=pieceAt(x+3,y);
+                rook.setLocation((x+1)*80,y*80);
+                rook.face.move(rook.location.x,rook.location.y);
+                BOARD[x+3][y]=null;
+                BOARD[x+1][y]=rook;
+                piece.NOTcastlable=true;
+                rook.NOTcastlable=true;
+            }});
+        }
     }
+    //left rook k saath
+    {
+        if(pieceAt(x-1,y)==null
+        &&  pieceAt(x-2,y)==null
+        &&  pieceAt(x-3,y)==null
+        &&  pieceAt(x-4,y).NOTcastlable==undefined
+        &&  pieceAt(x-4,y).symbolFEN=="R")
+        {
+            array.push({x:x-3,y:y,sqCol:"purple",spcl:function()
+            {
+                let rook=pieceAt(x-4,y);
+                rook.setLocation((x-2)*80,y*80);
+                rook.face.move(rook.location.x,rook.location.y);
+                BOARD[x-4,y]=null;
+                BOARD[x-2][y]=rook;
+                piece.NOTcastlable=true;
+                rook.NOTcastlable=true;
+            }});
+        }
+    }
+
     return array;
 }
 const queenMoves=function()
@@ -242,6 +280,7 @@ const bishopMoves=function()
 const pawnMoves=function()
 {
     let now=this.location;
+    let piece=this;
     let x=now.x/80;
     let y=now.y/80;
     let array=new Array();
@@ -249,35 +288,51 @@ const pawnMoves=function()
     {
         if(!pieceAt(x,y-1))
         {
-            array.push({x:x,y:y-1,kill:false});
+            array.push({x:x,y:y-1,sqCol:"pink"});
             if(y==6  &&  !pieceAt(x,y-2))
-            array.push({x:x,y:y-2,kill:false});
+            array.push({x:x,y:y-2,sqCol:"pink",spcl:function()
+            {
+                enPassantLoc.x=x;
+                enPassantLoc.y=y-1;
+                enPassantLoc.expiryMove=turnCount+1;
+                enPassantLoc.pawn=piece;
+                chessBoard.clear("enp");
+                chessBoard.highlight({...enPassantLoc,color:"orange",purpose:"enp"})
+            }});
         }
         if(pieceAt(x+1,y-1) &&  pieceAt(x+1,y-1).team!=this.team)
         {
-            array.push({x:x+1,y:y-1,kill:true});
+            array.push({x:x+1,y:y-1,sqCol:"red"});
         }
         if(pieceAt(x-1,y-1) &&  pieceAt(x-1,y-1).team!=this.team)
         {
-            array.push({x:x-1,y:y-1,kill:true});
+            array.push({x:x-1,y:y-1,sqCol:"red"});
         }
     }
     else
     {
         if(!pieceAt(x,y+1))
         {
-            array.push({x:x,y:y+1,kill:false});
-            if(y==1   &&  !pieceAt(x,y+2))
-            array.push({x:x,y:y+2,kill:false});
+            array.push({x:x,y:y+1,sqCol:"pink"});
+            if(y==1   &&  !pieceAt(x,y+2))//enp
+            array.push({x:x,y:y+2,sqCol:"pink",spcl:function()
+            {
+                enPassantLoc.x=x;
+                enPassantLoc.y=y+1;
+                enPassantLoc.expiryMove=turnCount+1;
+                enPassantLoc.pawn=piece;
+                chessBoard.clear("enp");
+                chessBoard.highlight({...enPassantLoc,color:"orange",purpose:"enp"})
+            }});
         }
         
         if(pieceAt(x+1,y+1) &&  pieceAt(x+1,y+1).team!=this.team)
         {
-            array.push({x:x+1,y:y+1,kill:true});
+            array.push({x:x+1,y:y+1,sqCol:"red"});
         }
         if(pieceAt(x-1,y+1) &&  pieceAt(x-1,y+1).team!=this.team)
         {
-            array.push({x:x-1,y:y+1,kill:true});
+            array.push({x:x-1,y:y+1,sqCol:"red"});
         }
         
     }
@@ -286,12 +341,20 @@ const pawnMoves=function()
         if(this.team==WHITE_TEAM)
         {
             if(enPassantLoc.y-y==-1)
-            array.push({...enPassantLoc,kill:true});
+            array.push({...enPassantLoc,sqCol:"red",spcl:function()
+                {
+                    //if this move is executed, it means en passant rule se kill hua h
+                    kill(enPassantLoc.pawn,x*80,y*80);
+                }});
         }
         if(this.team==BLACK_TEAM)
         {
             if(enPassantLoc.y-y==+1)
-            array.push({...enPassantLoc,kill:true});
+            array.push({...enPassantLoc,sqCol:"red",spcl:function()
+                {
+                    //if this move is executed, it means en passant rule se kill hua h
+                    kill(enPassantLoc.pawn,x*80,y*80);
+                }});
         }
     }
     return array;

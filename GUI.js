@@ -22,7 +22,7 @@ for(let i=0;i<8;i++)
         let sq=document.createElement("label");
         sq.className="boardSquares";
         sq.id="square"+i+"_"+j;
-        if((i+j)%2==0)
+        if((i+j)%2!=0)
         {
             sq.reset=resB;
         }
@@ -93,7 +93,7 @@ chessBoard.clear=function(purpose)
             if(purpose==l.innerText)
             {
                 l.innerText="";
-                if((i+j)%2==0)
+                if((i+j)%2!=0)
                 {
                     l.style.backgroundColor=blackSquares;
                 }

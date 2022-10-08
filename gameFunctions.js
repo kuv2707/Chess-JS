@@ -6,6 +6,8 @@
  */
 var kill=function(piece,mrelX,mrelY)
 {
+    if(!piece)
+    return;
     piece.alive=false;
     let x=piece.location.x;
     let y=piece.location.y;

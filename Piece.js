@@ -120,7 +120,7 @@ class Piece
         var am=currentlySelected.getAllowedMoves();
         am.forEach(function(val)
         {
-            chessBoard.highlight({x:val.x,y:val.y,color:val.kill?"red":"pink",purpose:"move"});
+            chessBoard.highlight({x:val.x,y:val.y,color:val.sqCol,purpose:"move"});
         })
         movestart=true;
         this.setPointerCapture(e.pointerId)
@@ -138,12 +138,12 @@ class Piece
         tentativeMove.setListen(false);
         movestart=false;
         let guiElem=this;
-        let thisPiece=this.soul;
+        let thisPiece=guiElem.soul;
         var xy=getXY(e,true);
         e.target.style.zIndex="3";
         guiElem.scale(9/8,9/8);
         guiElem.style.transitionProperty="transform";
-        
+        this.releasePointerCapture(e.pointerId)
         guiElem.removeEventListener("pointermove",Piece.drag)
         let vx=Math.floor((xy.x)/80);
         let vy=Math.floor((xy.y)/80);
@@ -157,48 +157,25 @@ class Piece
              * or it is of different team
              */
             let am=thisPiece.getAllowedMoves();
-            let legal=false;
+            let move=null;
             for(let i=0;i<am.length;i++)
             {
                 if((am[i].x==vx)  &&  (am[i].y==vy))
                 {
-                    //moved to a legal location
-                    legal=true;
+                    move=am[i];
                 }
             }
-            if(legal)
+            if(move)//legal move is played by player
             {
+                
                 var already=BOARD[vx][vy];//indexoutofbounds exception never occurs
-                if(thisPiece.symbolFEN=="P"|| thisPiece.symbolFEN=="p")
-                {
-                    //check if this very piece did an enpassant
-                    let now=thisPiece.location;
-                    let x=now.x/80;
-                    let y=now.y/80;
-                    if(vy-y==2  ||  vy-y==-2)
-                    {
-                        enPassantLoc.x=x;
-                        enPassantLoc.y=(y+vy)/2;
-                        enPassantLoc.expiryMove=turnCount+1;
-                        enPassantLoc.pawn=thisPiece;
-                        chessBoard.clear("enp");
-                        chessBoard.highlight({...enPassantLoc,color:"orange",purpose:"enp"})
-                    }
-                    //check if this very piece is capable of capturing an enpassant
-                    if(enPassantLoc.x==vx  &&  enPassantLoc.y==vy)
-                    {
-                        already=enPassantLoc.pawn;
-                    }
-                }
-                if(thisPiece.symbolFEN=="R"|| thisPiece.symbolFEN=="r")
-                {
-                    thisPiece.NOTcastlable=true;
-                }
                 if(already==null)
                 {
                     BOARD[Math.floor(thisPiece.location.x/80)][Math.floor(thisPiece.location.y/80)]=null;
-                    this.soul.setLocation(vx*80,vy*80)
+                    thisPiece.setLocation(vx*80,vy*80)
                     BOARD[Math.floor(thisPiece.location.x/80)][Math.floor(thisPiece.location.y/80)]=thisPiece;
+                    if(move.spcl)
+                    move.spcl();
                     switchTurn();
                 }
                 else
@@ -209,9 +186,12 @@ class Piece
                         BOARD[Math.floor(thisPiece.location.x/80)][Math.floor(thisPiece.location.y/80)]=null;
                         thisPiece.setLocation(vx*80,vy*80)
                         BOARD[Math.floor(thisPiece.location.x/80)][Math.floor(thisPiece.location.y/80)]=thisPiece;
+                        if(move.spcl)
+                        move.spcl();
                         switchTurn();
                     }
                 }
+                
             }
         }
         guiElem.move(thisPiece.location.x,thisPiece.location.y);
