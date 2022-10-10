@@ -77,11 +77,6 @@ function addTransformManager(go)
         this.translateCoords.y=yy;
         this.updateAppearance();
     }
-    go.flip=function()
-    {
-        go.flipval*=-1;
-        this.updateAppearance();
-    }
 }
 
 function printBoard()

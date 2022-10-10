@@ -34,7 +34,7 @@ function getRectMoves(piece,array)
             if(pieceAt(i,y).team==piece.team)
             array.pop();
             else
-            ob.kill=true;
+            ob.sqCol="red";
             break;
         }
     }
@@ -47,7 +47,7 @@ function getRectMoves(piece,array)
             if(pieceAt(i,y).team==piece.team)
             array.pop();
             else
-            ob.kill=true;
+            ob.sqCol="red";
             break;
         }
     }
@@ -61,7 +61,7 @@ function getRectMoves(piece,array)
             if(pieceAt(x,i).team==piece.team)
             array.pop();
             else
-            ob.kill=true;
+            ob.sqCol="red";
             break;
         }
     }
@@ -74,7 +74,7 @@ function getRectMoves(piece,array)
             if(pieceAt(x,i).team==piece.team)
             array.pop();
             else
-            ob.kill=true;
+            ob.sqCol="red";
             break;
         }
     }
@@ -101,7 +101,7 @@ function getSlantMoves(piece,array)
                 if(pieceAt(x+i,y+i).team==piece.team)
                 array.pop();
                 else
-                ob.kill=true;
+                ob.sqCol="red";
                 break;
             }            
         }
@@ -117,7 +117,7 @@ function getSlantMoves(piece,array)
                 if(pieceAt(x+i,y+i).team==piece.team)
                 array.pop();
                 else
-                ob.kill=true;
+                ob.sqCol="red";
                 break;
             }           
         }
@@ -133,7 +133,7 @@ function getSlantMoves(piece,array)
                 if(pieceAt(x+i,y-i).team==piece.team)
                 array.pop();
                 else
-                ob.kill=true;
+                ob.sqCol="red";
                 break;
             }         
         }  
@@ -149,7 +149,7 @@ function getSlantMoves(piece,array)
                 if(pieceAt(x+i,y-i).team==piece.team)
                 array.pop();
                 else
-                ob.kill=true;
+                ob.sqCol="red";
                 break;
             }         
         }
@@ -158,7 +158,9 @@ function getSlantMoves(piece,array)
 }
 const rookMoves=function()
 {
-    return getRectMoves(this,new Array());
+    let k= getRectMoves(this,new Array());
+    k.forEach((h)=>{h.spcl=()=>h.NOTcastlable=true});
+    return k;
 }
 const knightMoves=function()
 {
@@ -184,7 +186,7 @@ const knightMoves=function()
             if(pieceAt(value.x,value.y).team==piece.team)
             ret=false;
             else
-            value.kill=true;
+            value.sqCol="red";
         }
         return ret;
     })
@@ -216,8 +218,9 @@ const kingMoves=function()
             if(pieceAt(value.x,value.y).team==piece.team)
             ret=false;
             else
-            value.kill=true;
+            value.sqCol="red";
         }
+        value.spcl=()=>value.NOTcastlable=true;
         return ret;
     })
 
@@ -232,7 +235,7 @@ const kingMoves=function()
         if(pieceAt(x+1,y)==null
         &&  pieceAt(x+2,y)==null
         &&  pieceAt(x+3,y).NOTcastlable==undefined
-        &&  pieceAt(x+3,y).symbolFEN=="R")
+        &&  (""+pieceAt(x+3,y).symbolFEN).toUpperCase()=="R")
         {
             array.push({x:x+2,y:y,sqCol:"purple",spcl:function()
             {
@@ -252,7 +255,7 @@ const kingMoves=function()
         &&  pieceAt(x-2,y)==null
         &&  pieceAt(x-3,y)==null
         &&  pieceAt(x-4,y).NOTcastlable==undefined
-        &&  pieceAt(x-4,y).symbolFEN=="R")
+        &&  (""+pieceAt(x-4,y).symbolFEN).toUpperCase()=="R")
         {
             array.push({x:x-3,y:y,sqCol:"purple",spcl:function()
             {

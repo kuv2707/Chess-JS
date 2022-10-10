@@ -226,7 +226,7 @@ contextMenu.showAt=function(e)
 }
 contextMenu.hide=function()
 {
-    contextMenu.scale(1,0);
+    contextMenu.scale(0,0);
     contextMenu.innerHTML="";
     if(contextMenu.subject)
     {

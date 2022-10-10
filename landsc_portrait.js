@@ -8,7 +8,7 @@ var resizeFunction=function()
         whiteGraveyard.move(window.innerWidth/2+320+30,window.innerHeight/2-300+80);
         blackGraveyard.move(window.innerWidth/2-320-330,window.innerHeight/2-300+80);
         gameRules.rotatePerspective.board=true;
-        if(!turn)
+        if(turn==BLACK_TEAM)
         chessBoard.rotate(180);
     }
     else
@@ -19,7 +19,7 @@ var resizeFunction=function()
         whiteGraveyard.move(window.innerWidth/2+0,760);
         blackGraveyard.move(window.innerWidth/2-320,760);
         gameRules.rotatePerspective.board=false;
-        if(!turn)
+        if(turn==BLACK_TEAM)
         chessBoard.rotate(0);
     }
 };

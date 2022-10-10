@@ -87,7 +87,7 @@ class Piece
     }
     static mouseEnter()
     {
-        if(turn!=this.soul.team)
+        if(turn!=this.soul.team  ||  !this.soul.alive)
         return;
         this.scale(9/8,9/8);
         this.style.setProperty("filter","drop-shadow(0 0 10px black)")
@@ -145,6 +145,7 @@ class Piece
         guiElem.style.transitionProperty="transform";
         this.releasePointerCapture(e.pointerId)
         guiElem.removeEventListener("pointermove",Piece.drag)
+        guiElem.removeEventListener("pointerup",Piece.mu)
         let vx=Math.floor((xy.x)/80);
         let vy=Math.floor((xy.y)/80);
         chessBoard.clear("move");
