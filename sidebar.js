@@ -17,8 +17,8 @@ for(let i=0;i<pieceThemes.length;i++)
     o.innerText=pieceThemes[i];
     sel.append(o);
 }
-//sel.value=pieceThemes[Math.floor(sel.childNodes.length*Math.random())];
-sel.value=pieceThemes[5]
+sel.value=pieceThemes[Math.floor(sel.childNodes.length*Math.random())];
+//sel.value=pieceThemes[5]
 sel.addEventListener("change",function(e)
 {
     Pieces.forEach(function(e)
