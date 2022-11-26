@@ -88,7 +88,7 @@ if(savedthemestr)
 }
 else
 {
-    if(!window.matchMedia("(prefers-color-scheme:dark").matches)
+    if(window.matchMedia("(prefers-color-scheme:dark").matches)
     {
         defaultTheme=createTheme({red:20,green:60,blue:33});
     }
