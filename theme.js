@@ -1,6 +1,6 @@
 const setTheme=function(theme)
 {
-    Theme=theme;
+    Tema=theme;
     theme.chromeTheme=theme.elems;
     whiteSquares=theme.ws;
     blackSquares=theme.bs;
@@ -71,12 +71,14 @@ function RGBtoHex(a,b,c)
 {
     return "#"+TwoDig(a.toString(16))+TwoDig(b.toString(16))+TwoDig(c.toString(16));
 }
-var defaultTheme=createTheme({red:57,green:155,blue:162});
+
+
 
 //search for default theme in cookie
 /**
  * deprecating cookies in favor of window.localStorage
  */
+var defaultTheme;
 let vals=[];
 let savedthemestr=window.localStorage.getItem("theme");
 if(savedthemestr)
@@ -84,6 +86,16 @@ if(savedthemestr)
     let savedTheme=JSON.parse(savedthemestr);
     defaultTheme=createTheme(savedTheme);
 }
-
+else
+{
+    if(!window.matchMedia("(prefers-color-scheme:dark").matches)
+    {
+        defaultTheme=createTheme({red:20,green:60,blue:33});
+    }
+    else
+    {
+        defaultTheme=createTheme({red:57,green:155,blue:162});
+    }
+}
 colorSelector.value=RGBtoHex(defaultTheme.baseColor.red,defaultTheme.baseColor.green,defaultTheme.baseColor.blue)
 setTheme(defaultTheme);

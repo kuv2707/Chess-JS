@@ -6,17 +6,19 @@ let switchTurn=function()
     chessBoard.clear("move");
     if(turnCount>enPassantLoc.expiryMove)
     enPassantLoc.clear();
+    const ACTIVECOL="#eeeeee";
+    const INACTIVECOL="#212121";
     if(turn==WHITE_TEAM)
     {
         deg=0;
-        labelW.style.color="rgb(25, 180, 25)";
-        labelB.style.color="rgb(255, 255, 255)";
+        labelW.style.color=ACTIVECOL;
+        labelB.style.color=INACTIVECOL;
     }
     else
     {
         deg=180;
-        labelB.style.color="rgb(25, 180, 25)";
-        labelW.style.color="rgb(255, 255, 255)";
+        labelB.style.color=ACTIVECOL;
+        labelW.style.color=INACTIVECOL;
     }
     if(gameRules.rotatePerspective.board)
     {

@@ -8,7 +8,7 @@ var whiteSquares="#ffa1a1";
 var boardOffsetX=(window.innerWidth/window.innerHeight>1)?window.innerWidth/2-320:0;
 var boardOffsetY=25;
 const Pieces=new Array();
-var Theme;
+var Tema;
 
 var labelInactive="black";
 var labelActive="white"
