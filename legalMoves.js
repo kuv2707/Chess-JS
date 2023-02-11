@@ -220,21 +220,22 @@ const kingMoves=function()
             else
             value.sqCol="red";
         }
-        value.spcl=()=>value.NOTcastlable=true;
+        value.spcl=()=>value.castlable=false;
         return ret;
     })
 
 
     //castling add
-    if(piece.NOTcastlable!=undefined)
+    if(piece.castlable==false)
     return array;
     //piece might be eligible for castling
-
+    console.log("castl",piece.NOTcastlable)
     //right rook k saath
     {
         if(pieceAt(x+1,y)==null
         &&  pieceAt(x+2,y)==null
-        &&  pieceAt(x+3,y).NOTcastlable==undefined
+        &&  pieceAt(x+3,y)!=null
+        &&  pieceAt(x+3,y).castlable
         &&  (""+pieceAt(x+3,y).symbolFEN).toUpperCase()=="R")
         {
             array.push({x:x+2,y:y,sqCol:"purple",spcl:function()
@@ -244,8 +245,8 @@ const kingMoves=function()
                 rook.face.move(rook.location.x,rook.location.y);
                 BOARD[x+3][y]=null;
                 BOARD[x+1][y]=rook;
-                piece.NOTcastlable=true;
-                rook.NOTcastlable=true;
+                piece.castlable=false;
+                rook.castlable=false;
             }});
         }
     }
@@ -254,7 +255,8 @@ const kingMoves=function()
         if(pieceAt(x-1,y)==null
         &&  pieceAt(x-2,y)==null
         &&  pieceAt(x-3,y)==null
-        &&  pieceAt(x-4,y).NOTcastlable==undefined
+        &&  pieceAt(x-4,y)!=null
+        &&  pieceAt(x-4,y).castlable
         &&  (""+pieceAt(x-4,y).symbolFEN).toUpperCase()=="R")
         {
             array.push({x:x-3,y:y,sqCol:"purple",spcl:function()
@@ -264,8 +266,8 @@ const kingMoves=function()
                 rook.face.move(rook.location.x,rook.location.y);
                 BOARD[x-4,y]=null;
                 BOARD[x-2][y]=rook;
-                piece.NOTcastlable=true;
-                rook.NOTcastlable=true;
+                piece.castlable=false;
+                rook.castlable=false;
             }});
         }
     }

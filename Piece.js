@@ -50,6 +50,7 @@ class Piece
         k.src=`Images/${sel.value}/${type}.svg`;
         this.face=k;
         this.face.soul=this;
+        this.castlable=true;
         addTransformManager(k);
         this.face.addEventListener("contextmenu",function(e)
         {
