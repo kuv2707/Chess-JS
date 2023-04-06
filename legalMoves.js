@@ -302,7 +302,7 @@ const pawnMoves=function()
                 enPassantLoc.expiryMove=turnCount+1;
                 enPassantLoc.pawn=piece;
                 chessBoard.clear("enp");
-                chessBoard.highlight({...enPassantLoc,color:"orange",purpose:"enp"})
+                //chessBoard.highlight({...enPassantLoc,color:"orange",purpose:"enp"})
             }});
         }
         if(pieceAt(x+1,y-1) &&  pieceAt(x+1,y-1).team!=this.team)
@@ -327,7 +327,7 @@ const pawnMoves=function()
                 enPassantLoc.expiryMove=turnCount+1;
                 enPassantLoc.pawn=piece;
                 chessBoard.clear("enp");
-                chessBoard.highlight({...enPassantLoc,color:"orange",purpose:"enp"})
+                //chessBoard.highlight({...enPassantLoc,color:"orange",purpose:"enp"})
             }});
         }
         
